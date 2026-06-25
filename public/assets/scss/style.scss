@@ -110,25 +110,15 @@ button, input, textarea, select {
     align-items: center;
 
     /* Elemen dekoratif abstrak (lingkaran transparan di latar banner) */
-    &::before {
-        content: '';
-        position: absolute;
-        top: -30px;
-        right: -20px;
-        width: 130px;
-        height: 130px;
-        background: rgba(255, 255, 255, 0.08);
-        border-radius: 50%;
-    }
-    &::after {
-        content: '';
-        position: absolute;
-        bottom: -40px;
-        right: 60px;
-        width: 90px;
-        height: 90px;
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 50%;
+    &::before{
+    content:'';
+    position:absolute;
+    inset:0;
+
+    background-image:url('../img/logo-pattern.png');
+    background-repeat:repeat;
+    background-size:70px;
+    opacity:.06;
     }
 
     .banner-content {
