@@ -14,3 +14,10 @@ $routes->get('cart/decrease/(:any)', 'Cart::decrease/$1');
 
 $routes->get('checkout', 'Cart::checkout');
 $routes->post('checkout/process', 'Cart::process');
+
+$routes->group('admin', function($routes) {
+    $routes->get('/', 'Admin::index');
+    $routes->get('detail/(:num)', 'Admin::detail/$1');
+    $routes->post('update-status/(:num)', 'Admin::updateStatus/$1');
+    $routes->post('pay/(:num)', 'Admin::processPayment/$1');
+});
