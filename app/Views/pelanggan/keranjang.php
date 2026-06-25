@@ -4,12 +4,12 @@
 
 <div class="app-container" style="min-height: 100vh; display: flex; flex-direction: column; box-sizing: border-box;"> 
     
-    <header class="cart-header">
+    <header class="cart-header" style="position: sticky; top: 0; z-index: 1000; background-color: #FAF6EB; padding-top: 15px; padding-bottom: 10px;">
         <a href="<?= base_url('pelanggan'); ?>" class="btn-back" style="text-decoration: none;">←</a>
-        <h1>Keranjang Belanja</h1>
+        <h1 style="display: inline-block; margin: 0 0 0 10px; vertical-align: middle;">Keranjang Belanja</h1>
     </header>
 
-    <div class="cart-list" style="flex: 1; margin-bottom: 30px;">
+    <div class="cart-list" style="flex: 1; padding-bottom: 220px; box-sizing: border-box;">
         <?php if (empty($cart)): ?>
             <div class="empty-state" style="margin-top: 40px;">
                 <svg viewBox="0 0 100 100">
@@ -47,7 +47,7 @@
         <?php endif; ?>
     </div>
 
-<div style="position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 1200px; background-color: #ffffff; box-shadow: 0 -8px 24px rgba(0,0,0,0.06); border-radius: 20px 20px 0 0; z-index: 999; box-sizing: border-box; padding: 16px 16px env(safe-area-inset-bottom, 16px) 16px;">
+    <div style="position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 1200px; background-color: #ffffff; box-shadow: 0 -8px 24px rgba(0,0,0,0.06); border-radius: 20px 20px 0 0; z-index: 999; box-sizing: border-box; padding: 16px 16px env(safe-area-inset-bottom, 16px) 16px;">
         
         <?php if (!empty($cart)): ?>
             <div class="summary-line" style="margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
@@ -75,5 +75,6 @@
             </div>
         </div>
     </div>
-        
+</div>
+
 <?= $this->endSection(); ?>

@@ -11,3 +11,6 @@ $routes->get('cart', 'Cart::index');
 $routes->post('cart/add', 'Cart::add');       
 $routes->get('cart/remove/(:any)', 'Cart::remove/$1');
 $routes->get('cart/decrease/(:any)', 'Cart::decrease/$1');
+
+$routes->get('checkout', 'Cart::checkout');
+$routes->post('checkout/process', 'Cart::process');
