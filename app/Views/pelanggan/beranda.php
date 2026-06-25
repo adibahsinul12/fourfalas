@@ -70,56 +70,61 @@
         <span style="font-size: 12px; color: #4CAF50; font-weight: 600; cursor: pointer;">Lihat semua</span>
     </div>
     
-<div class="menu-grid">
-    <?php if (!empty($recommended_menus)): ?>
-        <?php foreach ($recommended_menus as $menu): 
-            // 1. Tentukan path file asli
-            $filename = $menu['image_path'] ?? 'default.jpg';
-            $path = 'uploads/menus/' . $filename;
-            
-            // 2. Cek apakah file benar-benar ada di folder
-            if (file_exists(FCPATH . $path) && !empty($menu['image_path'])) {
-                $imgUrl = base_url($path);
-            } else {
-                // 3. Jika tidak ada, gunakan default_menus.jpg
-                $imgUrl = base_url('uploads/menus/default_menus.jpg');
-            }
-        ?>
-            <div class="menu-card">
-                <img class="menu-img" src="<?= $imgUrl; ?>" alt="<?= esc($menu['menu_name']); ?>">
-                <div class="menu-info">
-                    <h3><?= esc($menu['menu_name']); ?></h3>
-                    <div class="menu-footer">
-                        <span class="price">Rp <?= number_format($menu['price'], 0, ',', '.'); ?></span>
-                        
-                        <form action="<?= base_url('cart/add'); ?>" method="post" style="margin: 0; padding: 0; display: inline;">
-                            <input type="hidden" name="menu_id" value="<?= $menu['id']; ?>">
-                            <button type="submit" class="btn-add">+</button>
-                        </form>
+    <div class="menu-grid">
+        <?php if (!empty($recommended_menus)): ?>
+            <?php foreach ($recommended_menus as $menu): 
+                $filename = $menu['image_path'] ?? 'default.jpg';
+                $path = 'uploads/menus/' . $filename;
+                
+                if (file_exists(FCPATH . $path) && !empty($menu['image_path'])) {
+                    $imgUrl = base_url($path);
+                } else {
+                    $imgUrl = base_url('uploads/menus/default_menus.jpg');
+                }
+            ?>
+                <div class="menu-card">
+                    <img class="menu-img" src="<?= $imgUrl; ?>" alt="<?= esc($menu['menu_name']); ?>">
+                    <div class="menu-info">
+                        <h3><?= esc($menu['menu_name']); ?></h3>
+                        <div class="menu-footer">
+                            <span class="price">Rp <?= number_format($menu['price'], 0, ',', '.'); ?></span>
+                            
+                            <form action="<?= base_url('cart/add'); ?>" method="post" style="margin: 0; padding: 0; display: inline;">
+                                <input type="hidden" name="menu_id" value="<?= $menu['id']; ?>">
+                                <button type="submit" class="btn-add">+</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <div class="empty-state">
+                <svg viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M30 40 L35 25 L40 40 L55 45 L40 50 L35 65 L30 50 L15 45 Z" fill="#F4A261" opacity="0.6"/>
+                    <path d="M110 30 L113 20 L116 30 L126 33 L116 36 L113 46 L110 36 L100 33 Z" fill="#F4A261" opacity="0.4"/>
+                    <path d="M60 45 Q50 35, 60 25 T60 5" stroke="#A67C52" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.5"/>
+                    <path d="M85 50 Q95 40, 85 30 T85 10" stroke="#A67C52" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.5"/>
+                    <rect x="45" y="60" width="60" height="55" rx="12" fill="#FFFFFF" stroke="#E5E5E5" stroke-width="3"/>
+                    <path d="M105 75 C120 75, 120 95, 105 100" fill="none" stroke="#FFFFFF" stroke-width="6"/>
+                    <path d="M105 75 C120 75, 120 95, 105 100" fill="none" stroke="#E5E5E5" stroke-width="3"/>
+                    <circle cx="65" cy="85" r="4" fill="#6B3A1E"/>
+                    <circle cx="85" cy="85" r="4" fill="#6B3A1E"/>
+                    <path d="M70 95 Q75 102, 80 95" fill="none" stroke="#6B3A1E" stroke-width="3" stroke-linecap="round"/>
+                    <circle cx="58" cy="90" r="3" fill="#FF8FA3" opacity="0.6"/>
+                    <circle cx="92" cy="90" r="3" fill="#FF8FA3" opacity="0.6"/>
+                </svg>
+                <h4>Belum Ada Rekomendasi</h4>
+                <p>Menu spesial dari Fourfalas sedang<br>disiapkan untukmu!</p>
             </div>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <div class="empty-state">
-            <svg viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
-                <path d="M30 40 L35 25 L40 40 L55 45 L40 50 L35 65 L30 50 L15 45 Z" fill="#F4A261" opacity="0.6"/>
-                <path d="M110 30 L113 20 L116 30 L126 33 L116 36 L113 46 L110 36 L100 33 Z" fill="#F4A261" opacity="0.4"/>
-                <path d="M60 45 Q50 35, 60 25 T60 5" stroke="#A67C52" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.5"/>
-                <path d="M85 50 Q95 40, 85 30 T85 10" stroke="#A67C52" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.5"/>
-                <rect x="45" y="60" width="60" height="55" rx="12" fill="#FFFFFF" stroke="#E5E5E5" stroke-width="3"/>
-                <path d="M105 75 C120 75, 120 95, 105 100" fill="none" stroke="#FFFFFF" stroke-width="6"/>
-                <path d="M105 75 C120 75, 120 95, 105 100" fill="none" stroke="#E5E5E5" stroke-width="3"/>
-                <circle cx="65" cy="85" r="4" fill="#6B3A1E"/>
-                <circle cx="85" cy="85" r="4" fill="#6B3A1E"/>
-                <path d="M70 95 Q75 102, 80 95" fill="none" stroke="#6B3A1E" stroke-width="3" stroke-linecap="round"/>
-                <circle cx="58" cy="90" r="3" fill="#FF8FA3" opacity="0.6"/>
-                <circle cx="92" cy="90" r="3" fill="#FF8FA3" opacity="0.6"/>
-            </svg>
-            <h4>Belum Ada Rekomendasi</h4>
-            <p>Menu spesial dari Fourfalas sedang<br>disiapkan untukmu!</p>
-        </div>
-    <?php endif; ?>
+        <?php endif; ?>
+    </div>
+
+    <div style="text-align: center; margin-top: 40px; margin-bottom: 60px;">
+        <a href="<?= base_url('login'); ?>" style="display: inline-block; padding: 10px 20px; background-color: #6B3A1E; color: #FFFFFF; text-decoration: none; border-radius: 8px; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; box-shadow: 0 4px 10px rgba(107, 58, 30, 0.15);">
+             Kelola Toko (Admin)
+        </a>
+    </div>
+
 </div>
 
 <div class="bottom-nav">

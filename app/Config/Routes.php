@@ -21,3 +21,15 @@ $routes->group('admin', function($routes) {
     $routes->post('update-status/(:num)', 'Admin::updateStatus/$1');
     $routes->post('pay/(:num)', 'Admin::processPayment/$1');
 });
+
+// ==========================================
+// RUTE UNTUK AUTH & ADMIN (TAMBAHKAN INI)
+// ==========================================
+$routes->get('login', 'Auth::index');       
+$routes->post('login/auth', 'Auth::login'); 
+$routes->get('logout', 'Auth::logout');     
+
+// Halaman admin diproteksi dengan filter 'auth'
+$routes->group('admin', ['filter' => 'auth'], function($routes) {
+    $routes->get('/', 'Admin\Dashboard::index'); 
+});
