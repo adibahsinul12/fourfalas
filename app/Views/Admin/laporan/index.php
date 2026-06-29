@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ── RESET & BASE ─────────────────────────── */
         *, *::before, *::after { box-sizing: border-box; }
         body {
             font-family: 'Poppins', sans-serif;
@@ -29,8 +28,8 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            z-index: 300;
-            transition: transform 0.28s ease;
+            z-index: 1050;
+            transition: left 0.3s ease;
             overflow-y: auto;
             overflow-x: hidden;
         }
@@ -77,13 +76,26 @@
         }
         .sidebar-logout:hover { opacity: 1; background-color: rgba(244,67,54,0.15); color: #FFCDD2; }
 
+        /* Close button — hidden on desktop */
+        .sidebar-close-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: #FFFFFF;
+            font-size: 1.2rem;
+            position: absolute;
+            top: 20px;
+            right: 16px;
+            cursor: pointer;
+        }
+
         /* Overlay mobile */
         .sidebar-overlay {
             display: none;
             position: fixed;
             inset: 0;
             background: rgba(0,0,0,0.5);
-            z-index: 299;
+            z-index: 1040;
         }
         .sidebar-overlay.show { display: block; }
 
@@ -92,7 +104,7 @@
             margin-left: 260px;
             padding: 30px;
             min-height: 100vh;
-            transition: margin-left 0.28s ease;
+            transition: margin-left 0.3s ease;
         }
 
         /* ── TOPBAR ───────────────────────────────── */
@@ -106,17 +118,18 @@
         }
         .topbar-left { display: flex; align-items: center; gap: 10px; }
 
-        .hamburger-btn {
+        /* Hamburger — hidden on desktop */
+        .menu-toggle-btn {
             display: none;
             background: #FFFFFF;
             border: 1px solid #E5E5E5;
             width: 40px; height: 40px;
-            border-radius: 10px;
+            border-radius: 50%;
             align-items: center; justify-content: center;
             color: #6B3A1E;
-            font-size: 17px;
-            cursor: pointer;
+            font-size: 1rem;
             flex-shrink: 0;
+            cursor: pointer;
         }
 
         .admin-profile { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
@@ -149,7 +162,14 @@
         .mini-box { border-left: 4px solid #4CAF50; padding-left: 15px; }
 
         /* ── FILTER FORM ──────────────────────────── */
-        .filter-card { background: #FFFFFF; border-radius: 16px; padding: 22px 24px; border: 1px solid rgba(229,229,229,0.5); box-shadow: 0 4px 12px rgba(0,0,0,0.04); margin-bottom: 24px; }
+        .filter-card {
+            background: #FFFFFF;
+            border-radius: 16px;
+            padding: 22px 24px;
+            border: 1px solid rgba(229,229,229,0.5);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            margin-bottom: 24px;
+        }
         .filter-card h6 { font-weight: 700; color: #888; margin-bottom: 16px; }
 
         /* ── TABLE ────────────────────────────────── */
@@ -192,71 +212,66 @@
         .lap-card-body { display: flex; flex-direction: column; gap: 6px; }
         .lap-card-row { display: flex; justify-content: space-between; font-size: 13px; }
         .lap-card-label { color: #888888; font-size: 12px; }
-
         .empty-state { text-align: center; padding: 40px 20px; color: #888; font-size: 13px; }
 
-        /* ── PRINT STYLES ─────────────────────────── */
+        /* ── PRINT ────────────────────────────────── */
         @media print {
-            .sidebar, .hamburger-btn, .sidebar-overlay,
+            .sidebar, .menu-toggle-btn, .sidebar-overlay,
             .filter-card, .topbar .admin-profile { display: none !important; }
             .main-content { margin-left: 0 !important; padding: 0 !important; }
             .lap-card-list { display: none !important; }
             .table-responsive { display: block !important; }
         }
 
-        /* ── TABLET: icon-only sidebar ────────────── */
-        @media (max-width: 1024px) and (min-width: 769px) {
-            .sidebar { width: 70px; }
-            .sidebar-brand span,
-            .sidebar-link span,
-            .sidebar-logout span { display: none; }
-            .sidebar-brand { padding-left: 8px; justify-content: center; }
-            .sidebar-link { justify-content: center; padding: 12px; gap: 0; }
-            .sidebar-logout { justify-content: center; padding: 12px; gap: 0; }
-            .main-content { margin-left: 70px; }
+        /* ── TABLET + MOBILE: off-canvas sidebar ─── */
+        /* Sama persis dengan pola halaman Transaksi   */
+        @media (max-width: 991.98px) {
+            .sidebar {
+                left: -280px;
+                box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+            }
+            .sidebar.show { left: 0; }
+            .sidebar-close-btn { display: block; }
+            .main-content { margin-left: 0; padding: 20px; }
+            .menu-toggle-btn { display: flex; }
         }
 
-        /* ── MOBILE: off-canvas sidebar ───────────── */
-        @media (max-width: 768px) {
-            .sidebar { transform: translateX(-100%); }
-            .sidebar.open { transform: translateX(0); }
-
-            .main-content { margin-left: 0; padding: 18px 14px 36px; }
-            .hamburger-btn { display: flex; }
-
-            /* hide desktop table, show cards */
-            .table-responsive { display: none; }
-            .lap-card-list { display: block; }
-
-            /* profile: avatar only */
+        @media (max-width: 767.98px) {
+            .main-content { padding: 16px; }
+            .topbar { margin-bottom: 20px; }
+            .admin-profile { gap: 10px; }
             .profile-card .small { display: none; }
             .profile-card { padding: 4px; border-radius: 50%; }
 
-            /* summary grid: 1 col */
-            .row.g-4 .col-md-4 { width: 100%; }
+            /* Sembunyikan tabel, tampilkan kartu */
+            .table-responsive { display: none; }
+            .lap-card-list { display: block; }
 
-            /* filter form: full width inputs */
+            /* Summary grid: 1 col */
+            .row.g-3 .col-sm-6 { width: 100%; }
+
+            /* Filter form: full width */
             .filter-card .row .col-md-4 { width: 100%; }
 
-            .topbar { margin-bottom: 18px; }
             h4 { font-size: 1rem !important; }
-
-            /* table in card header */
             .d-flex.justify-content-between { flex-wrap: wrap; gap: 10px; }
         }
 
-        @media (max-width: 420px) {
-            .main-content { padding: 12px 10px 32px; }
+        @media (max-width: 479.98px) {
+            .main-content { padding: 12px; }
         }
     </style>
 </head>
 <body>
 
-<!-- Mobile overlay -->
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+<!-- Overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
 <!-- ── SIDEBAR ──────────────────────────────────── -->
 <div class="sidebar" id="sidebar">
+    <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Tutup menu">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
     <div>
         <a href="<?= base_url('admin') ?>" class="sidebar-brand">
             <i class="fa-solid fa-mug-hot text-success"></i> <span>FO'Orders</span>
@@ -315,7 +330,7 @@
     <!-- Topbar -->
     <div class="topbar">
         <div class="topbar-left">
-            <button class="hamburger-btn" onclick="toggleSidebar()" aria-label="Buka menu">
+            <button class="menu-toggle-btn" id="menuToggleBtn" aria-label="Buka menu">
                 <i class="fa-solid fa-bars"></i>
             </button>
             <h4 class="fw-bold m-0">📈 Laporan Keuangan & Penjualan</h4>
@@ -384,7 +399,7 @@
             </button>
         </div>
 
-        <!-- ── DESKTOP TABLE ─────────────────────── -->
+        <!-- Desktop Table -->
         <div class="table-responsive">
             <table class="table custom-table m-0">
                 <thead>
@@ -418,7 +433,7 @@
             </table>
         </div>
 
-        <!-- ── MOBILE CARD LIST ──────────────────── -->
+        <!-- Mobile Card List -->
         <div class="lap-card-list">
             <?php if(!empty($laporan_penjualan)): ?>
                 <?php foreach($laporan_penjualan as $row): ?>
@@ -456,21 +471,31 @@
 </div><!-- /main-content -->
 
 <!-- ── SCRIPTS ─────────────────────────────────── -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    function toggleSidebar() {
-        const s = document.getElementById('sidebar');
-        const o = document.getElementById('sidebarOverlay');
-        const open = s.classList.toggle('open');
-        o.classList.toggle('show', open);
-        document.body.style.overflow = open ? 'hidden' : '';
+    const sidebar         = document.getElementById('sidebar');
+    const overlay         = document.getElementById('sidebarOverlay');
+    const menuToggleBtn   = document.getElementById('menuToggleBtn');
+    const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
+
+    function openSidebar() {
+        sidebar.classList.add('show');
+        overlay.classList.add('show');
+        document.body.style.overflow = 'hidden';
     }
     function closeSidebar() {
-        document.getElementById('sidebar').classList.remove('open');
-        document.getElementById('sidebarOverlay').classList.remove('show');
+        sidebar.classList.remove('show');
+        overlay.classList.remove('show');
         document.body.style.overflow = '';
     }
-</script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    menuToggleBtn.addEventListener('click', openSidebar);
+    sidebarCloseBtn.addEventListener('click', closeSidebar);
+    overlay.addEventListener('click', closeSidebar);
+
+    window.addEventListener('resize', function () {
+        if (window.innerWidth >= 992) closeSidebar();
+    });
+</script>
 </body>
 </html>

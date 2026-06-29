@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ── RESET & BASE ─────────────────────────── */
         *, *::before, *::after { box-sizing: border-box; }
         body {
             font-family: 'Poppins', sans-serif;
@@ -29,8 +28,8 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            z-index: 300;
-            transition: transform 0.28s ease;
+            z-index: 1050;
+            transition: left 0.3s ease;
             overflow-y: auto;
             overflow-x: hidden;
         }
@@ -77,13 +76,26 @@
         }
         .sidebar-logout:hover { opacity: 1; background-color: rgba(244,67,54,0.15); color: #FFCDD2; }
 
-        /* Mobile overlay */
+        /* Close button — hidden on desktop */
+        .sidebar-close-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: #FFFFFF;
+            font-size: 1.2rem;
+            position: absolute;
+            top: 20px;
+            right: 16px;
+            cursor: pointer;
+        }
+
+        /* Overlay */
         .sidebar-overlay {
             display: none;
             position: fixed;
             inset: 0;
             background: rgba(0,0,0,0.5);
-            z-index: 299;
+            z-index: 1040;
         }
         .sidebar-overlay.show { display: block; }
 
@@ -92,7 +104,7 @@
             margin-left: 260px;
             padding: 30px;
             min-height: 100vh;
-            transition: margin-left 0.28s ease;
+            transition: margin-left 0.3s ease;
         }
 
         /* ── TOPBAR ───────────────────────────────── */
@@ -106,17 +118,18 @@
         }
         .topbar-left { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
 
-        .hamburger-btn {
+        /* Hamburger — hidden on desktop */
+        .menu-toggle-btn {
             display: none;
             background: #FFFFFF;
             border: 1px solid #E5E5E5;
             width: 40px; height: 40px;
-            border-radius: 10px;
+            border-radius: 50%;
             align-items: center; justify-content: center;
             color: #6B3A1E;
-            font-size: 17px;
-            cursor: pointer;
+            font-size: 1rem;
             flex-shrink: 0;
+            cursor: pointer;
         }
 
         .search-box { position: relative; width: 300px; max-width: 100%; }
@@ -177,7 +190,6 @@
         }
         .form-control:focus { border-color: #6B3A1E; box-shadow: 0 0 0 3px rgba(107,58,30,0.08); }
         .form-label { font-size: 12px; font-weight: 600; }
-
         .btn { font-family: 'Poppins', sans-serif; font-size: 13px; }
         .section-divider { border-top: 1px solid #F0EBE5; margin: 20px 0; }
 
@@ -197,61 +209,48 @@
         /* Alert */
         .alert { border-radius: 10px; font-size: 13px; }
 
-        /* ── TABLET ───────────────────────────────── */
-        @media (max-width: 1024px) and (min-width: 769px) {
-            .sidebar { width: 70px; }
-            .sidebar-brand span,
-            .sidebar-link span,
-            .sidebar-logout span { display: none; }
-            .sidebar-brand { padding-left: 8px; justify-content: center; }
-            .sidebar-link { justify-content: center; padding: 12px; gap: 0; }
-            .sidebar-logout { justify-content: center; padding: 12px; gap: 0; }
-            .main-content { margin-left: 70px; }
-            .search-box { width: 200px; }
+        /* ── TABLET + MOBILE: off-canvas sidebar ─── */
+        @media (max-width: 991.98px) {
+            .sidebar {
+                left: -280px;
+                box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+            }
+            .sidebar.show { left: 0; }
+            .sidebar-close-btn { display: block; }
+            .main-content { margin-left: 0; padding: 20px; }
+            .menu-toggle-btn { display: flex; }
         }
 
-        /* ── MOBILE ───────────────────────────────── */
-        @media (max-width: 768px) {
-            .sidebar { transform: translateX(-100%); }
-            .sidebar.open { transform: translateX(0); }
-
-            .main-content { margin-left: 0; padding: 18px 14px 36px; }
-            .hamburger-btn { display: flex; }
-
+        @media (max-width: 767.98px) {
+            .main-content { padding: 16px; }
+            .topbar { margin-bottom: 20px; }
             .search-box { flex: 1; width: auto; }
-            .topbar { margin-bottom: 18px; }
-
-            /* profile: avatar only */
+            .admin-profile { gap: 10px; }
             .profile-card .small { display: none; }
             .profile-card { padding: 4px; border-radius: 50%; }
 
-            /* stack the two setting columns */
+            /* Stack the two setting columns */
             .row.g-4 .col-lg-5,
             .row.g-4 .col-lg-7 { width: 100%; }
-
-            /* jam buka/tutup side by side still */
-            .row.g-4 .col-lg-7 .row .col-md-6 { width: 50%; }
 
             h4 { font-size: 1rem !important; }
         }
 
-        @media (max-width: 480px) {
-            /* jam buka/tutup stack on very small */
-            .row.g-4 .col-lg-7 .row .col-md-6 { width: 100%; }
-        }
-
-        @media (max-width: 420px) {
-            .main-content { padding: 12px 10px 32px; }
+        @media (max-width: 479.98px) {
+            .main-content { padding: 12px; }
         }
     </style>
 </head>
 <body>
 
-<!-- Mobile overlay -->
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+<!-- Overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
 <!-- ── SIDEBAR ──────────────────────────────────── -->
 <div class="sidebar" id="sidebar">
+    <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Tutup menu">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
     <div>
         <a href="<?= base_url('admin') ?>" class="sidebar-brand">
             <i class="fa-solid fa-mug-hot text-success"></i> <span>FO'Orders</span>
@@ -310,7 +309,7 @@
     <!-- Topbar -->
     <div class="topbar">
         <div class="topbar-left">
-            <button class="hamburger-btn" onclick="toggleSidebar()" aria-label="Buka menu">
+            <button class="menu-toggle-btn" id="menuToggleBtn" aria-label="Buka menu">
                 <i class="fa-solid fa-bars"></i>
             </button>
             <div class="search-box">
@@ -458,20 +457,31 @@
 </div><!-- /main-content -->
 
 <!-- ── SCRIPTS ─────────────────────────────────── -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    /* Sidebar toggle */
-    function toggleSidebar() {
-        const s = document.getElementById('sidebar');
-        const o = document.getElementById('sidebarOverlay');
-        const open = s.classList.toggle('open');
-        o.classList.toggle('show', open);
-        document.body.style.overflow = open ? 'hidden' : '';
+    const sidebar         = document.getElementById('sidebar');
+    const overlay         = document.getElementById('sidebarOverlay');
+    const menuToggleBtn   = document.getElementById('menuToggleBtn');
+    const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
+
+    function openSidebar() {
+        sidebar.classList.add('show');
+        overlay.classList.add('show');
+        document.body.style.overflow = 'hidden';
     }
     function closeSidebar() {
-        document.getElementById('sidebar').classList.remove('open');
-        document.getElementById('sidebarOverlay').classList.remove('show');
+        sidebar.classList.remove('show');
+        overlay.classList.remove('show');
         document.body.style.overflow = '';
     }
+
+    menuToggleBtn.addEventListener('click', openSidebar);
+    sidebarCloseBtn.addEventListener('click', closeSidebar);
+    overlay.addEventListener('click', closeSidebar);
+
+    window.addEventListener('resize', function () {
+        if (window.innerWidth >= 992) closeSidebar();
+    });
 
     /* Show / hide password */
     function togglePw(inputId, btn) {
@@ -481,7 +491,5 @@
         btn.querySelector('i').className = isText ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash';
     }
 </script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
