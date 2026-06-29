@@ -10,7 +10,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
-
 :root{
     --brown:#6B3A1E;
     --green:#4CAF50;
@@ -31,14 +30,17 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
+    padding: 20px; 
 }
 
 .login-card{
-    width:500px;
+    width: 100%;
+    max-width: 480px; 
     background:#fff;
     border-radius:25px;
-    padding:35px 40px;
+    padding:40px;
     box-shadow:0 10px 25px rgba(0,0,0,.1);
+    transition: all 0.3s ease;
 }
 
 .logo{
@@ -47,13 +49,14 @@ body{
 }
 
 .logo img{
-    width:220px;
+    width:100%;
+    max-width:200px; 
     height:auto;
 }
 
 .brand{
     text-align:center;
-    font-size:52px;
+    font-size:42px; 
     font-weight:700;
     color:#4A2812;
 }
@@ -67,7 +70,8 @@ body{
     color:#444;
     margin-top:10px;
     margin-bottom:30px;
-    line-height:1.8;
+    line-height:1.6;
+    font-size: 14px;
 }
 
 .form-group{
@@ -94,7 +98,7 @@ body{
 
 .form-control{
     width:100%;
-    height:60px;
+    height:55px; 
     border:1px solid var(--border);
     border-radius:15px;
     padding-left:45px;
@@ -110,8 +114,8 @@ body{
 .option{
     display:flex;
     justify-content:space-between;
-    margin-bottom:20px;
-    font-size:14px;
+    margin-bottom:25px;
+    font-size:13px;
 }
 
 .option input{
@@ -125,12 +129,12 @@ body{
 
 .btn-login{
     width:100%;
-    height:60px;
+    height:55px;
     border:none;
     border-radius:15px;
     background:var(--green);
     color:#fff;
-    font-size:18px;
+    font-size:16px;
     font-weight:600;
     cursor:pointer;
 }
@@ -139,17 +143,26 @@ body{
     background:#43a047;
 }
 
-.register{
-    text-align:center;
-    margin-top:20px;
+/* ==================== RESPONSIVE MEDIA QUERIES ==================== */
+@media (max-width: 576px) {
+    .login-card {
+        padding: 30px 20px; 
+        border-radius: 20px;
+    }
+    .brand {
+        font-size: 34px;
+    }
+    .subtitle {
+        font-size: 13px;
+        margin-bottom: 20px;
+    }
 }
 
-.register a{
-    color:var(--green);
-    text-decoration:none;
-    font-weight:600;
+@media (min-width: 577px) and (max-width: 768px) {
+    .login-card {
+        padding: 35px;
+    }
 }
-
 </style>
 </head>
 <body>
@@ -168,6 +181,13 @@ body{
         Sistem Pemesanan &amp; Manajemen<br>
         Café Fourfalas
     </div>
+
+    <?php if (session()->getFlashdata('msg')) : ?>
+        <div style="background-color: #FFEBEE; color: #F44336; padding: 12px 15px; border-radius: 12px; font-size: 14px; margin-bottom: 20px; text-align: center; font-weight: 500; border: 1px solid #FFCDD2;">
+            <i class="fa-solid fa-circle-exclamation" style="margin-right: 8px;"></i>
+            <?= session()->getFlashdata('msg'); ?>
+        </div>
+    <?php endif; ?>
 
     <form action="<?= base_url('login/auth') ?>" method="post">
 
@@ -200,7 +220,7 @@ body{
                 Ingat saya
             </label>
 
-            <a href="#">Lupa password?</a>
+            <a href="#" id="btnLupaPassword">Lupa password?</a>
         </div>
 
         <button type="submit" class="btn-login">
@@ -209,11 +229,6 @@ body{
 
     </form>
 
-    <div class="register">
-        Belum punya akun?
-        <a href="#">Daftar di sini</a>
-    </div>
-
 </div>
 
 <script>
@@ -221,15 +236,22 @@ const togglePassword = document.querySelector('#togglePassword');
 const password = document.querySelector('#password');
 
 togglePassword.addEventListener('click', function () {
-
-    const type = password.getAttribute('type') === 'password'
-        ? 'text'
-        : 'password';
-
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
     password.setAttribute('type', type);
-
     this.classList.toggle('fa-eye');
     this.classList.toggle('fa-eye-slash');
+});
+
+document.querySelector('#btnLupaPassword').addEventListener('click', function (e) {
+    e.preventDefault(); 
+
+    let konfirmasi = confirm("Apakah Anda adalah Administrator Utama sistem FO'orders?");
+
+    if (konfirmasi) {
+        alert("PENGAMANAN SISTEM:\n\nSebagai Administrator Utama, jika Anda lupa password, silakan buka phpMyAdmin -> database 'fourfalas' -> tabel 'admins', lalu perbarui field 'password_hash' Anda secara manual demi menjaga keamanan internal sistem.");
+    } else {
+        alert("Silakan hubungi Administrator Utama Café Fourfalas di ruang IT untuk mereset kata sandi akun staff Anda.");
+    }
 });
 </script>
 

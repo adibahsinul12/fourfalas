@@ -1,0 +1,784 @@
+CRITICAL - 2026-06-26 13:06:08 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "layout_admin.php"
+[Method: GET, Route: admin/menu]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('layout_admin.php')
+ 2 SYSTEMPATH\View\View.php(256): CodeIgniter\View\View->render('layout_admin', [], true)
+ 3 SYSTEMPATH\Common.php(1254): CodeIgniter\View\View->render('Admin/menu/index', [], true)
+ 4 APPPATH\Controllers\Admin\Dashboard.php(23): view('Admin/menu/index')
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->menu()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+CRITICAL - 2026-06-26 13:06:11 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "layout_admin.php"
+[Method: GET, Route: admin/pelanggan]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('layout_admin.php')
+ 2 SYSTEMPATH\View\View.php(256): CodeIgniter\View\View->render('layout_admin', [], true)
+ 3 SYSTEMPATH\Common.php(1254): CodeIgniter\View\View->render('Admin/pelanggan/index', [], true)
+ 4 APPPATH\Controllers\Admin\Dashboard.php(33): view('Admin/pelanggan/index')
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->pelanggan()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+CRITICAL - 2026-06-26 13:06:14 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "layout_admin.php"
+[Method: GET, Route: admin/laporan]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('layout_admin.php')
+ 2 SYSTEMPATH\View\View.php(256): CodeIgniter\View\View->render('layout_admin', [], true)
+ 3 SYSTEMPATH\Common.php(1254): CodeIgniter\View\View->render('Admin/laporan/index', [], true)
+ 4 APPPATH\Controllers\Admin\Dashboard.php(43): view('Admin/laporan/index')
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->laporan()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+CRITICAL - 2026-06-26 13:06:17 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "layout_admin.php"
+[Method: GET, Route: admin/menu]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('layout_admin.php')
+ 2 SYSTEMPATH\View\View.php(256): CodeIgniter\View\View->render('layout_admin', [], true)
+ 3 SYSTEMPATH\Common.php(1254): CodeIgniter\View\View->render('Admin/menu/index', [], true)
+ 4 APPPATH\Controllers\Admin\Dashboard.php(23): view('Admin/menu/index')
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->menu()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+CRITICAL - 2026-06-26 13:06:25 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "layout_admin.php"
+[Method: GET, Route: admin/menu]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('layout_admin.php')
+ 2 SYSTEMPATH\View\View.php(256): CodeIgniter\View\View->render('layout_admin', [], true)
+ 3 SYSTEMPATH\Common.php(1254): CodeIgniter\View\View->render('Admin/menu/index', [], true)
+ 4 APPPATH\Controllers\Admin\Dashboard.php(23): view('Admin/menu/index')
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->menu()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+CRITICAL - 2026-06-26 13:09:36 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "layout_admin.php"
+[Method: GET, Route: admin/menu]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('layout_admin.php')
+ 2 SYSTEMPATH\View\View.php(256): CodeIgniter\View\View->render('layout_admin', [], true)
+ 3 SYSTEMPATH\Common.php(1254): CodeIgniter\View\View->render('admin/menu/index', [], true)
+ 4 APPPATH\Controllers\Admin\Dashboard.php(22): view('admin/menu/index')
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->menu()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+CRITICAL - 2026-06-26 13:09:37 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "layout_admin.php"
+[Method: GET, Route: admin/menu]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('layout_admin.php')
+ 2 SYSTEMPATH\View\View.php(256): CodeIgniter\View\View->render('layout_admin', [], true)
+ 3 SYSTEMPATH\Common.php(1254): CodeIgniter\View\View->render('admin/menu/index', [], true)
+ 4 APPPATH\Controllers\Admin\Dashboard.php(22): view('admin/menu/index')
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->menu()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+CRITICAL - 2026-06-26 13:09:38 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "layout_admin.php"
+[Method: GET, Route: admin/menu]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('layout_admin.php')
+ 2 SYSTEMPATH\View\View.php(256): CodeIgniter\View\View->render('layout_admin', [], true)
+ 3 SYSTEMPATH\Common.php(1254): CodeIgniter\View\View->render('admin/menu/index', [], true)
+ 4 APPPATH\Controllers\Admin\Dashboard.php(22): view('admin/menu/index')
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->menu()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+CRITICAL - 2026-06-26 13:09:43 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "layout_admin.php"
+[Method: GET, Route: admin/menu]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('layout_admin.php')
+ 2 SYSTEMPATH\View\View.php(256): CodeIgniter\View\View->render('layout_admin', [], true)
+ 3 SYSTEMPATH\Common.php(1254): CodeIgniter\View\View->render('admin/menu/index', [], true)
+ 4 APPPATH\Controllers\Admin\Dashboard.php(22): view('admin/menu/index')
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->menu()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+CRITICAL - 2026-06-26 13:09:49 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "layout_admin.php"
+[Method: GET, Route: admin/menu]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('layout_admin.php')
+ 2 SYSTEMPATH\View\View.php(256): CodeIgniter\View\View->render('layout_admin', [], true)
+ 3 SYSTEMPATH\Common.php(1254): CodeIgniter\View\View->render('admin/menu/index', [], true)
+ 4 APPPATH\Controllers\Admin\Dashboard.php(22): view('admin/menu/index')
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->menu()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+DEBUG - 2026-06-26 13:16:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-06-26 13:16:28 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "layout_admin.php"
+[Method: GET, Route: admin/menu]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('layout_admin.php')
+ 2 SYSTEMPATH\View\View.php(256): CodeIgniter\View\View->render('layout_admin', [], true)
+ 3 SYSTEMPATH\Common.php(1254): CodeIgniter\View\View->render('admin/menu/index', [], true)
+ 4 APPPATH\Controllers\Admin\Dashboard.php(22): view('admin/menu/index')
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->menu()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+DEBUG - 2026-06-26 13:20:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-06-26 13:20:02 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "layout_admin.php"
+[Method: GET, Route: admin/menu]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('layout_admin.php')
+ 2 SYSTEMPATH\View\View.php(256): CodeIgniter\View\View->render('layout_admin', [], true)
+ 3 SYSTEMPATH\Common.php(1254): CodeIgniter\View\View->render('admin/menu/index', [], true)
+ 4 APPPATH\Controllers\Admin\Dashboard.php(22): view('admin/menu/index')
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->menu()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+DEBUG - 2026-06-26 13:20:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-06-26 13:20:04 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "layout_admin.php"
+[Method: GET, Route: admin/menu]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('layout_admin.php')
+ 2 SYSTEMPATH\View\View.php(256): CodeIgniter\View\View->render('layout_admin', [], true)
+ 3 SYSTEMPATH\Common.php(1254): CodeIgniter\View\View->render('admin/menu/index', [], true)
+ 4 APPPATH\Controllers\Admin\Dashboard.php(22): view('admin/menu/index')
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->menu()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+DEBUG - 2026-06-26 13:20:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:20:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-06-26 13:20:15 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "layout_admin.php"
+[Method: GET, Route: admin/meja]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('layout_admin.php')
+ 2 SYSTEMPATH\View\View.php(256): CodeIgniter\View\View->render('layout_admin', [], true)
+ 3 SYSTEMPATH\Common.php(1254): CodeIgniter\View\View->render('admin/meja/index', [], true)
+ 4 APPPATH\Controllers\Admin\Dashboard.php(27): view('admin/meja/index')
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->meja()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+DEBUG - 2026-06-26 13:21:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:21:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:21:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:21:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:21:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-06-26 13:21:28 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "layout_admin.php"
+[Method: GET, Route: admin/meja]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('layout_admin.php')
+ 2 SYSTEMPATH\View\View.php(256): CodeIgniter\View\View->render('layout_admin', [], true)
+ 3 SYSTEMPATH\Common.php(1254): CodeIgniter\View\View->render('admin/meja/index', [], true)
+ 4 APPPATH\Controllers\Admin\Dashboard.php(27): view('admin/meja/index')
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->meja()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+DEBUG - 2026-06-26 13:21:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:21:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:21:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:21:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:21:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:21:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:21:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:21:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:21:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-06-26 13:21:49 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "layout_admin.php"
+[Method: GET, Route: admin/meja]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('layout_admin.php')
+ 2 SYSTEMPATH\View\View.php(256): CodeIgniter\View\View->render('layout_admin', [], true)
+ 3 SYSTEMPATH\Common.php(1254): CodeIgniter\View\View->render('admin/meja/index', [], true)
+ 4 APPPATH\Controllers\Admin\Dashboard.php(27): view('admin/meja/index')
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->meja()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+DEBUG - 2026-06-26 13:21:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-06-26 13:21:53 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "layout_admin.php"
+[Method: GET, Route: admin/meja]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('layout_admin.php')
+ 2 SYSTEMPATH\View\View.php(256): CodeIgniter\View\View->render('layout_admin', [], true)
+ 3 SYSTEMPATH\Common.php(1254): CodeIgniter\View\View->render('admin/meja/index', [], true)
+ 4 APPPATH\Controllers\Admin\Dashboard.php(27): view('admin/meja/index')
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->meja()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+DEBUG - 2026-06-26 13:22:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-06-26 13:22:15 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "layout_admin.php"
+[Method: GET, Route: admin/pelanggan]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('layout_admin.php')
+ 2 SYSTEMPATH\View\View.php(256): CodeIgniter\View\View->render('layout_admin', [], true)
+ 3 SYSTEMPATH\Common.php(1254): CodeIgniter\View\View->render('admin/pelanggan/index', [], true)
+ 4 APPPATH\Controllers\Admin\Dashboard.php(32): view('admin/pelanggan/index')
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->pelanggan()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+DEBUG - 2026-06-26 13:22:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:22:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-06-26 13:22:31 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "layout_admin.php"
+[Method: GET, Route: admin/pengaturan]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('layout_admin.php')
+ 2 SYSTEMPATH\View\View.php(256): CodeIgniter\View\View->render('layout_admin', [], true)
+ 3 SYSTEMPATH\Common.php(1254): CodeIgniter\View\View->render('admin/pengaturan/index', [], true)
+ 4 APPPATH\Controllers\Admin\Dashboard.php(47): view('admin/pengaturan/index')
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->pengaturan()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+DEBUG - 2026-06-26 13:22:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-06-26 13:22:47 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "layout_admin.php"
+[Method: GET, Route: admin/laporan]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('layout_admin.php')
+ 2 SYSTEMPATH\View\View.php(256): CodeIgniter\View\View->render('layout_admin', [], true)
+ 3 SYSTEMPATH\Common.php(1254): CodeIgniter\View\View->render('admin/laporan/index', [], true)
+ 4 APPPATH\Controllers\Admin\Dashboard.php(42): view('admin/laporan/index')
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->laporan()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+DEBUG - 2026-06-26 13:23:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-06-26 13:23:00 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "layout_admin.php"
+[Method: GET, Route: admin/pengaturan]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('layout_admin.php')
+ 2 SYSTEMPATH\View\View.php(256): CodeIgniter\View\View->render('layout_admin', [], true)
+ 3 SYSTEMPATH\Common.php(1254): CodeIgniter\View\View->render('admin/pengaturan/index', [], true)
+ 4 APPPATH\Controllers\Admin\Dashboard.php(47): view('admin/pengaturan/index')
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->pengaturan()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+DEBUG - 2026-06-26 13:24:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:24:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:24:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:24:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:25:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:25:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:25:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:26:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:26:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:26:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:26:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:26:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:27:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:27:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:27:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:28:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:28:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:28:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:28:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:28:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:28:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:28:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:28:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:29:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:29:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:33:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:33:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:44:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:44:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:44:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:44:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:44:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:45:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:45:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:48:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:48:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:48:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-06-26 13:48:39 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "admin/dashboard_utama.php"
+[Method: GET, Route: admin]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('admin/dashboard_utama.php')
+ 2 SYSTEMPATH\Common.php(1254): CodeIgniter\View\View->render('admin/dashboard_utama', [], true)
+ 3 APPPATH\Controllers\Admin\Dashboard.php(12): view('admin/dashboard_utama')
+ 4 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->index()
+ 5 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 6 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+DEBUG - 2026-06-26 13:51:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:51:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:51:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:52:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:52:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:52:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 13:52:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 14:17:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 14:17:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 14:17:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 14:17:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 14:18:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 14:18:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 14:22:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 14:22:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 14:22:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 14:22:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 14:22:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 14:23:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 14:27:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 14:27:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 15:02:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 15:02:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 15:10:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 15:12:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 15:12:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 15:12:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 15:14:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 15:17:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 15:30:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 15:35:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 15:37:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 15:43:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 15:44:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:00:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:00:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:00:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:00:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:00:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:01:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:01:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:01:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:01:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:01:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:02:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:02:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:02:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:02:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:02:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:02:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:02:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:02:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:03:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:03:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:03:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:03:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:03:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:03:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:03:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:03:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:05:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:05:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:05:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:05:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:05:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:05:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:05:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:05:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:05:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:05:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:05:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:05:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:05:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:05:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:08:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-06-26 16:08:45 --> ErrorException: Undefined variable $total_pendapatan
+[Method: GET, Route: admin]
+in APPPATH\Views\admin\dashboard_utama.php on line 86.
+ 1 APPPATH\Views\admin\dashboard_utama.php(86): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $total_pendapatan', 'D:\\Xampp\\htdocs\\fo_orders\\app\\Views\\admin\\dashboard_utama.php', 86)
+ 2 SYSTEMPATH\View\View.php(240): include('D:\\Xampp\\htdocs\\fo_orders\\app\\Views\\admin\\dashboard_utama.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1254): CodeIgniter\View\View->render('admin/dashboard_utama', [], true)
+ 5 APPPATH\Controllers\Admin\Dashboard.php(12): view('admin/dashboard_utama')
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->index()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+DEBUG - 2026-06-26 16:08:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:08:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:08:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-06-26 16:08:52 --> ErrorException: Undefined variable $total_pendapatan
+[Method: GET, Route: admin]
+in APPPATH\Views\admin\dashboard_utama.php on line 86.
+ 1 APPPATH\Views\admin\dashboard_utama.php(86): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $total_pendapatan', 'D:\\Xampp\\htdocs\\fo_orders\\app\\Views\\admin\\dashboard_utama.php', 86)
+ 2 SYSTEMPATH\View\View.php(240): include('D:\\Xampp\\htdocs\\fo_orders\\app\\Views\\admin\\dashboard_utama.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1254): CodeIgniter\View\View->render('admin/dashboard_utama', [], true)
+ 5 APPPATH\Controllers\Admin\Dashboard.php(12): view('admin/dashboard_utama')
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->index()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+DEBUG - 2026-06-26 16:09:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:09:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:09:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:09:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:10:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:10:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:13:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:13:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:13:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:16:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:16:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:16:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:16:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:16:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:16:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:16:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:16:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:23:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:23:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:23:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:23:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:23:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:23:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-06-26 16:23:32 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "admin/orders/index.php"
+[Method: GET, Route: admin/pesanan]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('admin/orders/index.php')
+ 2 SYSTEMPATH\Common.php(1254): CodeIgniter\View\View->render('admin/orders/index', [], true)
+ 3 APPPATH\Controllers\Admin\Dashboard.php(45): view('admin/orders/index')
+ 4 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->pesanan()
+ 5 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 6 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+DEBUG - 2026-06-26 16:26:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:26:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:26:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:26:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:26:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:26:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:26:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:26:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:26:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:26:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:26:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:27:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:27:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:27:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:27:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:27:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:30:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:35:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:35:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:35:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:35:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:35:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:35:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:48:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:48:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:53:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:53:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:53:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:53:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:53:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:53:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:53:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:53:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:53:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:53:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:53:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:54:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:55:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:55:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 16:57:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-06-26 16:57:50 --> ErrorException: Undefined variable $tgl_mulai
+[Method: GET, Route: admin/laporan]
+in APPPATH\Views\admin\laporan\index.php on line 67.
+ 1 APPPATH\Views\admin\laporan\index.php(67): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $tgl_mulai', 'D:\\Xampp\\htdocs\\fo_orders\\app\\Views\\admin\\laporan\\index.php', 67)
+ 2 SYSTEMPATH\View\View.php(240): include('D:\\Xampp\\htdocs\\fo_orders\\app\\Views\\admin\\laporan\\index.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1254): CodeIgniter\View\View->render('admin/laporan/index', [], true)
+ 5 APPPATH\Controllers\Admin\Dashboard.php(122): view('admin/laporan/index')
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->laporan()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+DEBUG - 2026-06-26 16:58:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-06-26 16:58:33 --> Unknown column 'total_amount' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT SUM(`total_payment`) AS `omzet`, SUM(`total_amount`) AS `subtotal`
+FROM `orders`
+WHERE `order_status` = \'Selesai\'
+AND DATE(created_at) >= \'2026-06-01\'
+AND DATE(created_at) <= \'2026-06-26\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT SUM(`total_payment`) AS `omzet`, SUM(`total_amount`) AS `subtotal`
+FROM `orders`
+WHERE `order_status` = \'Selesai\'
+AND DATE(created_at) >= \'2026-06-01\'
+AND DATE(created_at) <= \'2026-06-26\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT SUM(`total_payment`) AS `omzet`, SUM(`total_amount`) AS `subtotal`
+FROM `orders`
+WHERE `order_status` = \'Selesai\'
+AND DATE(created_at) >= \'2026-06-01\'
+AND DATE(created_at) <= \'2026-06-26\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT SUM(`total_payment`) AS `omzet`, SUM(`total_amount`) AS `subtotal`
+FROM `orders`
+WHERE `order_status` = :order_status:
+AND DATE(created_at) >= :DATE(created_at):
+AND DATE(created_at) <= :DATE(created_at).1:', [...], false)
+ 5 APPPATH\Controllers\Admin\Dashboard.php(135): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->laporan()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+CRITICAL - 2026-06-26 16:58:33 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'total_amount' in 'field list'
+[Method: GET, Route: admin/laporan]
+in SYSTEMPATH\Database\BaseConnection.php on line 863.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT SUM(`total_payment`) AS `omzet`, SUM(`total_amount`) AS `subtotal`
+FROM `orders`
+WHERE `order_status` = :order_status:
+AND DATE(created_at) >= :DATE(created_at):
+AND DATE(created_at) <= :DATE(created_at).1:', [...], false)
+ 2 APPPATH\Controllers\Admin\Dashboard.php(135): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->laporan()
+ 4 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 5 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 9 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+CRITICAL - 2026-06-26 16:58:33 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'total_amount' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT SUM(`total_payment`) AS `omzet`, SUM(`total_amount`) AS `subtotal`
+FROM `orders`
+WHERE `order_status` = \'Selesai\'
+AND DATE(created_at) >= \'2026-06-01\'
+AND DATE(created_at) <= \'2026-06-26\'')
+ 2 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT SUM(`total_payment`) AS `omzet`, SUM(`total_amount`) AS `subtotal`
+FROM `orders`
+WHERE `order_status` = \'Selesai\'
+AND DATE(created_at) >= \'2026-06-01\'
+AND DATE(created_at) <= \'2026-06-26\'')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT SUM(`total_payment`) AS `omzet`, SUM(`total_amount`) AS `subtotal`
+FROM `orders`
+WHERE `order_status` = :order_status:
+AND DATE(created_at) >= :DATE(created_at):
+AND DATE(created_at) <= :DATE(created_at).1:', [...], false)
+ 4 APPPATH\Controllers\Admin\Dashboard.php(135): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->laporan()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+CRITICAL - 2026-06-26 16:58:33 --> [Caused by] mysqli_sql_exception: Unknown column 'total_amount' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT SUM(`total_payment`) AS `omzet`, SUM(`total_amount`) AS `subtotal`
+FROM `orders`
+WHERE `order_status` = \'Selesai\'
+AND DATE(created_at) >= \'2026-06-01\'
+AND DATE(created_at) <= \'2026-06-26\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT SUM(`total_payment`) AS `omzet`, SUM(`total_amount`) AS `subtotal`
+FROM `orders`
+WHERE `order_status` = \'Selesai\'
+AND DATE(created_at) >= \'2026-06-01\'
+AND DATE(created_at) <= \'2026-06-26\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT SUM(`total_payment`) AS `omzet`, SUM(`total_amount`) AS `subtotal`
+FROM `orders`
+WHERE `order_status` = \'Selesai\'
+AND DATE(created_at) >= \'2026-06-01\'
+AND DATE(created_at) <= \'2026-06-26\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT SUM(`total_payment`) AS `omzet`, SUM(`total_amount`) AS `subtotal`
+FROM `orders`
+WHERE `order_status` = :order_status:
+AND DATE(created_at) >= :DATE(created_at):
+AND DATE(created_at) <= :DATE(created_at).1:', [...], false)
+ 5 APPPATH\Controllers\Admin\Dashboard.php(135): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->laporan()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+DEBUG - 2026-06-26 16:58:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-06-26 16:58:36 --> Unknown column 'total_amount' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT SUM(`total_payment`) AS `omzet`, SUM(`total_amount`) AS `subtotal`
+FROM `orders`
+WHERE `order_status` = \'Selesai\'
+AND DATE(created_at) >= \'2026-06-01\'
+AND DATE(created_at) <= \'2026-06-26\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT SUM(`total_payment`) AS `omzet`, SUM(`total_amount`) AS `subtotal`
+FROM `orders`
+WHERE `order_status` = \'Selesai\'
+AND DATE(created_at) >= \'2026-06-01\'
+AND DATE(created_at) <= \'2026-06-26\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT SUM(`total_payment`) AS `omzet`, SUM(`total_amount`) AS `subtotal`
+FROM `orders`
+WHERE `order_status` = \'Selesai\'
+AND DATE(created_at) >= \'2026-06-01\'
+AND DATE(created_at) <= \'2026-06-26\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT SUM(`total_payment`) AS `omzet`, SUM(`total_amount`) AS `subtotal`
+FROM `orders`
+WHERE `order_status` = :order_status:
+AND DATE(created_at) >= :DATE(created_at):
+AND DATE(created_at) <= :DATE(created_at).1:', [...], false)
+ 5 APPPATH\Controllers\Admin\Dashboard.php(135): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->laporan()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+CRITICAL - 2026-06-26 16:58:36 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'total_amount' in 'field list'
+[Method: GET, Route: admin/laporan]
+in SYSTEMPATH\Database\BaseConnection.php on line 863.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT SUM(`total_payment`) AS `omzet`, SUM(`total_amount`) AS `subtotal`
+FROM `orders`
+WHERE `order_status` = :order_status:
+AND DATE(created_at) >= :DATE(created_at):
+AND DATE(created_at) <= :DATE(created_at).1:', [...], false)
+ 2 APPPATH\Controllers\Admin\Dashboard.php(135): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->laporan()
+ 4 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 5 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 9 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+CRITICAL - 2026-06-26 16:58:36 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'total_amount' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT SUM(`total_payment`) AS `omzet`, SUM(`total_amount`) AS `subtotal`
+FROM `orders`
+WHERE `order_status` = \'Selesai\'
+AND DATE(created_at) >= \'2026-06-01\'
+AND DATE(created_at) <= \'2026-06-26\'')
+ 2 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT SUM(`total_payment`) AS `omzet`, SUM(`total_amount`) AS `subtotal`
+FROM `orders`
+WHERE `order_status` = \'Selesai\'
+AND DATE(created_at) >= \'2026-06-01\'
+AND DATE(created_at) <= \'2026-06-26\'')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT SUM(`total_payment`) AS `omzet`, SUM(`total_amount`) AS `subtotal`
+FROM `orders`
+WHERE `order_status` = :order_status:
+AND DATE(created_at) >= :DATE(created_at):
+AND DATE(created_at) <= :DATE(created_at).1:', [...], false)
+ 4 APPPATH\Controllers\Admin\Dashboard.php(135): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->laporan()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+CRITICAL - 2026-06-26 16:58:36 --> [Caused by] mysqli_sql_exception: Unknown column 'total_amount' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT SUM(`total_payment`) AS `omzet`, SUM(`total_amount`) AS `subtotal`
+FROM `orders`
+WHERE `order_status` = \'Selesai\'
+AND DATE(created_at) >= \'2026-06-01\'
+AND DATE(created_at) <= \'2026-06-26\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT SUM(`total_payment`) AS `omzet`, SUM(`total_amount`) AS `subtotal`
+FROM `orders`
+WHERE `order_status` = \'Selesai\'
+AND DATE(created_at) >= \'2026-06-01\'
+AND DATE(created_at) <= \'2026-06-26\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT SUM(`total_payment`) AS `omzet`, SUM(`total_amount`) AS `subtotal`
+FROM `orders`
+WHERE `order_status` = \'Selesai\'
+AND DATE(created_at) >= \'2026-06-01\'
+AND DATE(created_at) <= \'2026-06-26\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT SUM(`total_payment`) AS `omzet`, SUM(`total_amount`) AS `subtotal`
+FROM `orders`
+WHERE `order_status` = :order_status:
+AND DATE(created_at) >= :DATE(created_at):
+AND DATE(created_at) <= :DATE(created_at).1:', [...], false)
+ 5 APPPATH\Controllers\Admin\Dashboard.php(135): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Admin\Dashboard->laporan()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Dashboard))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('D:\\Xampp\\htdocs\\fo_orders\\public\\index.php')
+DEBUG - 2026-06-26 17:04:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 17:04:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 17:04:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 17:04:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 17:04:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 17:04:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 17:04:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 17:04:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 17:04:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 17:04:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 17:05:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-06-26 17:05:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.

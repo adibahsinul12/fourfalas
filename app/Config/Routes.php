@@ -3,33 +3,54 @@
 use CodeIgniter\Router\RouteCollection;
 
 /** @var RouteCollection $routes */
-$routes->get('/', 'Home::index');
-$routes->get('pelanggan', 'Home::index'); // FIX: Arahkan URL /pelanggan ke Home::index
 
-// Rute untuk fitur Keranjang Belanja
+// Rute Halaman Utama Pelanggan
+$routes->get('/', 'Home::index');
+$routes->get('pelanggan', 'Home::index'); 
+
+// Rute untuk Fitur Keranjang Belanja Pelanggan
 $routes->get('cart', 'Cart::index');          
 $routes->post('cart/add', 'Cart::add');       
 $routes->get('cart/remove/(:any)', 'Cart::remove/$1');
 $routes->get('cart/decrease/(:any)', 'Cart::decrease/$1');
 
+// Rute untuk Fitur Checkout Pelanggan
 $routes->get('checkout', 'Cart::checkout');
 $routes->post('checkout/process', 'Cart::process');
 
-$routes->group('admin', function($routes) {
-    $routes->get('/', 'Admin::index');
-    $routes->get('detail/(:num)', 'Admin::detail/$1');
-    $routes->post('update-status/(:num)', 'Admin::updateStatus/$1');
-    $routes->post('pay/(:num)', 'Admin::processPayment/$1');
-});
-
-// ==========================================
-// RUTE UNTUK AUTH & ADMIN (TAMBAHKAN INI)
-// ==========================================
+// Rute untuk Fitur Autentikasi Login & Logout
 $routes->get('login', 'Auth::index');       
 $routes->post('login/auth', 'Auth::login'); 
 $routes->get('logout', 'Auth::logout');     
 
-// Halaman admin diproteksi dengan filter 'auth'
+// ====================================================================
+// HALAMAN ADMIN (GRUP RUTE YANG SUDAH DIPROTEKSI DENGAN FILTER 'auth')
+// ====================================================================
 $routes->group('admin', ['filter' => 'auth'], function($routes) {
+    
+    // Dashboard Utama Admin (Mengarah ke Controller Dashboard)
     $routes->get('/', 'Admin\Dashboard::index'); 
+    
+    // RUTE SIDEBAR
+    $routes->get('pesanan', 'Admin\Dashboard::pesanan');
+    $routes->get('menu', 'Admin\Dashboard::menu');
+    $routes->get('meja', 'Admin\Dashboard::meja');
+    $routes->get('pelanggan', 'Admin\Dashboard::pelanggan');
+    $routes->get('transaksi', 'Admin\Dashboard::transaksi');
+    $routes->get('laporan', 'Admin\Dashboard::laporan');
+    $routes->get('pengaturan', 'Admin\Dashboard::pengaturan');
+    
+    // PROSES CRUD MENU KAFE (Sudah diselipkan di dalam grup admin)
+    $routes->post('menu/add', 'Admin\Dashboard::addMenu');
+    $routes->post('menu/edit/(:num)', 'Admin\Dashboard::updateMenu/$1');
+    $routes->get('menu/delete/(:num)', 'Admin\Dashboard::deleteMenu/$1');
+    
+    // Manajemen Detail Order, Update Status Dapur, dan Pembayaran Kasir
+    $routes->get('detail/(:num)', 'Admin\Dashboard::detail/$1');
+    $routes->post('update-status/(:num)', 'Admin\Dashboard::updateStatus/$1');
+    $routes->post('pay/(:num)', 'Admin\Dashboard::processPayment/$1');
+    
+    // Jalur Proses Simpan Pengaturan & Password
+    $routes->post('pengaturan/update-password', 'Admin\Dashboard::updatePassword');
+    $routes->post('pengaturan/update-settings', 'Admin\Dashboard::updateSettings');
 });
