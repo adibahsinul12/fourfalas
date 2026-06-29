@@ -119,12 +119,6 @@
         <?php endif; ?>
     </div>
 
-    <div style="text-align: center; margin-top: 40px; margin-bottom: 60px;">
-        <a href="<?= base_url('login'); ?>" style="display: inline-block; padding: 10px 20px; background-color: #6B3A1E; color: #FFFFFF; text-decoration: none; border-radius: 8px; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; box-shadow: 0 4px 10px rgba(107, 58, 30, 0.15);">
-             Kelola Toko (Admin)
-        </a>
-    </div>
-
 </div>
 
 <div class="bottom-nav">
