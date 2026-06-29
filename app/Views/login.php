@@ -30,35 +30,36 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    padding: 20px; 
+    padding: 12px; 
 }
 
 .login-card{
     width: 100%;
-    max-width: 480px; 
+    max-width: 320px; /* Ukuran diperkecil agar pas di HP terkecil sekalipun */
     background:#fff;
-    border-radius:25px;
-    padding:40px;
-    box-shadow:0 10px 25px rgba(0,0,0,.1);
+    border-radius:16px;
+    padding:22px 20px; /* Padding dipadatkan */
+    box-shadow:0 8px 20px rgba(0,0,0,.04);
     transition: all 0.3s ease;
 }
 
 .logo{
     text-align:center;
-    margin-bottom:10px;
+    margin-bottom:4px;
 }
 
 .logo img{
     width:100%;
-    max-width:200px; 
+    max-width:85px; /* Logo diperkecil agar lebih estetik */
     height:auto;
 }
 
 .brand{
     text-align:center;
-    font-size:42px; 
+    font-size:22px; /* Ukuran teks judul diperkecil */
     font-weight:700;
     color:#4A2812;
+    line-height: 1.2;
 }
 
 .brand span{
@@ -67,44 +68,47 @@ body{
 
 .subtitle{
     text-align:center;
-    color:#444;
-    margin-top:10px;
-    margin-bottom:30px;
-    line-height:1.6;
-    font-size: 14px;
+    color:#666;
+    margin-top:2px;
+    margin-bottom:18px;
+    line-height:1.4;
+    font-size: 11px; /* Subtitle dibuat mini */
 }
 
 .form-group{
     position:relative;
-    margin-bottom:20px;
+    margin-bottom:12px; /* Jarak antar input lebih rapat */
 }
 
 .left-icon{
     position:absolute;
-    left:15px;
+    left:12px;
     top:50%;
     transform:translateY(-50%);
-    color:#999;
+    color:#a0a0a0;
+    font-size: 13px;
 }
 
 .eye{
     position:absolute;
-    right:15px;
+    right:12px;
     top:50%;
     transform:translateY(-50%);
-    color:#999;
+    color:#a0a0a0;
     cursor:pointer;
+    font-size: 13px;
 }
 
 .form-control{
     width:100%;
-    height:55px; 
+    height:40px; /* Tinggi kolom input diturunkan ke ukuran standar minimalis (40px) */
     border:1px solid var(--border);
-    border-radius:15px;
-    padding-left:45px;
-    padding-right:45px;
-    font-size:15px;
+    border-radius:8px;
+    padding-left:36px;
+    padding-right:36px;
+    font-size:13px;
     outline:none;
+    color: #333;
 }
 
 .form-control:focus{
@@ -114,12 +118,24 @@ body{
 .option{
     display:flex;
     justify-content:space-between;
-    margin-bottom:25px;
-    font-size:13px;
+    align-items: center;
+    margin-bottom:18px;
+    font-size:11px; /* Teks opsi diperkecil */
+}
+
+.option label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    color: #555;
 }
 
 .option input{
     accent-color:var(--green);
+    width: 12px;
+    height: 12px;
+    cursor: pointer;
 }
 
 .option a{
@@ -129,12 +145,12 @@ body{
 
 .btn-login{
     width:100%;
-    height:55px;
+    height:40px; /* Seimbang dengan tinggi kolom input */
     border:none;
-    border-radius:15px;
+    border-radius:8px;
     background:var(--green);
     color:#fff;
-    font-size:16px;
+    font-size:13px;
     font-weight:600;
     cursor:pointer;
 }
@@ -144,23 +160,16 @@ body{
 }
 
 /* ==================== RESPONSIVE MEDIA QUERIES ==================== */
-@media (max-width: 576px) {
-    .login-card {
-        padding: 30px 20px; 
-        border-radius: 20px;
-    }
-    .brand {
-        font-size: 34px;
-    }
-    .subtitle {
-        font-size: 13px;
-        margin-bottom: 20px;
-    }
-}
 
-@media (min-width: 577px) and (max-width: 768px) {
+/* HP Layar Sangat Kecil (Lebar di bawah 320px) */
+@media (max-width: 320px) {
     .login-card {
-        padding: 35px;
+        padding: 18px 15px;
+    }
+    .option {
+        flex-direction: column;
+        gap: 6px;
+        align-items: flex-start;
     }
 }
 </style>
@@ -183,8 +192,8 @@ body{
     </div>
 
     <?php if (session()->getFlashdata('msg')) : ?>
-        <div style="background-color: #FFEBEE; color: #F44336; padding: 12px 15px; border-radius: 12px; font-size: 14px; margin-bottom: 20px; text-align: center; font-weight: 500; border: 1px solid #FFCDD2;">
-            <i class="fa-solid fa-circle-exclamation" style="margin-right: 8px;"></i>
+        <div style="background-color: #FFEBEE; color: #F44336; padding: 8px 10px; border-radius: 6px; font-size: 11px; margin-bottom: 12px; text-align: center; font-weight: 500; border: 1px solid #FFCDD2;">
+            <i class="fa-solid fa-circle-exclamation" style="margin-right: 4px;"></i>
             <?= session()->getFlashdata('msg'); ?>
         </div>
     <?php endif; ?>
