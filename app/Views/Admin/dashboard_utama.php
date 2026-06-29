@@ -9,7 +9,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { font-family: 'Poppins', sans-serif; background-color: #F7F3EE; color: #333333; margin: 0; padding: 0; overflow-x: hidden; }
-        .sidebar { width: 260px; height: 100vh; background-color: #6B3A1E; position: fixed; top: 0; left: 0; padding: 24px 16px; display: flex; flex-direction: column; justify-content: space-between; z-index: 100; }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            background-color: #6B3A1E;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 1050;
+            transition: left 0.3s ease;
+        }
         .sidebar-brand { color: #FFFFFF; font-size: 1.5rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 10px; padding-left: 12px; margin-bottom: 30px; }
         .sidebar-menu { list-style: none; padding: 0; margin: 0; flex-grow: 1; }
         .sidebar-item { margin-bottom: 8px; }
@@ -18,33 +33,137 @@
         .sidebar-link.active { opacity: 1; background-color: #4CAF50; color: #FFFFFF; font-weight: 600; }
         .sidebar-logout { color: #FFFFFF; opacity: 0.7; padding: 12px 16px; text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 14px; }
         .sidebar-logout:hover { opacity: 1; background-color: rgba(244, 67, 54, 0.15); color: #FFCDD2; }
-        .main-content { margin-left: 260px; padding: 30px; min-height: 100vh; }
-        .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .search-box { position: relative; width: 300px; }
+
+        /* Tombol close di sidebar (khusus mobile) */
+        .sidebar-close-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: #FFFFFF;
+            font-size: 1.2rem;
+            position: absolute;
+            top: 20px;
+            right: 16px;
+        }
+
+        /* Overlay gelap saat sidebar mobile terbuka */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1040;
+        }
+        .sidebar-overlay.show { display: block; }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content { margin-left: 260px; padding: 30px; min-height: 100vh; transition: margin-left 0.3s ease; }
+
+        /* ===== TOPBAR ===== */
+        .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; gap: 12px; flex-wrap: wrap; }
+        .menu-toggle-btn {
+            display: none;
+            background: #FFFFFF;
+            border: 1px solid #E5E5E5;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            color: #6B3A1E;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        .search-box { position: relative; width: 300px; flex: 1 1 200px; max-width: 300px; }
         .search-box input { width: 100%; padding: 10px 16px 10px 40px; border-radius: 12px; border: 1px solid #E5E5E5; background-color: #FFFFFF; font-size: 13px; }
         .search-box i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #888888; }
-        .admin-profile { display: flex; align-items: center; gap: 20px; }
-        .notif-btn { background: #FFFFFF; border: 1px solid #E5E5E5; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #6B3A1E; }
+        .admin-profile { display: flex; align-items: center; gap: 20px; flex-shrink: 0; }
+        .notif-btn { background: #FFFFFF; border: 1px solid #E5E5E5; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #6B3A1E; flex-shrink: 0; }
         .profile-card { background: #FFFFFF; padding: 6px 16px 6px 6px; border-radius: 30px; border: 1px solid #E5E5E5; display: flex; align-items: center; gap: 10px; }
-        .profile-avatar { width: 32px; height: 32px; background-color: #F7F3EE; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #6B3A1E; }
+        .profile-avatar { width: 32px; height: 32px; background-color: #F7F3EE; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #6B3A1E; flex-shrink: 0; }
+
+        /* ===== STAT CARD ===== */
         .stat-card { background-color: #FFFFFF; border-radius: 16px; padding: 20px; border: 1px solid rgba(229, 229, 229, 0.5); display: flex; align-items: center; gap: 16px; }
-        .stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; color: #FFFFFF; }
+        .stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; color: #FFFFFF; flex-shrink: 0; }
         .stat-title { font-size: 11px; color: #888888; margin-bottom: 2px; font-weight: 500; }
-        .stat-value { font-size: 18px; font-weight: 700; color: #333333; margin: 0; }
+        .stat-value { font-size: 18px; font-weight: 700; color: #333333; margin: 0; word-break: break-word; }
         .stat-desc { font-size: 11px; margin-top: 4px; }
+
+        /* ===== WIDGET / TABLE ===== */
         .widget-card { background-color: #FFFFFF; border-radius: 16px; padding: 24px; border: 1px solid rgba(229, 229, 229, 0.5); }
-        .custom-table th { font-size: 12px; text-transform: uppercase; color: #888888; font-weight: 600; padding: 12px 16px; border-bottom: 2px solid #F7F3EE; }
+        .custom-table th { font-size: 12px; text-transform: uppercase; color: #888888; font-weight: 600; padding: 12px 16px; border-bottom: 2px solid #F7F3EE; white-space: nowrap; }
         .custom-table td { font-size: 13px; padding: 14px 16px; vertical-align: middle; border-bottom: 1px solid #F7F3EE; }
-        .badge-status { padding: 4px 12px; border-radius: 6px; font-weight: 600; font-size: 11px; display: inline-block; }
+        .badge-status { padding: 4px 12px; border-radius: 6px; font-weight: 600; font-size: 11px; display: inline-block; white-space: nowrap; }
         .status-selesai { background-color: #E8F5E9; color: #4CAF50; }
         .status-diproses { background-color: #FFF3E0; color: #FF9800; }
         .status-menunggu { background-color: #ECEFF1; color: #607D8B; }
         .status-dibatalkan { background-color: #FFEBEE; color: #F44336; }
+
+        /* Pastikan tabel bisa di-scroll horizontal di layar kecil, tanpa "membocorkan" lebar ke luar card */
+        .table-responsive { -webkit-overflow-scrolling: touch; }
+
+        /* =========================================================
+           BREAKPOINTS RESPONSIF
+           >= 992px (lg)  : Desktop / PC -> sidebar selalu tampil
+           768-991px (md) : Tablet       -> sidebar jadi off-canvas
+           < 768px (sm/xs): Mobile / HP  -> sidebar off-canvas, layout 1 kolom
+           ========================================================= */
+
+        /* ----- Tablet & Mobile (< 992px): sidebar disembunyikan, jadi off-canvas ----- */
+        @media (max-width: 991.98px) {
+            .sidebar {
+                left: -280px; /* sembunyikan di luar layar */
+                width: 260px;
+                box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+            }
+            .sidebar.show {
+                left: 0;
+            }
+            .sidebar-close-btn { display: block; }
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+            .menu-toggle-btn { display: flex; }
+        }
+
+        /* ----- Mobile (< 768px) ----- */
+        @media (max-width: 767.98px) {
+            .main-content { padding: 16px; }
+
+            .topbar { margin-bottom: 20px; }
+            .search-box { order: 3; width: 100%; max-width: 100%; flex: 1 1 100%; }
+            .admin-profile { gap: 10px; }
+            .profile-card .small { display: none; } /* sembunyikan nama, sisakan ikon saja biar ringkas */
+
+            .stat-card { padding: 16px; gap: 12px; }
+            .stat-icon { width: 40px; height: 40px; font-size: 1.05rem; }
+            .stat-value { font-size: 16px; }
+
+            .widget-card { padding: 16px; border-radius: 14px; }
+
+            /* Tabel: izinkan scroll horizontal halus di HP */
+            .custom-table th, .custom-table td { padding: 10px 12px; font-size: 12px; }
+        }
+
+        /* ----- Mobile kecil (< 480px) ----- */
+        @media (max-width: 479.98px) {
+            .sidebar-brand span { font-size: 1.2rem; }
+            .stat-card { flex-direction: row; }
+            .stat-title { font-size: 10px; }
+            .stat-value { font-size: 15px; }
+        }
     </style>
 </head>
 <body>
 
-<div class="sidebar">
+<!-- Overlay untuk menutup sidebar saat di mobile/tablet -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="sidebar" id="sidebar">
+    <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Tutup menu">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
     <div>
         <a href="<?= base_url('admin') ?>" class="sidebar-brand">
             <i class="fa-solid fa-mug-hot text-success"></i> <span>FO'Orders</span>
@@ -65,6 +184,9 @@
 
 <div class="main-content">
     <div class="topbar">
+        <button class="menu-toggle-btn" id="menuToggleBtn" aria-label="Buka menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
         <div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input type="text" placeholder="Cari sesuatu..."></div>
         <div class="admin-profile">
             <div class="notif-btn"><i class="fa-solid fa-bell"></i></div>
@@ -77,8 +199,8 @@
         </div>
     </div>
 
-    <div class="row g-4 mb-4">
-        <div class="col-md-3">
+    <div class="row g-3 g-md-4 mb-4">
+        <div class="col-6 col-md-3">
             <div class="stat-card h-100">
                 <div class="stat-icon" style="background-color: #4CAF50;"><i class="fa-solid fa-wallet"></i></div>
                 <div>
@@ -88,7 +210,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-6 col-md-3">
             <div class="stat-card h-100">
                 <div class="stat-icon" style="background-color: #6B3A1E;"><i class="fa-solid fa-scroll"></i></div>
                 <div>
@@ -98,7 +220,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-6 col-md-3">
             <div class="stat-card h-100">
                 <div class="stat-icon" style="background-color: #4CAF50;"><i class="fa-solid fa-users"></i></div>
                 <div>
@@ -108,7 +230,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-6 col-md-3">
             <div class="stat-card h-100">
                 <div class="stat-icon" style="background-color: #6B3A1E;"><i class="fa-solid fa-mug-saucer"></i></div>
                 <div>
@@ -120,8 +242,8 @@
         </div>
     </div>
 
-    <div class="row g-4">
-        <div class="col-lg-6">
+    <div class="row g-3 g-md-4">
+        <div class="col-12 col-lg-6">
             <div class="widget-card">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="m-0" style="font-size: 15px; font-weight: 700;">Grafik Penjualan</h5>
@@ -134,7 +256,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-6">
+        <div class="col-12 col-lg-6">
             <div class="widget-card">
                 <h5 class="mb-3" style="font-size: 15px; font-weight: 700;">Pesanan Terbaru</h5>
                 <div class="table-responsive">
@@ -177,5 +299,32 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Toggle sidebar untuk tablet & mobile (off-canvas menu)
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const menuToggleBtn = document.getElementById('menuToggleBtn');
+    const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
+
+    function openSidebar() {
+        sidebar.classList.add('show');
+        overlay.classList.add('show');
+    }
+    function closeSidebar() {
+        sidebar.classList.remove('show');
+        overlay.classList.remove('show');
+    }
+
+    menuToggleBtn.addEventListener('click', openSidebar);
+    sidebarCloseBtn.addEventListener('click', closeSidebar);
+    overlay.addEventListener('click', closeSidebar);
+
+    // Tutup sidebar otomatis saat ukuran layar balik ke desktop (>=992px)
+    window.addEventListener('resize', function () {
+        if (window.innerWidth >= 992) {
+            closeSidebar();
+        }
+    });
+</script>
 </body>
 </html>

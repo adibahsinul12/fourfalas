@@ -8,8 +8,23 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: 'Poppins', sans-serif; background-color: #F7F3EE; color: #333333; margin: 0; padding: 0; }
-        .sidebar { width: 260px; height: 100vh; background-color: #6B3A1E; position: fixed; top: 0; left: 0; padding: 24px 16px; display: flex; flex-direction: column; justify-content: space-between; z-index: 100; }
+        body { font-family: 'Poppins', sans-serif; background-color: #F7F3EE; color: #333333; margin: 0; padding: 0; overflow-x: hidden; }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            background-color: #6B3A1E;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 1050;
+            transition: left 0.3s ease;
+        }
         .sidebar-brand { color: #FFFFFF; font-size: 1.5rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 10px; padding-left: 12px; margin-bottom: 30px; }
         .sidebar-menu { list-style: none; padding: 0; margin: 0; flex-grow: 1; }
         .sidebar-item { margin-bottom: 8px; }
@@ -18,20 +33,109 @@
         .sidebar-link.active { opacity: 1; background-color: #4CAF50; color: #FFFFFF; font-weight: 600; }
         .sidebar-logout { color: #FFFFFF; opacity: 0.7; padding: 12px 16px; text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 14px; }
         .sidebar-logout:hover { opacity: 1; background-color: rgba(244, 67, 54, 0.15); color: #FFCDD2; }
-        .main-content { margin-left: 260px; padding: 30px; min-height: 100vh; }
+
+        .sidebar-close-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: #FFFFFF;
+            font-size: 1.2rem;
+            position: absolute;
+            top: 20px;
+            right: 16px;
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1040;
+        }
+        .sidebar-overlay.show { display: block; }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content { margin-left: 260px; padding: 30px; min-height: 100vh; transition: margin-left 0.3s ease; }
+
+        /* ===== TOP ACTION BAR (tombol kembali + toggle menu) ===== */
+        .top-action-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+        .menu-toggle-btn {
+            display: none;
+            background: #FFFFFF;
+            border: 1px solid #E5E5E5;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            color: #6B3A1E;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        /* ===== WIDGET ===== */
         .widget-card { background-color: #FFFFFF; border-radius: 16px; padding: 24px; border: 1px solid rgba(229, 229, 229, 0.5); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.01); }
-        .badge-status { padding: 6px 14px; border-radius: 8px; font-weight: 600; font-size: 12px; display: inline-block; }
+        .badge-status { padding: 6px 14px; border-radius: 8px; font-weight: 600; font-size: 12px; display: inline-block; white-space: nowrap; }
         .status-selesai { background-color: #E8F5E9; color: #4CAF50; }
         .status-diproses { background-color: #FFF3E0; color: #FF9800; }
         .status-menunggu { background-color: #ECEFF1; color: #607D8B; }
         .status-dibatalkan { background-color: #FFEBEE; color: #F44336; }
-        .item-table th { font-size: 12px; text-transform: uppercase; color: #888888; border-bottom: 2px solid #F7F3EE; padding: 12px; }
+        .item-table th { font-size: 12px; text-transform: uppercase; color: #888888; border-bottom: 2px solid #F7F3EE; padding: 12px; white-space: nowrap; }
         .item-table td { font-size: 14px; padding: 14px 12px; vertical-align: middle; border-bottom: 1px solid #F7F3EE; }
+        .table-responsive { -webkit-overflow-scrolling: touch; }
+
+        /* Header widget (judul + badge status) */
+        .widget-header { flex-wrap: wrap; gap: 10px; }
+
+        /* Panel eksekusi (tombol aksi staf) */
+        .action-panel-buttons { display: flex; gap: 8px; flex-wrap: wrap; width: 100%; }
+        .action-panel-buttons > * { flex: 1 1 220px; }
+
+        /* =========================================================
+           BREAKPOINTS RESPONSIF
+           >= 992px (lg)  : Desktop / PC -> sidebar selalu tampil
+           768-991px (md) : Tablet       -> sidebar off-canvas
+           < 768px (sm/xs): Mobile / HP  -> sidebar off-canvas, layout 1 kolom
+           ========================================================= */
+
+        @media (max-width: 991.98px) {
+            .sidebar {
+                left: -280px;
+                width: 260px;
+                box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+            }
+            .sidebar.show { left: 0; }
+            .sidebar-close-btn { display: block; }
+            .main-content { margin-left: 0; padding: 20px; }
+            .menu-toggle-btn { display: flex; }
+        }
+
+        @media (max-width: 767.98px) {
+            .main-content { padding: 16px; }
+            .widget-card { padding: 16px; border-radius: 14px; }
+            .widget-card.mb-4 { margin-bottom: 16px !important; }
+
+            .item-table th, .item-table td { padding: 10px 8px; font-size: 12px; }
+
+            .action-panel-buttons > * { flex: 1 1 100%; }
+
+            /* Nota tagihan: angka total jangan terlalu besar di HP kecil */
+            .widget-card h5 { font-size: 14px; }
+        }
+
+        @media (max-width: 479.98px) {
+            .sidebar-brand span { font-size: 1.2rem; }
+        }
     </style>
 </head>
 <body>
 
-<div class="sidebar">
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="sidebar" id="sidebar">
+    <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Tutup menu">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
     <div>
         <a href="<?= base_url('admin') ?>" class="sidebar-brand"><i class="fa-solid fa-mug-hot text-success"></i> <span>FO'Orders</span></a>
         <ul class="sidebar-menu">
@@ -49,14 +153,17 @@
 </div>
 
 <div class="main-content">
-    <div class="mb-4">
+    <div class="top-action-bar">
+        <button class="menu-toggle-btn" id="menuToggleBtn" aria-label="Buka menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
         <a href="<?= base_url('admin/pesanan'); ?>" class="btn btn-sm btn-secondary" style="border-radius: 8px;"><i class="fa-solid fa-arrow-left me-1"></i> Kembali ke Antrean</a>
     </div>
 
     <div class="row g-4">
         <div class="col-lg-8">
             <div class="widget-card mb-4">
-                <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-3 widget-header">
                     <h5 class="fw-bold m-0">🛒 Rincian Item Pesanan</h5>
                     <?php 
                         $status = $order['order_status'] ?? 'Menunggu';
@@ -114,21 +221,21 @@
             <div class="widget-card">
                 <h5 class="fw-bold mb-3">⚡ Panel Eksekusi Staf Kafe</h5>
                 <hr>
-                <div class="d-flex gap-2">
+                <div class="action-panel-buttons">
                     <?php if ($status == 'Menunggu') : ?>
-                        <form action="<?= base_url('admin/pay/' . $order['id']); ?>" method="POST" class="w-50">
+                        <form action="<?= base_url('admin/pay/' . $order['id']); ?>" method="POST">
                             <button type="submit" class="btn btn-success w-100 p-2 fw-semibold" style="border-radius: 10px;"><i class="fa-solid fa-cash-register me-2"></i>Terima Uang Kasir (Lunas)</button>
                         </form>
                     <?php elseif ($status == 'Diproses') : ?>
-                        <form action="<?= base_url('admin/update-status/' . $order['id']); ?>" method="POST" class="w-50">
+                        <form action="<?= base_url('admin/update-status/' . $order['id']); ?>" method="POST">
                             <button type="submit" class="btn btn-warning text-white w-100 p-2 fw-semibold" style="border-radius: 10px;"><i class="fa-solid fa-utensils me-2"></i>Masakan Selesai (Sajikan)</button>
                         </form>
                     <?php else : ?>
-                        <button class="btn btn-secondary w-50 p-2 fw-semibold" style="border-radius: 10px;" disabled><i class="fa-solid fa-circle-check me-2"></i>Transaksi Selesai Diarsip</button>
+                        <button class="btn btn-secondary w-100 p-2 fw-semibold" style="border-radius: 10px;" disabled><i class="fa-solid fa-circle-check me-2"></i>Transaksi Selesai Diarsip</button>
                     <?php endif; ?>
                     
                     <?php if ($status != 'Selesai' && $status != 'Batal') : ?>
-                        <a href="#" onclick="return confirm('Yakin ingin membatalkan pesanan kafe ini?')" class="btn btn-outline-danger w-50 p-2 fw-semibold" style="border-radius: 10px;"><i class="fa-solid fa-ban me-2"></i>Batalkan Pesanan</a>
+                        <a href="#" onclick="return confirm('Yakin ingin membatalkan pesanan kafe ini?')" class="btn btn-outline-danger w-100 p-2 fw-semibold" style="border-radius: 10px;"><i class="fa-solid fa-ban me-2"></i>Batalkan Pesanan</a>
                     <?php endif; ?>
                 </div>
             </div>
@@ -171,5 +278,30 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const menuToggleBtn = document.getElementById('menuToggleBtn');
+    const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
+
+    function openSidebar() {
+        sidebar.classList.add('show');
+        overlay.classList.add('show');
+    }
+    function closeSidebar() {
+        sidebar.classList.remove('show');
+        overlay.classList.remove('show');
+    }
+
+    menuToggleBtn.addEventListener('click', openSidebar);
+    sidebarCloseBtn.addEventListener('click', closeSidebar);
+    overlay.addEventListener('click', closeSidebar);
+
+    window.addEventListener('resize', function () {
+        if (window.innerWidth >= 992) {
+            closeSidebar();
+        }
+    });
+</script>
 </body>
 </html>
