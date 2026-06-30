@@ -9,7 +9,7 @@
     
     <link rel="stylesheet" href="<?= base_url('assets/css/style.css'); ?>">
 </head>
-<body>
+<body style="background-color: #FAF6EB; margin: 0; padding: 0;">
 
     <div class="app-container">
         

@@ -25,7 +25,23 @@
         <?php else: ?>
             <?php foreach ($cart as $id => $item): ?>
                 <div class="cart-item">
-                    <img src="<?= $item['image_path'] ? base_url($item['image_path']) : 'https://placehold.co/100x100?text=FO' ?>" class="item-img" alt="<?= $item['menu_name']; ?>">
+                    
+                    <?php 
+                    // BENERIN DI SINI: Ambil nama kolom 'image' dari database
+                    $namaFileGambar = isset($item['image']) ? trim($item['image']) : '';
+
+                    // Amankan jalur ke folder uploads/menus/ jika filenya banya ada fisik
+                    if (!empty($namaFileGambar) && file_exists(FCPATH . 'uploads/menus/' . $namaFileGambar)) {
+                        $imageSrc = base_url('uploads/menus/' . $namaFileGambar);
+                    } else {
+                        // Jika data kosong atau file tidak ditemukan, panggil default_menus.jpg lokal
+                        $imageSrc = base_url('uploads/menus/default_menus.jpg');
+                    }
+                    ?>
+                    
+                    <!-- Tag IMG baru yang diarahkan ke variabel imageSrc -->
+                    <img src="<?= $imageSrc; ?>" class="item-img" alt="<?= $item['menu_name']; ?>">
+                    
                     <div class="item-info">
                         <h3><?= $item['menu_name']; ?></h3>
                         <p class="item-price">Rp <?= number_format($item['price'], 0, ',', '.'); ?></p>
