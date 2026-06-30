@@ -42,20 +42,22 @@ class Dashboard extends BaseController
     public function pesanan()
     {
         $db = \Config\Database::connect();
-        
+
         // Tangkap status dari link URL yang diklik
         $statusFilter = $this->request->getGet('status');
 
-        $builder = $db->table('orders');
-        
+        $builder = $db->table('orders')
+                      ->select('orders.*, tables.table_number')
+                      ->join('tables', 'tables.id = orders.table_id', 'left');
+
         // Jika status diklik (tidak kosong), filter datanya berdasarkan status tersebut
         if (!empty($statusFilter)) {
             $builder->where('order_status', $statusFilter);
         }
 
-        $data['orders'] = $builder->orderBy('id', 'DESC')->get()->getResultArray();
+        $data['orders'] = $builder->orderBy('orders.id', 'DESC')->get()->getResultArray();
 
-        return view('admin/pesanan/index', $data); 
+        return view('admin/pesanan/index', $data);
     }
 
     public function detail($id)
@@ -77,16 +79,65 @@ class Dashboard extends BaseController
         return view('admin/pesanan/detail', $data);
     }
 
+    public function processPayment($id)
+    {
+        $db = \Config\Database::connect();
+
+        // 1. Ambil dulu data pesanan yang mau dibayar, supaya tahu total_payment-nya
+        $order = $db->table('orders')->where('id', $id)->get()->getRowArray();
+
+        if (!$order) {
+            return redirect()->to(base_url('admin/pesanan'))->with('error', 'Pesanan tidak ditemukan!');
+        }
+
+        // 2. Ambil uang yang dibayarkan kasir dari form (kalau form belum ada inputnya, dianggap pas/sesuai tagihan)
+        $amountPaid = $this->request->getPost('amount_paid') ?? $order['total_payment'];
+        $amountChange = $amountPaid - $order['total_payment'];
+
+        // 3. Update status pesanan jadi Selesai/Lunas, simpan juga uang dibayar & kembalian
+        $db->table('orders')->where('id', $id)->update([
+            'order_status' => 'Selesai',
+            'amount_paid'  => $amountPaid,
+            'amount_change' => $amountChange,
+        ]);
+
+        return redirect()->to(base_url('admin/detail/' . $id))->with('success', 'Pembayaran berhasil dicatat. Pesanan lunas!');
+    }
+
+    public function updateStatus($id)
+    {
+        $db = \Config\Database::connect();
+
+        // Update status pesanan dari "Diproses" jadi "Selesai" (misal: masakan selesai disajikan)
+        $db->table('orders')->where('id', $id)->update([
+            'order_status' => 'Selesai',
+        ]);
+
+        return redirect()->to(base_url('admin/detail/' . $id))->with('success', 'Status pesanan diperbarui!');
+    }
+
+    public function batalkan($id)
+    {
+        $db = \Config\Database::connect();
+
+        // Update status pesanan jadi Batal
+        $db->table('orders')->where('id', $id)->update([
+            'order_status' => 'Batal',
+        ]);
+
+        return redirect()->to(base_url('admin/detail/' . $id))->with('success', 'Pesanan dibatalkan.');
+    }
+
     public function menu()
     {
         $db = \Config\Database::connect();
-        
+
         // Menggabungkan tabel menus dan categories berdasarkan ID kategorinya
         $query = $db->table('menus')
                     ->select('menus.*, categories.category_name')
                     ->join('categories', 'categories.id = menus.category_id', 'left')
                     ->get();
-        
+
         $data['daftar_menu'] = $query->getResultArray();
 
         return view('admin/menu/index', $data);
@@ -102,12 +153,9 @@ class Dashboard extends BaseController
 
         // 3. Kirim data ke view index meja
         // (Pastikan 'admin/meja/index' ini sudah sesuai dengan lokasi file index mejamu)
-        return view('admin/meja/index', $data); 
+        return view('admin/meja/index', $data);
     }
 
-    // ==========================================
-    // PROSES CRUD MEJA KAFE
-    // ==========================================
     // ==========================================
     // PROSES CRUD MEJA KAFE (Disesuaikan dengan TableModel)
     // ==========================================
@@ -129,11 +177,11 @@ class Dashboard extends BaseController
         $data = [
             'table_number' => $nomorMejaAngka,     // Sekarang isinya murni angka (cth: 2)
             'capacity'     => $kapasitas,          // Simpan angka kapasitas saja tanpa text tambahan
-            'type'         => 'Reguler',           
-            'status'       => 'Kosong'             
+            'type'         => 'Reguler',
+            'status'       => 'Kosong'
         ];
 
-        $tableModel = new \App\Models\TableModel(); 
+        $tableModel = new \App\Models\TableModel();
         $tableModel->insert($data);
 
         return redirect()->to(base_url('admin/meja'))->with('success', 'Meja baru berhasil ditambahkan!');
@@ -147,7 +195,7 @@ class Dashboard extends BaseController
     public function transaksi()
     {
         $db = \Config\Database::connect();
-        
+
         // Menarik data transaksi/pesanan yang sudah selesai atau lunas dari database
         $data['daftar_transaksi'] = $db->table('orders')
                                        ->where('order_status', 'Selesai')
@@ -164,8 +212,8 @@ class Dashboard extends BaseController
         $db = \Config\Database::connect();
 
         // 1. Ambil filter tanggal dari inputan (jika ada)
-        $tgl_mulai = $this->request->getGet('tgl_mulai') ?? date('Y-m-01'); 
-        $tgl_selesai = $this->request->getGet('tgl_selesai') ?? date('Y-m-d'); 
+        $tgl_mulai = $this->request->getGet('tgl_mulai') ?? date('Y-m-01');
+        $tgl_selesai = $this->request->getGet('tgl_selesai') ?? date('Y-m-d');
 
         // 2. Query menghitung ringkasan total omzet kotor (SUM dari total_payment)
         $ringkasan = $db->table('orders')
@@ -250,7 +298,7 @@ class Dashboard extends BaseController
     {
         $db = \Config\Database::connect();
         $passwordBaru = $this->request->getPost('password_baru');
-        
+
         // Mengamankan password baru dengan enkripsi hash (Bcrypt) bawaan PHP sebelum masuk SQL
         $passwordHash = password_hash($passwordBaru, PASSWORD_BCRYPT);
 
@@ -264,7 +312,7 @@ class Dashboard extends BaseController
     public function updateSettings()
     {
         $db = \Config\Database::connect();
-        
+
         // Memperbarui baris data tabel settings berdasarkan kolom di SQL kamu
         $db->table('settings')->where('id', 1)->update([
             'cafe_name'             => $this->request->getPost('cafe_name'),

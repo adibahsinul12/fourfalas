@@ -194,23 +194,14 @@
                                                 <small class="d-block text-danger mt-1">📝 Catatan: "<?= $item['notes']; ?>"</small>
                                             <?php endif; ?>
                                         </td>
-                                        <td class="text-center">Rp <?= number_format($item['price'], 0, ',', '.'); ?></td>
+                                        <td class="text-center">Rp <?= number_format($item['price_at_order'], 0, ',', '.'); ?></td>
                                         <td class="text-center fw-bold">x<?= $item['quantity']; ?></td>
-                                        <td class="text-end fw-semibold">Rp <?= number_format(($item['price'] * $item['quantity']), 0, ',', '.'); ?></td>
+                                        <td class="text-end fw-semibold">Rp <?= number_format($item['subtotal'], 0, ',', '.'); ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php else : ?>
                                 <tr>
-                                    <td><span class="fw-bold">PangShipp Original Wonton</span><small class="d-block text-danger mt-1">Catatan: Pedas sedang</small></td>
-                                    <td class="text-center">Rp 15.000</td>
-                                    <td class="text-center fw-bold">x2</td>
-                                    <td class="text-end fw-semibold">Rp 30.000</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="fw-bold">Chocolate Milkshake Extra Cream</span></td>
-                                    <td class="text-center">Rp 12.000</td>
-                                    <td class="text-center fw-bold">x1</td>
-                                    <td class="text-end fw-semibold">Rp 12.000</td>
+                                    <td colspan="4" class="text-center text-muted py-4">Belum ada item pada pesanan ini.</td>
                                 </tr>
                             <?php endif; ?>
                         </tbody>
@@ -235,7 +226,9 @@
                     <?php endif; ?>
                     
                     <?php if ($status != 'Selesai' && $status != 'Batal') : ?>
-                        <a href="#" onclick="return confirm('Yakin ingin membatalkan pesanan kafe ini?')" class="btn btn-outline-danger w-100 p-2 fw-semibold" style="border-radius: 10px;"><i class="fa-solid fa-ban me-2"></i>Batalkan Pesanan</a>
+                        <form action="<?= base_url('admin/batalkan/' . $order['id']); ?>" method="POST" onsubmit="return confirm('Yakin ingin membatalkan pesanan kafe ini?')">
+                            <button type="submit" class="btn btn-outline-danger w-100 p-2 fw-semibold" style="border-radius: 10px;"><i class="fa-solid fa-ban me-2"></i>Batalkan Pesanan</button>
+                        </form>
                     <?php endif; ?>
                 </div>
             </div>
@@ -243,34 +236,31 @@
 
         <div class="col-lg-4">
             <div class="widget-card">
-                <h5 class="fw-bold mb-3"><i class="fa-solid fa-receipt text-success me-2"></i>Nota Tagihan #<?= $order['order_number'] ?? '104'; ?></h5>
+                <h5 class="fw-bold mb-3"><i class="fa-solid fa-receipt text-success me-2"></i>Nota Tagihan #<?= $order['order_number']; ?></h5>
                 <hr>
                 <div class="mb-3">
                     <small class="text-muted d-block font-weight-semibold">NAMA PELANGGAN</small>
-                    <span class="fw-bold text-dark" style="font-size: 15px;"><?= $order['customer_name'] ?? 'Nur Avika'; ?></span>
+                    <span class="fw-bold text-dark" style="font-size: 15px;"><?= $order['customer_name']; ?></span>
                 </div>
                 <div class="mb-3">
                     <small class="text-muted d-block">LOKASI ANTRIAN</small>
-                    <span class="badge bg-secondary fw-bold">Meja <?= $order['table_number'] ?? '05'; ?></span>
+                    <span class="badge bg-secondary fw-bold">Meja <?= $order['table_id']; ?></span>
                 </div>
                 <div class="mb-4">
                     <small class="text-muted d-block">WAKTU MASUK</small>
-                    <span class="small text-muted fw-semibold"><i class="fa-regular fa-clock me-1"></i> <?= $order['created_at'] ?? 'Hari Ini, 16:23'; ?></span>
+                    <span class="small text-muted fw-semibold"><i class="fa-regular fa-clock me-1"></i> <?= $order['created_at']; ?></span>
                 </div>
                 <hr>
                 
                 <div class="d-flex justify-content-between mb-2 small text-muted">
                     <span>Total Item (Subtotal)</span>
-                    <span>Rp <?= number_format(($order['total_amount'] ?? 42000), 0, ',', '.'); ?></span>
+                    <span>Rp <?= number_format($order['subtotal'], 0, ',', '.'); ?></span>
                 </div>
-                <div class="d-flex justify-content-between mb-2 small text-muted">
-                    <span>Pajak Resto / PPN (10%)</span>
-                    <span>Rp <?= number_format((($order['total_amount'] ?? 42000) * 0.1), 0, ',', '.'); ?></span>
-                </div>
+               
                 <hr style="border-style: dashed;">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <span class="fw-bold" style="font-size: 14px;">Total Akhir Tagihan</span>
-                    <span class="fw-bold text-success" style="font-size: 20px;">Rp <?= number_format(($order['total_payment'] ?? 46200), 0, ',', '.'); ?></span>
+                    <span class="fw-bold text-success" style="font-size: 20px;">Rp <?= number_format($order['total_payment'], 0, ',', '.'); ?></span>
                 </div>
             </div>
         </div>

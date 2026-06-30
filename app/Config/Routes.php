@@ -56,6 +56,7 @@ $routes->group('admin', ['filter' => 'auth'], function($routes) {
     $routes->get('detail/(:num)', 'Admin\Dashboard::detail/$1');
     $routes->post('update-status/(:num)', 'Admin\Dashboard::updateStatus/$1');
     $routes->post('pay/(:num)', 'Admin\Dashboard::processPayment/$1');
+    $routes->post('batalkan/(:num)', 'Admin\Dashboard::batalkan/$1');
     
     // Jalur Proses Simpan Pengaturan & Password
     $routes->post('pengaturan/update-password', 'Admin\Dashboard::updatePassword');
