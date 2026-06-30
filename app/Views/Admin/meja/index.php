@@ -76,12 +76,25 @@
         .search-box input { width: 100%; padding: 10px 16px 10px 40px; border-radius: 12px; border: 1px solid #E5E5E5; background-color: #FFFFFF; font-size: 13px; }
         .search-box i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #888888; }
         .admin-profile { display: flex; align-items: center; gap: 20px; flex-shrink: 0; }
+
         .notif-btn { background: #FFFFFF; border: 1px solid #E5E5E5; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #6B3A1E; flex-shrink: 0; }
         .profile-card { background: #FFFFFF; padding: 6px 16px 6px 6px; border-radius: 30px; border: 1px solid #E5E5E5; display: flex; align-items: center; gap: 10px; }
         .profile-avatar { width: 32px; height: 32px; background-color: #F7F3EE; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #6B3A1E; flex-shrink: 0; }
 
         /* ===== PAGE HEADER ===== */
         .page-header h4 { font-size: 1.15rem; margin: 0; }
+
+        /* ===== CUSTOM BUTTON GREEN ===== */
+        .btn-tambah { 
+            background-color: #4CAF50 !important; 
+            border-color: #4CAF50 !important;
+            color: #FFFFFF !important;
+            font-weight: 500;
+        }
+        .btn-tambah:hover {
+            background-color: #3e9c43 !important;
+            border-color: #3e9c43 !important;
+        }
 
         /* ===== WIDGET / TABLE ===== */
         .widget-card { background-color: #FFFFFF; border-radius: 16px; padding: 24px; border: 1px solid rgba(229, 229, 229, 0.5); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.01); }
@@ -90,19 +103,13 @@
         .badge-status { padding: 4px 12px; border-radius: 6px; font-weight: 600; font-size: 11px; display: inline-block; background-color: #E8F5E9; color: #4CAF50; white-space: nowrap; }
         .table-responsive { -webkit-overflow-scrolling: touch; }
 
-        /* =========================================================
-           BREAKPOINTS RESPONSIF
-           >= 992px (lg)  : Desktop / PC -> sidebar selalu tampil
-           768-991px (md) : Tablet       -> sidebar off-canvas
-           < 768px (sm/xs): Mobile / HP  -> sidebar off-canvas, layout 1 kolom
-           ========================================================= */
+        /* ===== MODAL CUSTOM ===== */
+        .modal-dialog { margin: 1.75rem auto; }
+        .modal-content { border-radius: 14px; font-family: 'Poppins', sans-serif; }
+        button, input, select, textarea, .btn { font-family: 'Poppins', sans-serif !important; }
 
         @media (max-width: 991.98px) {
-            .sidebar {
-                left: -280px;
-                width: 260px;
-                box-shadow: 4px 0 20px rgba(0,0,0,0.15);
-            }
+            .sidebar { left: -280px; width: 260px; box-shadow: 4px 0 20px rgba(0,0,0,0.15); }
             .sidebar.show { left: 0; }
             .sidebar-close-btn { display: block; }
             .main-content { margin-left: 0; padding: 20px; }
@@ -115,10 +122,8 @@
             .search-box { order: 3; width: 100%; max-width: 100%; flex: 1 1 100%; }
             .admin-profile { gap: 10px; }
             .profile-card .small { display: none; }
-
             .page-header { flex-wrap: wrap; gap: 10px; }
             .page-header h4 { font-size: 1.05rem; }
-
             .widget-card { padding: 16px; border-radius: 14px; }
             .custom-table th, .custom-table td { padding: 10px 12px; font-size: 12px; }
         }
@@ -145,7 +150,7 @@
             <li class="sidebar-item"><a href="<?= base_url('admin/pesanan') ?>" class="sidebar-link"><i class="fa-solid fa-utensils"></i> <span>Pesanan</span></a></li>
             <li class="sidebar-item"><a href="<?= base_url('admin/menu') ?>" class="sidebar-link"><i class="fa-solid fa-bowl-food"></i> <span>Menu</span></a></li>
             <li class="sidebar-item"><a href="<?= base_url('admin/meja') ?>" class="sidebar-link active"><i class="fa-solid fa-chair"></i> <span>Meja</span></a></li>
-            <li class="sidebar-item"><a href="<?= base_url('admin/pelanggan') ?>" class="sidebar-link"><i class="fa-solid fa-users"></i> <span>Pelanggan</span></a></li>
+            <li class="sidebar-item"><a href="<?= base_url('admin/pelanggan') ?>" class="sidebar-link"><i class="fa-solid fa-users"></i> <span>Member</span></a></li>
             <li class="sidebar-item"><a href="<?= base_url('admin/transaksi') ?>" class="sidebar-link"><i class="fa-solid fa-file-invoice-dollar"></i> <span>Transaksi</span></a></li>
             <li class="sidebar-item"><a href="<?= base_url('admin/laporan') ?>" class="sidebar-link"><i class="fa-solid fa-chart-line"></i> <span>Laporan</span></a></li>
             <li class="sidebar-item"><a href="<?= base_url('admin/pengaturan') ?>" class="sidebar-link"><i class="fa-solid fa-gear"></i> <span>Pengaturan</span></a></li>
@@ -161,7 +166,7 @@
         </button>
         <div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input type="text" placeholder="Cari sesuatu..."></div>
         <div class="admin-profile">
-            <div class="notif-btn"><i class="fa-solid fa-bell"></i></div>
+            <div class="notif-btn me-2"><i class="fa-solid fa-bell"></i></div>
             <a href="<?= base_url('admin/pengaturan') ?>" class="text-decoration-none text-dark">
                 <div class="profile-card">
                     <div class="profile-avatar"><i class="fa-solid fa-user-tie"></i></div>
@@ -171,10 +176,21 @@
         </div>
     </div>
 
+    <?php if (session()->getFlashdata('success')) : ?>
+        <div class="alert alert-success" role="alert">
+            <?= session()->getFlashdata('success') ?>
+        </div>
+    <?php endif; ?>
+
+    <!-- PAGE HEADER DENGAN TOMBOL TAMBAH MEJA -->
     <div class="d-flex justify-content-between align-items-center mb-4 page-header">
         <h4>🪑 Pengaturan Meja Café</h4>
+        <button class="btn btn-sm btn-tambah d-flex align-items-center gap-2" style="border-radius: 8px;" data-bs-toggle="modal" data-bs-target="#modalTambahMeja">
+            <i class="fa-solid fa-plus"></i> Tambah Meja
+        </button>
     </div>
 
+    <!-- SATU-SATUNYA TABEL: ambil data langsung dari $meja yang dikirim controller -->
     <div class="widget-card">
         <div class="table-responsive">
             <table class="table custom-table m-0">
@@ -186,13 +202,56 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><b>Meja 01</b></td>
-                        <td>4 Orang</td>
-                        <td><span class="badge-status">Kosong</span></td>
-                    </tr>
+                    <?php if (!empty($meja) && is_array($meja)) : ?>
+                        <?php foreach ($meja as $row) : ?>
+                            <tr>
+                                <td><b>Meja <?= esc($row['table_number']) ?></b></td>
+                                <td><?= esc($row['capacity']) ?> Orang</td>
+                                <td>
+                                    <?php if ($row['status'] == 'Kosong') : ?>
+                                        <span class="badge-status">Kosong</span>
+                                    <?php else : ?>
+                                        <span class="badge bg-danger-subtle text-danger px-2 py-1" style="border-radius: 6px;"><?= esc($row['status']) ?></span>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else : ?>
+                        <tr>
+                            <td colspan="3" class="text-center text-muted py-4">Belum ada data meja di database.</td>
+                        </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL POP-UP TAMBAH MEJA -->
+<div class="modal fade" id="modalTambahMeja" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="<?= base_url('admin/meja/simpan') ?>" method="post">
+                <?= csrf_field() ?>
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Meja Baru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Nomor Meja</label>
+                        <input type="text" name="table_number" class="form-control" placeholder="Contoh: 2" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Kapasitas</label>
+                        <input type="number" name="capacity" class="form-control" placeholder="Contoh: 4" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-tambah">Simpan</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
