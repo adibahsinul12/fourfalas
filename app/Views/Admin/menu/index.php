@@ -126,7 +126,17 @@
         }
 
         /* ===== MODAL (Tambah / Edit Menu) ===== */
-        .modal-dialog { margin: 1.75rem auto; }
+        /* Update atau tambahkan ini di bagian CSS */
+        .modal-dialog { 
+            max-width: 500px; /* Atur lebar modal di sini */
+            margin: 1.75rem auto; 
+        }
+
+        /* Biarkan body modal bisa di-scroll jika kepanjangan */
+        .modal-body {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
         .modal-content { border-radius: 14px; }
 
         /* ===== TAMBAHAN FONT & WARNA TOMBOL TAMBAH BARU ===== */
@@ -333,6 +343,37 @@
                                                 </div>
                                                 <div class="mb-3"><label class="form-label">Harga (Rp)</label><input type="number" name="price" class="form-control" value="<?= (int)$row['price'] ?>" required></div>
                                                 <div class="mb-3"><label class="form-label">Stok</label><input type="number" name="stock" class="form-control" value="<?= $row['stock'] ?>" required></div>
+
+                                                <div class="mb-3">
+                                                    <label class="form-label">Harga (Rp)</label>
+                                                    <input type="number" name="price" class="form-control" value="<?= (int)$row['price'] ?>" required>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label class="form-label">Stok</label>
+                                                    <input type="number" name="stock" class="form-control" value="<?= $row['stock'] ?>" required>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                <label class="form-label">Foto Saat Ini</label><br>
+
+                                                <?php if (!empty($row['image_path'])): ?>
+                                                    <img src="<?= base_url('uploads/menus/'.$row['image_path']) ?>"
+                                                        width="100"
+                                                        class="img-thumbnail mb-2">
+                                                <?php else: ?>
+                                                    <img src="<?= base_url('uploads/menus/default_menus.jpg') ?>"
+                                                        width="100"
+                                                        class="img-thumbnail mb-2">
+                                                <?php endif; ?>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label class="form-label">Ganti Foto Menu</label>
+                                                <input type="file" name="image" class="form-control" accept="image/*">
+                                                <small class="text-muted">Kosongkan jika tidak ingin mengganti foto.</small>
+                                            </div>
+
                                             </div>
                                             <div class="modal-footer"><button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button><button type="submit" class="btn btn-warning btn-sm text-white">Simpan Perubahan</button></div>
                                         </form>
