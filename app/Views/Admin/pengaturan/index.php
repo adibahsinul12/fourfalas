@@ -460,15 +460,6 @@
                     </div>
 
                     <!-- Pajak -->
-                    <div class="mb-3">
-                        <label class="form-label">Pajak Layanan / PPN (%)</label>
-                        <div class="input-group" style="max-width:200px;">
-                            <input type="number" name="service_tax_percent" class="form-control" value="10" min="0" max="100" required>
-                            <span class="input-group-text">%</span>
-                        </div>
-                        <small class="text-muted" style="font-size:11px;">Nilai ini dipakai otomatis untuk kalkulasi PPN di setiap transaksi.</small>
-                    </div>
-
                     <!-- Kontak & Alamat -->
                     <div class="mb-4">
                         <label class="form-label">Kontak & Alamat Kafe</label>

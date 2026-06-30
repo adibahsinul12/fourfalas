@@ -16,8 +16,6 @@
             margin: 0; padding: 0;
             overflow-x: hidden;
         }
-
-        /* ── SIDEBAR ──────────────────────────────── */
         .sidebar {
             width: 260px;
             height: 100vh;
@@ -75,8 +73,6 @@
             white-space: nowrap;
         }
         .sidebar-logout:hover { opacity: 1; background-color: rgba(244,67,54,0.15); color: #FFCDD2; }
-
-        /* Close button — hidden on desktop */
         .sidebar-close-btn {
             display: none;
             background: none;
@@ -88,8 +84,6 @@
             right: 16px;
             cursor: pointer;
         }
-
-        /* Overlay mobile */
         .sidebar-overlay {
             display: none;
             position: fixed;
@@ -98,16 +92,12 @@
             z-index: 1040;
         }
         .sidebar-overlay.show { display: block; }
-
-        /* ── MAIN CONTENT ─────────────────────────── */
         .main-content {
             margin-left: 260px;
             padding: 30px;
             min-height: 100vh;
             transition: margin-left 0.3s ease;
         }
-
-        /* ── TOPBAR ───────────────────────────────── */
         .topbar {
             display: flex;
             justify-content: space-between;
@@ -117,8 +107,6 @@
             flex-wrap: wrap;
         }
         .topbar-left { display: flex; align-items: center; gap: 10px; }
-
-        /* Hamburger — hidden on desktop */
         .menu-toggle-btn {
             display: none;
             background: #FFFFFF;
@@ -131,7 +119,6 @@
             flex-shrink: 0;
             cursor: pointer;
         }
-
         .admin-profile { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
         .profile-card {
             background: #FFFFFF;
@@ -148,8 +135,6 @@
             display: flex; align-items: center; justify-content: center;
             color: #6B3A1E;
         }
-
-        /* ── WIDGET CARD ──────────────────────────── */
         .widget-card {
             background-color: #FFFFFF;
             border-radius: 16px;
@@ -157,11 +142,7 @@
             border: 1px solid rgba(229,229,229,0.5);
             box-shadow: 0 4px 12px rgba(0,0,0,0.04);
         }
-
-        /* ── SUMMARY BOXES ────────────────────────── */
         .mini-box { border-left: 4px solid #4CAF50; padding-left: 15px; }
-
-        /* ── FILTER FORM ──────────────────────────── */
         .filter-card {
             background: #FFFFFF;
             border-radius: 16px;
@@ -171,8 +152,6 @@
             margin-bottom: 24px;
         }
         .filter-card h6 { font-weight: 700; color: #888; margin-bottom: 16px; }
-
-        /* ── TABLE ────────────────────────────────── */
         .custom-table { width: 100%; border-collapse: collapse; }
         .custom-table th {
             font-size: 12px;
@@ -192,8 +171,6 @@
         }
         .custom-table tbody tr:last-child td { border-bottom: none; }
         .custom-table tbody tr:hover { background: #FDFAF7; }
-
-        /* ── MOBILE CARD LIST ─────────────────────── */
         .lap-card-list { display: none; }
         .lap-card {
             padding: 16px 18px;
@@ -213,8 +190,6 @@
         .lap-card-row { display: flex; justify-content: space-between; font-size: 13px; }
         .lap-card-label { color: #888888; font-size: 12px; }
         .empty-state { text-align: center; padding: 40px 20px; color: #888; font-size: 13px; }
-
-        /* ── PRINT ────────────────────────────────── */
         @media print {
             .sidebar, .menu-toggle-btn, .sidebar-overlay,
             .filter-card, .topbar .admin-profile { display: none !important; }
@@ -222,9 +197,6 @@
             .lap-card-list { display: none !important; }
             .table-responsive { display: block !important; }
         }
-
-        /* ── TABLET + MOBILE: off-canvas sidebar ─── */
-        /* Sama persis dengan pola halaman Transaksi   */
         @media (max-width: 991.98px) {
             .sidebar {
                 left: -280px;
@@ -235,55 +207,41 @@
             .main-content { margin-left: 0; padding: 20px; }
             .menu-toggle-btn { display: flex; }
         }
-
         @media (max-width: 767.98px) {
             .main-content { padding: 16px; }
             .topbar { margin-bottom: 20px; }
             .admin-profile { gap: 10px; }
             .profile-card .small { display: none; }
             .profile-card { padding: 4px; border-radius: 50%; }
-
-            /* Sembunyikan tabel, tampilkan kartu */
             .table-responsive { display: none; }
             .lap-card-list { display: block; }
-
-            /* Summary grid: 1 col */
             .row.g-3 .col-sm-6 { width: 100%; }
-
-            /* Filter form: full width */
             .filter-card .row .col-md-4 { width: 100%; }
-
             h4 { font-size: 1rem !important; }
             .d-flex.justify-content-between { flex-wrap: wrap; gap: 10px; }
         }
-
         @media (max-width: 479.98px) {
             .main-content { padding: 12px; }
         }
-
-        /* Warna tombol Tampilkan Laporan (Hijau Daun Resmi) */
         .btn-tampilkan-laporan {
-            background-color: #4CAF50 !important; /* Hijau Daun Utama FO'Orders */
+            background-color: #4CAF50 !important;
             border-color: #4CAF50 !important;
             color: #FFFFFF !important;
             font-family: 'Poppins', sans-serif !important;
             font-weight: 500;
-            padding: 8px 24px; /* Sesuaikan padding agar terlihat proporsional lebar */
+            padding: 8px 24px;
             transition: background-color 0.2s;
         }
-
         .btn-tampilkan-laporan:hover {
-            background-color: #3e9c43 !important; /* Hijau agak gelap saat di-hover */
+            background-color: #3e9c43 !important;
             border-color: #3e9c43 !important;
         }
     </style>
 </head>
 <body>
 
-<!-- Overlay -->
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-<!-- ── SIDEBAR ──────────────────────────────────── -->
 <div class="sidebar" id="sidebar">
     <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Tutup menu">
         <i class="fa-solid fa-xmark"></i>
@@ -340,10 +298,8 @@
     </a>
 </div>
 
-<!-- ── MAIN CONTENT ─────────────────────────────── -->
 <div class="main-content">
 
-    <!-- Topbar -->
     <div class="topbar">
         <div class="topbar-left">
             <button class="menu-toggle-btn" id="menuToggleBtn" aria-label="Buka menu">
@@ -352,7 +308,6 @@
             <h4 class="fw-bold m-0">📈 Laporan Keuangan & Penjualan</h4>
         </div>
         <div class="admin-profile d-flex align-items-center">
-        <!-- Tombol Lonceng dengan Lingkaran, Border, dan Jarak (me-3) -->
         <div class="notif-btn bg-white border d-flex align-items-center justify-content-center rounded-circle me-1" style="width: 40px; height: 40px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
             <i class="fa-solid fa-bell" style="color: #6B3A1E;"></i>
         </div>
@@ -366,7 +321,6 @@
         </div>
     </div>
 
-    <!-- Filter Card -->
     <div class="filter-card">
         <h6><i class="fa-solid fa-filter text-success me-2"></i>Filter Rentang Waktu Omzet</h6>
         <form action="<?= base_url('admin/laporan') ?>" method="GET" class="row g-3 align-items-end">
@@ -379,7 +333,6 @@
                 <input type="date" name="tgl_selesai" class="form-control" value="<?= $tgl_selesai; ?>">
             </div>
             <div class="col-md-4 col-12">
-                <!-- Sesudah diubah -->
                 <button type="submit" class="btn btn-tampilkan-laporan" style="border-radius: 8px;">
                     <i class="fa-solid fa-magnifying-glass"></i> Tampilkan Laporan
                 </button>
@@ -387,7 +340,6 @@
         </form>
     </div>
 
-    <!-- Summary Boxes -->
     <div class="row g-3 mb-4">
         <div class="col-12 col-sm-6 col-md-4">
             <div class="widget-card mini-box h-100" style="border-left-color:#4CAF50;">
@@ -403,7 +355,6 @@
         </div>
     </div>
 
-    <!-- Detail Table Card -->
     <div class="widget-card">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h6 class="fw-bold text-muted m-0">
@@ -422,19 +373,24 @@
                         <th>Waktu Transaksi</th>
                         <th>No. Nota</th>
                         <th>Pelanggan</th>
-                        <th class="text-end">Pajak Resto</th>
                         <th class="text-end">Total Bayar</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if(!empty($laporan_penjualan)): ?>
                         <?php foreach($laporan_penjualan as $row): ?>
+                            <?php
+                                // Fallback aman: kalau kolom total_amount tidak ada,
+                                // anggap pajak = 0 (total_payment dipakai sebagai dasar, bukan dikurangi).
+                                $totalPayment = $row['total_payment'] ?? 0;
+                                $totalAmount  = $row['total_amount'] ?? $totalPayment;
+                                $pajak        = $totalPayment - $totalAmount;
+                            ?>
                             <tr>
                                 <td><?= date('d M Y, H:i', strtotime($row['created_at'])); ?> WIB</td>
                                 <td class="fw-bold text-success">#<?= $row['order_number'] ?? $row['id']; ?></td>
                                 <td><?= $row['customer_name'] ?? 'Pelanggan'; ?></td>
-                                <td class="text-end text-muted">Rp <?= number_format(($row['total_payment'] - $row['total_amount']), 0, ',', '.'); ?></td>
-                                <td class="text-end fw-bold">Rp <?= number_format($row['total_payment'], 0, ',', '.'); ?></td>
+                                <td class="text-end fw-bold">Rp <?= number_format($totalPayment, 0, ',', '.'); ?></td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
@@ -452,6 +408,11 @@
         <div class="lap-card-list">
             <?php if(!empty($laporan_penjualan)): ?>
                 <?php foreach($laporan_penjualan as $row): ?>
+                    <?php
+                        $totalPayment = $row['total_payment'] ?? 0;
+                        $totalAmount  = $row['total_amount'] ?? $totalPayment;
+                        $pajak        = $totalPayment - $totalAmount;
+                    ?>
                     <div class="lap-card">
                         <div class="lap-card-header">
                             <div>
@@ -461,7 +422,7 @@
                                     <?= date('d M Y, H:i', strtotime($row['created_at'])); ?> WIB
                                 </div>
                             </div>
-                            <div class="lap-card-amount">Rp <?= number_format($row['total_payment'], 0, ',', '.'); ?></div>
+                            <div class="lap-card-amount">Rp <?= number_format($totalPayment, 0, ',', '.'); ?></div>
                         </div>
                         <div class="lap-card-body">
                             <div class="lap-card-row">
@@ -470,7 +431,7 @@
                             </div>
                             <div class="lap-card-row">
                                 <span class="lap-card-label"><i class="fa-solid fa-receipt fa-xs me-1"></i>Pajak Resto</span>
-                                <span class="text-muted">Rp <?= number_format(($row['total_payment'] - $row['total_amount']), 0, ',', '.'); ?></span>
+                                <span class="text-muted">Rp <?= number_format($pajak, 0, ',', '.'); ?></span>
                             </div>
                         </div>
                     </div>
@@ -485,7 +446,6 @@
     </div><!-- /widget-card -->
 </div><!-- /main-content -->
 
-<!-- ── SCRIPTS ─────────────────────────────────── -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     const sidebar         = document.getElementById('sidebar');
