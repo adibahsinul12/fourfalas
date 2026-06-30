@@ -63,12 +63,7 @@
                         <h3><?= esc($menu['menu_name']); ?></h3>
                         <div class="menu-footer">
                             <span class="price">Rp <?= number_format($menu['price'], 0, ',', '.'); ?></span>
-
-                            <form action="<?= base_url('cart/add'); ?>" method="post" style="margin: 0; padding: 0; display: inline;">
-                                <input type="hidden" name="menu_id" value="<?= $menu['id']; ?>">
-                                <input type="hidden" name="return_url" value="<?= current_url(true) ?>">
-                                <button type="submit" class="btn-add">+</button>
-                            </form>
+                            <button type="button" class="btn-add" onclick="addToCart(<?= $menu['id']; ?>, this)">+</button>
                         </div>
                     </div>
                 </div>
@@ -94,17 +89,15 @@
     }
 ?>
 
-<?php if ($cartCount > 0): ?>
-    <div onclick="location.href='<?= base_url('cart'); ?>'" style="position: fixed; bottom: 78px; left: 16px; right: 16px; max-width: 1200px; margin: 0 auto; background: #4CAF50; color: #ffffff; border-radius: 14px; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 6px 20px rgba(76,175,80,0.35); cursor: pointer; z-index: 998; font-family: 'Poppins', sans-serif;">
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <div style="background: rgba(255,255,255,0.25); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;">
-                <?= $cartCount; ?>
-            </div>
-            <span style="font-size: 14px; font-weight: 600;">Lihat Keranjang</span>
+<div id="floatingCartBar" onclick="location.href='<?= base_url('cart'); ?>'" style="<?= $cartCount > 0 ? '' : 'display:none;' ?> position: fixed; bottom: 78px; left: 16px; right: 16px; max-width: 1200px; margin: 0 auto; background: #4CAF50; color: #ffffff; border-radius: 14px; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 6px 20px rgba(76,175,80,0.35); cursor: pointer; z-index: 998; font-family: 'Poppins', sans-serif;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <div id="cartBarCount" style="background: rgba(255,255,255,0.25); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;">
+            <?= $cartCount; ?>
         </div>
-        <span style="font-size: 14px; font-weight: 700;">Rp <?= number_format($cartTotal, 0, ',', '.'); ?></span>
+        <span style="font-size: 14px; font-weight: 600;">Lihat Keranjang</span>
     </div>
-<?php endif; ?>
+    <span id="cartBarTotal" style="font-size: 14px; font-weight: 700;">Rp <?= number_format($cartTotal, 0, ',', '.'); ?></span>
+</div>
 
 <div class="bottom-nav">
     <div class="nav-item" onclick="location.href='<?= base_url('pelanggan'); ?>'">
@@ -120,5 +113,40 @@
         <span>Keranjang</span>
     </div>
 </div>
+
+<script>
+function addToCart(menuId, btn) {
+    btn.disabled = true;
+
+    fetch('<?= base_url('cart/add'); ?>', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: 'menu_id=' + menuId
+    })
+    .then(res => res.json())
+    .then(data => {
+        btn.disabled = false;
+        if (data.success) {
+            const bar = document.getElementById('floatingCartBar');
+            const countEl = document.getElementById('cartBarCount');
+            const totalEl = document.getElementById('cartBarTotal');
+
+            countEl.textContent = data.cartCount;
+            totalEl.textContent = 'Rp ' + new Intl.NumberFormat('id-ID').format(data.cartTotal);
+            bar.style.display = 'flex';
+        } else {
+            alert(data.message || 'Gagal menambahkan ke keranjang');
+        }
+    })
+    .catch(err => {
+        btn.disabled = false;
+        console.error(err);
+        alert('Terjadi kesalahan, coba lagi.');
+    });
+}
+</script>
 
 <?= $this->endSection(); ?>

@@ -94,7 +94,77 @@ class Dashboard extends BaseController
 
     public function meja()
     {
-        return view('admin/meja/index');
+        // 1. Panggil TableModel yang mengarah ke tabel 'tables'
+        $tableModel = new \App\Models\TableModel();
+
+        // 2. Ambil semua data dan urutkan berdasarkan nomor meja terkecil
+        $data['meja'] = $tableModel->orderBy('table_number', 'ASC')->findAll();
+
+        // 3. Kirim data ke view index meja
+        // (Pastikan 'admin/meja/index' ini sudah sesuai dengan lokasi file index mejamu)
+        return view('admin/meja/index', $data); 
+    }
+
+    // ==========================================
+    // PROSES CRUD MEJA KAFE
+    // ==========================================
+    // ==========================================
+    // PROSES CRUD MEJA KAFE (Disesuaikan dengan TableModel)
+    // ==========================================
+    public function simpanMeja()
+    {
+        // 1. Ambil input dari form (misal user ngetik "Meja 02" atau "2")
+        $inputMeja = $this->request->getPost('table_number');
+        $kapasitas = $this->request->getPost('capacity');
+
+        // 2. Bersihkan input: ambil angka-angkanya saja agar pas dengan tipe INT di database
+        $nomorMejaAngka = preg_replace('/[^0-9]/', '', $inputMeja);
+
+        // Jika user cuma ketik huruf tanpa angka, beri default angka 0
+        if (empty($nomorMejaAngka)) {
+            $nomorMejaAngka = 0;
+        }
+
+        // 3. Bungkus data untuk dikirim ke database
+        $data = [
+            'table_number' => $nomorMejaAngka,     // Sekarang isinya murni angka (cth: 2)
+            'capacity'     => $kapasitas,          // Simpan angka kapasitas saja tanpa text tambahan
+            'type'         => 'Reguler',           
+            'status'       => 'Kosong'             
+        ];
+
+        $tableModel = new \App\Models\TableModel(); 
+        $tableModel->insert($data);
+
+        return redirect()->to(base_url('admin/meja'))->with('success', 'Meja baru berhasil ditambahkan!');
+    }
+
+    // ==========================================
+    // PROSES UPDATE MEJA KAFE
+    // ==========================================
+    public function updateMeja($id)
+    {
+        $tableModel = new \App\Models\TableModel();
+
+        $data = [
+            'table_number' => $this->request->getPost('table_number'),
+            'capacity'     => $this->request->getPost('capacity'),
+            'status'       => $this->request->getPost('status')
+        ];
+
+        $tableModel->update($id, $data);
+        return redirect()->to(base_url('admin/meja'))->with('success', 'Data meja berhasil diperbarui!');
+    }
+
+    // ==========================================
+    // PROSES HAPUS MEJA KAFE
+    // ==========================================
+    public function deleteMeja($id)
+    {
+        $tableModel = new \App\Models\TableModel();
+        $tableModel->delete($id);
+
+        return redirect()->to(base_url('admin/meja'))->with('success', 'Meja berhasil dihapus!');
     }
 
     public function pelanggan()

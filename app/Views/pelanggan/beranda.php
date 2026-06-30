@@ -15,29 +15,18 @@
         </div>
     </div>
 
-    <?php if (session()->getFlashdata('success')): ?>
-        <div style="background:#e8f5e9; color:#2e7d32; padding:12px 16px; border-radius:8px; margin-bottom:16px; font-size:14px; font-family:'Poppins', sans-serif;">
-            <?= session()->getFlashdata('success'); ?>
-        </div>
-    <?php endif; ?>
-
     <div class="promo-banner">
         <div class="banner-content">
             <p style="margin: 0; font-size: 12px; opacity: 0.9;">Pesan dengan mudah</p>
             <h3>Nikmati Hidangan Terbaik<br>dari Fourfalas Café</h3>
-            <button class="btn-promo">Pesan Sekarang</button>
-        </div>
+        <button class="btn-promo" onclick="location.href='<?= base_url('menu'); ?>'" style="position: relative; z-index: 10;">Pesan Sekarang</button>        </div>
         <div class="banner-icon">
             <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="50" cy="50" r="45" fill="#A67C52" fill-opacity="0.3"/>
                 <circle cx="50" cy="50" r="30" fill="#FFFFFF" fill-opacity="0.2"/>
-                
                 <path d="M65 50 C85 50, 85 75, 65 75" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
-                
                 <rect x="25" y="40" width="50" height="45" rx="10" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2"/>
-                
                 <line x1="32" y1="50" x2="68" y2="50" stroke="#6B3A1E" stroke-width="3" stroke-linecap="round"/>
-                
                 <path d="M40 32 C40 20, 45 20, 45 10" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity="0.9"/>
                 <path d="M50 35 C50 23, 55 23, 55 13" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity="0.9"/>
                 <path d="M60 32 C60 20, 65 20, 65 10" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity="0.9"/>
@@ -47,7 +36,7 @@
 
     <h2 style="font-size: 16px; font-weight: 600; color: #333333; margin-bottom: 14px;">Kategori Menu</h2>
     <div class="category-container">
-        <span class="category-tab active">
+        <span class="category-tab active" onclick="location.href='<?= base_url('menu'); ?>'">
             <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
             Semua
         </span>
@@ -94,19 +83,14 @@
                         <h3><?= esc($menu['menu_name']); ?></h3>
                         <div class="menu-footer">
                             <span class="price">Rp <?= number_format($menu['price'], 0, ',', '.'); ?></span>
-                            
-                            <form action="<?= base_url('cart/add'); ?>" method="post" style="margin: 0; padding: 0; display: inline;">
-                                <input type="hidden" name="menu_id" value="<?= $menu['id']; ?>">
-                                <input type="hidden" name="return_url" value="<?= current_url(true) ?>">
-                                <button type="submit" class="btn-add">+</button>
-                            </form>
+                            <button type="button" class="btn-add" onclick="addToCart(<?= $menu['id']; ?>, this)">+</button>
                         </div>
                     </div>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
             <div class="empty-state">
-                <svg viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
+                <svg viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg" style="width: 120px; height: 120px; max-width: 120px;">
                     <path d="M30 40 L35 25 L40 40 L55 45 L40 50 L35 65 L30 50 L15 45 Z" fill="#F4A261" opacity="0.6"/>
                     <path d="M110 30 L113 20 L116 30 L126 33 L116 36 L113 46 L110 36 L100 33 Z" fill="#F4A261" opacity="0.4"/>
                     <path d="M60 45 Q50 35, 60 25 T60 5" stroke="#A67C52" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.5"/>
@@ -129,7 +113,6 @@
 </div>
 
 <?php
-    // Hitung jumlah item & total harga di keranjang untuk floating cart bar
     $cartData = session()->get('cart') ?? [];
     $cartCount = 0;
     $cartTotal = 0;
@@ -139,17 +122,15 @@
     }
 ?>
 
-<?php if ($cartCount > 0): ?>
-    <div onclick="location.href='<?= base_url('cart'); ?>'" style="position: fixed; bottom: 78px; left: 16px; right: 16px; max-width: 1200px; margin: 0 auto; background: #4CAF50; color: #ffffff; border-radius: 14px; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 6px 20px rgba(76,175,80,0.35); cursor: pointer; z-index: 998; font-family: 'Poppins', sans-serif;">
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <div style="background: rgba(255,255,255,0.25); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;">
-                <?= $cartCount; ?>
-            </div>
-            <span style="font-size: 14px; font-weight: 600;">Lihat Keranjang</span>
+<div id="floatingCartBar" onclick="location.href='<?= base_url('cart'); ?>'" style="position: fixed; bottom: 78px; left: 16px; right: 16px; max-width: 1200px; margin: 0 auto; background: #4CAF50; color: #ffffff; border-radius: 14px; padding: 14px 20px; justify-content: space-between; align-items: center; box-shadow: 0 6px 20px rgba(76,175,80,0.35); cursor: pointer; z-index: 998; font-family: 'Poppins', sans-serif; display: <?= $cartCount > 0 ? 'flex' : 'none' ?>;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <div id="cartBarCount" style="background: rgba(255,255,255,0.25); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;">
+            <?= $cartCount; ?>
         </div>
-        <span style="font-size: 14px; font-weight: 700;">Rp <?= number_format($cartTotal, 0, ',', '.'); ?></span>
+        <span style="font-size: 14px; font-weight: 600;">Lihat Keranjang</span>
     </div>
-<?php endif; ?>
+    <span id="cartBarTotal" style="font-size: 14px; font-weight: 700;">Rp <?= number_format($cartTotal, 0, ',', '.'); ?></span>
+</div>
 
 <div class="bottom-nav">
     <div class="nav-item active" onclick="location.href='<?= base_url('pelanggan'); ?>'">
@@ -166,4 +147,62 @@
     </div>
 </div>
 
+<?= $this->endSection(); ?>
+
+<?= $this->section('scripts'); ?>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Menangkap flashdata 'pesan_sukses' dari fungsi Cart::process()
+    <?php if (session()->getFlashdata('pesan_sukses')) : ?>
+        Swal.fire({
+            target: document.body, // --- TAMBAHIN BARIS INI COK, BIAR MODALNYA LEPAS KE TENGAH LAYAR GLOBAL ---
+            title: 'Berhasil!',
+            text: '<?= session()->getFlashdata("pesan_sukses"); ?>',
+            icon: 'success',
+            confirmButtonColor: '#4CAF50',
+            background: '#FAF6EB',
+            customClass: {
+                title: 'font-poppins',
+                popup: 'border-radius-16'
+            }
+        });
+    <?php endif; ?>
+});
+
+function addToCart(menuId, btn) {
+    btn.disabled = true;
+
+    fetch('<?= base_url('cart/add'); ?>', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: 'menu_id=' + menuId
+    })
+    .then(res => res.json())
+    .then(data => {
+        btn.disabled = false;
+        if (data.success) {
+            const bar = document.getElementById('floatingCartBar');
+            const countEl = document.getElementById('cartBarCount');
+            const totalEl = document.getElementById('cartBarTotal');
+
+            countEl.textContent = data.cartCount;
+            totalEl.textContent = 'Rp ' + new Intl.NumberFormat('id-ID').format(data.cartTotal);
+            // hanya tampilkan bar kalau cartCount lebih dari 0
+            bar.style.display = data.cartCount > 0 ? 'flex' : 'none';
+        } else {
+            alert(data.message || 'Gagal menambahkan ke keranjang');
+        }
+    })
+    .catch(err => {
+        btn.disabled = false;
+        console.error(err);
+        alert('Terjadi kesalahan, coba lagi.');
+    });
+}
+</script>
 <?= $this->endSection(); ?>

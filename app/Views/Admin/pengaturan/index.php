@@ -306,8 +306,8 @@
                 </a>
             </li>
             <li class="sidebar-item">
-                <a href="<?= base_url('admin/pelanggan') ?>" class="sidebar-link" title="Pelanggan">
-                    <i class="fa-solid fa-users"></i> <span>Pelanggan</span>
+                <a href="<?= base_url('admin/pelanggan') ?>" class="sidebar-link" title="Member">
+                    <i class="fa-solid fa-users"></i> <span>Member</span>
                 </a>
             </li>
             <li class="sidebar-item">

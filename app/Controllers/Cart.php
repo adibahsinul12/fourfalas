@@ -31,8 +31,13 @@ class Cart extends BaseController
     public function add()
     {
         $menuId = $this->request->getPost('menu_id');
-        $returnUrl = $this->request->getPost('return_url');
-        if (!$menuId) return redirect()->back();
+
+        if (!$menuId) {
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON(['success' => false, 'message' => 'Menu tidak valid']);
+            }
+            return redirect()->back();
+        }
 
         $cart = $this->session->get('cart') ?? [];
 
@@ -47,6 +52,8 @@ class Cart extends BaseController
                     'id'         => $menu['id'],
                     'menu_name'  => $menu['menu_name'],
                     'price'      => $menu['price'],
+                    // BENERIN DI SINI COK: Diarahkan ke image_path bawaan tabel database kamu agar tidak error key "image"
+                    'image'      => $menu['image_path'], 
                     'image_path' => $menu['image_path'],
                     'quantity'   => 1
                 ];
@@ -55,7 +62,25 @@ class Cart extends BaseController
 
         $this->session->set('cart', $cart);
 
-        // Redirect ke halaman asal yang dikirim form, atau ke menu jika tidak ada
+        // Hitung ulang jumlah item & total harga keranjang
+        $cartCount = 0;
+        $cartTotal = 0;
+        foreach ($cart as $ci) {
+            $cartCount += $ci['quantity'];
+            $cartTotal += $ci['price'] * $ci['quantity'];
+        }
+
+        // Kalau request datang dari AJAX (fetch), balikin JSON, JANGAN redirect
+        if ($this->request->isAJAX()) {
+            return $this->response->setJSON([
+                'success'   => true,
+                'cartCount' => $cartCount,
+                'cartTotal' => $cartTotal,
+            ]);
+        }
+
+        // Fallback: kalau bukan AJAX (misal JS browser dimatikan), tetap redirect seperti biasa
+        $returnUrl = $this->request->getPost('return_url');
         $target = !empty($returnUrl) ? $returnUrl : base_url('menu');
         return redirect()->to($target)->with('success', 'Menu ditambahkan!');
     }
@@ -199,8 +224,9 @@ class Cart extends BaseController
         $myOrders[] = $orderId;
         $session->set('my_orders', $myOrders);
 
-        // 7. Arahkan kembali ke halaman depan dengan pesan sukses
-        // (Nantinya ini bisa diarahkan ke halaman "Pesanan Berhasil" atau struk digital)
-        return redirect()->to(base_url('pelanggan'))->with('success', 'Yey! Pesanan kamu berhasil dibuat.');
+        // 7. BENERIN DI SINI COK: Set flashdata tunggal yang sinkron dan buang redirect bawaan lama (.with)
+        $session->setFlashdata('pesan_sukses', 'Yey! Pesanan kamu berhasil dibuat.');
+        
+        return redirect()->to(base_url('pelanggan'));
     }
 }
