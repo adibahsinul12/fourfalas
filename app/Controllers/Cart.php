@@ -52,7 +52,8 @@ class Cart extends BaseController
                     'id'         => $menu['id'],
                     'menu_name'  => $menu['menu_name'],
                     'price'      => $menu['price'],
-                    'image'      => $menu['image'], // Memastikan mengambil kolom image dari db agar foto muncul
+                    // BENERIN DI SINI COK: Diarahkan ke image_path bawaan tabel database kamu agar tidak error key "image"
+                    'image'      => $menu['image_path'], 
                     'image_path' => $menu['image_path'],
                     'quantity'   => 1
                 ];
@@ -223,9 +224,9 @@ class Cart extends BaseController
         $myOrders[] = $orderId;
         $session->set('my_orders', $myOrders);
 
-        // 7. DIUBAH DI SINI: Ditambahkan flashdata 'pesan_sukses' untuk memicu SweetAlert di halaman beranda
+        // 7. BENERIN DI SINI COK: Set flashdata tunggal yang sinkron dan buang redirect bawaan lama (.with)
         $session->setFlashdata('pesan_sukses', 'Yey! Pesanan kamu berhasil dibuat.');
         
-        return redirect()->to(base_url('pelanggan'))->with('success', 'Yey! Pesanan kamu berhasil dibuat.');
+        return redirect()->to(base_url('pelanggan'));
     }
 }

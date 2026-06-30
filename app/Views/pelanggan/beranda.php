@@ -19,8 +19,7 @@
         <div class="banner-content">
             <p style="margin: 0; font-size: 12px; opacity: 0.9;">Pesan dengan mudah</p>
             <h3>Nikmati Hidangan Terbaik<br>dari Fourfalas Café</h3>
-            <button class="btn-promo" onclick="location.href='<?= base_url('menu'); ?>'">Pesan Sekarang</button>
-        </div>
+        <button class="btn-promo" onclick="location.href='<?= base_url('menu'); ?>'" style="position: relative; z-index: 10;">Pesan Sekarang</button>        </div>
         <div class="banner-icon">
             <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="50" cy="50" r="45" fill="#A67C52" fill-opacity="0.3"/>
