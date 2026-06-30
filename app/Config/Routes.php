@@ -7,6 +7,7 @@ use CodeIgniter\Router\RouteCollection;
 // Rute Halaman Utama Pelanggan
 $routes->get('/', 'Home::index');
 $routes->get('pelanggan', 'Home::index'); 
+$routes->get('menu', 'Home::menu'); // <-- DITAMBAHKAN: Rute halaman "Lihat semua menu"
 
 // Rute untuk Fitur Keranjang Belanja Pelanggan
 $routes->get('cart', 'Cart::index');          

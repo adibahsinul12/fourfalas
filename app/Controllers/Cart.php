@@ -141,31 +141,36 @@ class Cart extends BaseController
         $tableId      = $this->request->getPost('table_id');
         $notes        = $this->request->getPost('notes');
 
+        // Generate nomor order unik, max 10 karakter (sesuai kolom order_number char(10))
+        $orderNumber = 'OR' . strtoupper(substr(uniqid(), -8));
+
         // Gunakan Transaction agar jika terjadi error di tengah jalan, database dibatalkan (aman)
         $db->transStart();
 
-        // 3. Masukkan data ke tabel `orders` utama
+        // 3. Masukkan data ke tabel `orders` utama (disesuaikan dengan struktur tabel asli)
         $orderData = [
-            'table_id'      => $tableId,
-            'customer_name' => $customerName,
-            'total_price'   => $total_price,
-            'notes'         => $notes,
-            'status'        => 'pending',
-            'created_at'    => date('Y-m-d H:i:s')
+            'order_number'   => $orderNumber,
+            'table_id'       => $tableId,
+            'customer_name'  => $customerName,
+            'notes'          => $notes,
+            'order_status'   => 'Menunggu',
+            'subtotal'       => $total_price,
+            'total_payment'  => $total_price,
         ];
         $db->table('orders')->insert($orderData);
         
         // Dapatkan ID Pesanan yang baru saja dibuat
         $orderId = $db->insertID(); 
 
-        // 4. Masukkan data detail menu ke tabel `order_items`
+        // 4. Masukkan data detail menu ke tabel `order_items` (disesuaikan, ada kolom subtotal wajib diisi)
         $orderItems = [];
         foreach ($cart as $id => $item) {
             $orderItems[] = [
                 'order_id'       => $orderId,
                 'menu_id'        => $id,
                 'quantity'       => $item['quantity'],
-                'price_at_order' => $item['price'] // Menyimpan harga saat dipesan
+                'price_at_order' => $item['price'],
+                'subtotal'       => $item['price'] * $item['quantity'],
             ];
         }
         $db->table('order_items')->insertBatch($orderItems);
@@ -178,7 +183,8 @@ class Cart extends BaseController
 
         // Cek apakah penyimpanan berhasil
         if ($db->transStatus() === FALSE) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat memproses pesanan.');
+            $error = $db->error();
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat memproses pesanan. DEBUG: ' . $error['message'] . ' (code: ' . $error['code'] . ')');
         }
 
         // 6. Jika sukses, kosongkan keranjang dari session

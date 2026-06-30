@@ -1,0 +1,94 @@
+<?= $this->extend('layout/customer_template'); ?>
+
+<?= $this->section('content'); ?>
+
+<div style="padding: 24px;">
+
+    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+        <span onclick="location.href='<?= base_url('pelanggan'); ?>'" style="cursor: pointer; font-size: 22px; color: #6B3A1E;">&#8592;</span>
+        <h1 style="margin: 0; font-size: 22px; font-weight: 700; color: #6B3A1E;">Semua Menu</h1>
+    </div>
+
+    <h2 style="font-size: 16px; font-weight: 600; color: #333333; margin-bottom: 14px;">Kategori Menu</h2>
+    <div class="category-container">
+        <span class="category-tab <?= empty($_GET['category']) ? 'active' : '' ?>"
+              onclick="location.href='<?= base_url('menu'); ?>'">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+            Semua
+        </span>
+
+        <?php foreach ($categories as $cat): 
+            $catName = strtolower($cat['category_name']);
+            $icon = '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>'; 
+
+            if (strpos($catName, 'kopi') !== false && strpos($catName, 'non') === false) {
+                $icon = '<svg viewBox="0 0 24 24"><path d="M17 8h1a4 4 0 1 1 0 8h-1"></path><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"></path><line x1="6" y1="2" x2="6" y2="4"></line><line x1="10" y1="2" x2="10" y2="4"></line><line x1="14" y1="2" x2="14" y2="4"></line></svg>';
+            } elseif (strpos($catName, 'minuman') !== false || strpos($catName, 'non') !== false) {
+                $icon = '<svg viewBox="0 0 24 24"><path d="M8 22h8"></path><path d="M12 18v4"></path><path d="M6 5l2 13h8l2-13"></path><line x1="10" y1="2" x2="16" y2="8"></line></svg>';
+            } elseif (strpos($catName, 'snack') !== false || strpos($catName, 'dessert') !== false) {
+                $icon = '<svg viewBox="0 0 24 24"><path d="M12 2l3 3h4v4l3 3-3 3v4h-4l-3 3-3-3H6v-4L3 12l3-3V6h4z"></path></svg>';
+            }
+
+            $isActive = (isset($_GET['category']) && $_GET['category'] == $cat['id']) ? 'active' : '';
+        ?>
+            <span class="category-tab <?= $isActive ?>"
+                  onclick="location.href='<?= base_url('menu') . '?category=' . $cat['id']; ?>'">
+                <?= $icon; ?>
+                <?= esc($cat['category_name']); ?>
+            </span>
+        <?php endforeach; ?>
+    </div>
+
+    <div class="menu-grid" style="margin-top: 20px;">
+        <?php if (!empty($all_menus)): ?>
+            <?php foreach ($all_menus as $menu): 
+                $filename = $menu['image_path'] ?? 'default.jpg';
+                $path = 'uploads/menus/' . $filename;
+
+                if (file_exists(FCPATH . $path) && !empty($menu['image_path'])) {
+                    $imgUrl = base_url($path);
+                } else {
+                    $imgUrl = base_url('uploads/menus/default_menus.jpg');
+                }
+            ?>
+                <div class="menu-card">
+                    <img class="menu-img" src="<?= $imgUrl; ?>" alt="<?= esc($menu['menu_name']); ?>">
+                    <div class="menu-info">
+                        <h3><?= esc($menu['menu_name']); ?></h3>
+                        <div class="menu-footer">
+                            <span class="price">Rp <?= number_format($menu['price'], 0, ',', '.'); ?></span>
+
+                            <form action="<?= base_url('cart/add'); ?>" method="post" style="margin: 0; padding: 0; display: inline;">
+                                <input type="hidden" name="menu_id" value="<?= $menu['id']; ?>">
+                                <button type="submit" class="btn-add">+</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <div class="empty-state">
+                <h4>Belum Ada Menu</h4>
+                <p>Tidak ada menu yang tersedia<br>untuk kategori ini.</p>
+            </div>
+        <?php endif; ?>
+    </div>
+
+</div>
+
+<div class="bottom-nav">
+    <div class="nav-item" onclick="location.href='<?= base_url('pelanggan'); ?>'">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <span>Beranda</span>
+    </div>
+    <div class="nav-item">
+        <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+        <span>Pesanan</span>
+    </div>
+    <div class="nav-item" onclick="location.href='<?= base_url('cart'); ?>'">
+        <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+        <span>Keranjang</span>
+    </div>
+</div>
+
+<?= $this->endSection(); ?>

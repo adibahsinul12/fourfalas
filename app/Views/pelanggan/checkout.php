@@ -10,6 +10,13 @@
     </header>
 
     <div style="flex: 1; padding: 10px 16px 140px 16px; box-sizing: border-box;">
+
+        <?php if (session()->getFlashdata('error')): ?>
+            <div style="background:#ffe5e5; color:#c0392b; padding:12px 16px; border-radius:8px; margin-bottom:16px; font-size:14px; font-family:'Poppins', sans-serif;">
+                <?= session()->getFlashdata('error'); ?>
+            </div>
+        <?php endif; ?>
+
         <form action="<?= base_url('checkout/process'); ?>" method="post" id="checkoutForm">
 
             <div style="background: #ffffff; padding: 20px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); margin-bottom: 16px;">
@@ -71,7 +78,7 @@
 
     <div style="position: fixed; bottom: 0; left: 0; right: 0; width: 100%; background: #ffffff; box-shadow: 0 -8px 24px rgba(0,0,0,0.08); border-radius: 16px 16px 0 0; z-index: 999; box-sizing: border-box; padding: 16px 16px 12px 16px; margin: 0 auto; max-width: inherit;">
         
-        <button type="button" onclick="document.getElementById('checkoutForm').submit();" style="display: block; text-align: center; padding: 14px 0; font-size: 15px; font-weight: 600; border-radius: 12px; background-color: #4CAF50; color: white; width: 100%; box-sizing: border-box; font-family: 'Poppins', sans-serif; border: none; cursor: pointer; transition: 0.2s; margin-bottom: 14px;">Pesan Sekarang</button>
+        <button type="button" onclick="document.getElementById('checkoutForm').requestSubmit();" style="display: block; text-align: center; padding: 14px 0; font-size: 15px; font-weight: 600; border-radius: 12px; background-color: #4CAF50; color: white; width: 100%; box-sizing: border-box; font-family: 'Poppins', sans-serif; border: none; cursor: pointer; transition: 0.2s; margin-bottom: 14px;">Pesan Sekarang</button>
         
         <hr style="border: 0; border-top: 1px solid #eeeeee; margin: 0 0 12px 0;">
 

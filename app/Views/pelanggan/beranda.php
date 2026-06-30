@@ -58,7 +58,7 @@
                 $icon = '<svg viewBox="0 0 24 24"><path d="M12 2l3 3h4v4l3 3-3 3v4h-4l-3 3-3-3H6v-4L3 12l3-3V6h4z"></path></svg>';
             }
         ?>
-            <span class="category-tab">
+            <span class="category-tab" onclick="location.href='<?= base_url('menu') . '?category=' . $cat['id']; ?>'">
                 <?= $icon; ?>
                 <?= esc($cat['category_name']); ?>
             </span>
@@ -67,7 +67,7 @@
 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
         <h2 style="font-size: 16px; font-weight: 600; color: #333333; margin: 0;">Rekomendasi Menu</h2>
-        <span style="font-size: 12px; color: #4CAF50; font-weight: 600; cursor: pointer;">Lihat semua</span>
+        <span style="font-size: 12px; color: #4CAF50; font-weight: 600; cursor: pointer;" onclick="location.href='<?= base_url('menu'); ?>'">Lihat semua</span>
     </div>
     
     <div class="menu-grid">

@@ -20,7 +20,7 @@
                 </svg>
                 <h4>Keranjangmu Kosong</h4>
                 <p>Yuk, pilih menu kopi atau cemilan favoritmu dulu!</p>
-                <a href="<?= base_url('pelanggan'); ?>" class="btn-promo" style="display:inline-block; margin-top:20px; text-decoration:none;">Lihat Menu</a>
+                <a href="<?= base_url('menu'); ?>" class="btn-promo" style="display:inline-block; margin-top:20px; text-decoration:none;">Lihat Menu</a>
             </div>
         <?php else: ?>
             <?php foreach ($cart as $id => $item): ?>

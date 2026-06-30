@@ -27,4 +27,28 @@ class Home extends BaseController
         // Kirim data ke view pelanggan/beranda
         return view('pelanggan/beranda', $data);
     }
+
+    // Halaman "Lihat semua menu" (dipanggil dari tombol "Lihat semua" di beranda)
+    public function menu()
+    {
+        $menuModel = new MenuModel();
+        $categoryModel = new CategoryModel();
+
+        // Ambil semua kategori untuk tab filter
+        $data['categories'] = $categoryModel->findAll();
+
+        // Cek apakah ada filter kategori dari query string, contoh: /menu?category=2
+        $categoryId = $this->request->getGet('category');
+
+        $query = $menuModel->where('is_active', 1);
+
+        if (!empty($categoryId)) {
+            $query = $query->where('category_id', $categoryId);
+        }
+
+        // Ambil semua menu (sudah difilter kategori kalau ada)
+        $data['all_menus'] = $query->findAll();
+
+        return view('pelanggan/menu', $data);
+    }
 }
