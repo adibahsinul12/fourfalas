@@ -239,6 +239,35 @@
         @media (max-width: 479.98px) {
             .main-content { padding: 12px; }
         }
+
+
+        /* Warna tombol Update Password (Coklat Kopi Resmi) */
+        .btn-update-password {
+            background-color: #6B3A1E !important; /* Coklat Kopi Utama FO'Orders */
+            color: #FFFFFF !important;
+            border: none !important;
+            font-family: 'Poppins', sans-serif !important;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .btn-update-password:hover {
+            background-color: #552e18 !important; /* Warna coklat agak gelap saat didekati mouse */
+        }
+
+        /* Warna tombol Update Password & Simpan Konfigurasi (Coklat Kopi Resmi) */
+        .btn-update-password, .btn-simpan-toko {
+            background-color: #6B3A1E !important; /* Coklat Kopi Utama FO'Orders */
+            color: #FFFFFF !important;
+            border: none !important;
+            font-family: 'Poppins', sans-serif !important;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .btn-update-password:hover, .btn-simpan-toko:hover {
+            background-color: #552e18 !important; /* Warna coklat agak gelap saat di-hover */
+        }
     </style>
 </head>
 <body>
@@ -389,7 +418,7 @@
                             </button>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-warning text-white btn-sm w-100 mt-1 py-2" style="border-radius:8px;">
+                    <button type="submit" class="btn btn-warning text-white btn-sm w-100 mt-1 py-2 btn-update-password" style="border-radius:8px;">
                         <i class="fa-solid fa-lock me-2"></i>Update Password
                     </button>
                 </form>
@@ -446,7 +475,7 @@
                         <textarea name="contact_info" class="form-control" rows="3" required>Jl. Pendidikan No. 04, Sambas, Kalimantan Barat.</textarea>
                     </div>
 
-                    <button type="submit" class="btn btn-success btn-sm w-100 py-2" style="border-radius:8px;">
+                    <button type="submit" class="btn btn-sm w-100 py-2 btn-simpan-toko" style="border-radius:8px;">
                         <i class="fa-solid fa-floppy-disk me-2"></i>Simpan Konfigurasi Toko
                     </button>
                 </form>

@@ -96,9 +96,57 @@
         /* Tombol aksi (Edit/Hapus) supaya rapi & tidak bertumpuk aneh di kolom sempit */
         .action-buttons { display: flex; gap: 6px; justify-content: center; flex-wrap: nowrap; }
 
+        /* ===== TAMBAHAN WARNA TOMBOL EDIT DAN HAPUS SESUAI PALET ===== */
+        .action-buttons .btn-edit {
+            background-color: #4CAF50; /* Hijau Daun (Primary Green) */
+            color: #FFFFFF;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .action-buttons .btn-edit:hover {
+            background-color: #3e9c43; /* Warna hijau sedikit lebih gelap saat di-hover */
+        }
+
+        .action-buttons .btn-delete {
+            background-color: #6B3A1E; /* Coklat Kopi (Secondary Button / Primary Brown) */
+            color: #FFFFFF;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .action-buttons .btn-delete:hover {
+            background-color: #552e18; /* Warna coklat sedikit lebih gelap saat di-hover */
+        }
+
         /* ===== MODAL (Tambah / Edit Menu) ===== */
         .modal-dialog { margin: 1.75rem auto; }
         .modal-content { border-radius: 14px; }
+
+        /* ===== TAMBAHAN FONT & WARNA TOMBOL TAMBAH BARU ===== */
+        /* Memaksa elemen button menggunakan font Poppins */
+        button, input, select, textarea, .btn {
+            font-family: 'Poppins', sans-serif !important;
+        }
+
+        /* Mengubah warna tombol + Tambah Menu Baru */
+        .btn-tambah { 
+            background-color: #4CAF50 !important; /* Hijau Daun Utama */
+            border-color: #4CAF50 !important;
+            color: #FFFFFF !important;
+        }
+
+        .btn-tambah:hover {
+            background-color: #3e9c43 !important; /* Hijau agak gelap saat di-hover */
+            border-color: #3e9c43 !important;
+        }
+
 
         /* =========================================================
            BREAKPOINTS RESPONSIF
@@ -187,7 +235,7 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4 page-header">
         <h4>📋 Manajemen Menu Makanan & Minuman</h4>
-        <button class="btn btn-success btn-sm" style="border-radius: 8px;" data-bs-toggle="modal" data-bs-target="#modalTambah"><i class="fa-solid fa-plus"></i> Tambah Menu Baru</button>
+        <button class="btn btn-success btn-sm btn-tambah" style="border-radius: 8px;" data-bs-toggle="modal" data-bs-target="#modalTambah"><i class="fa-solid fa-plus"></i> Tambah Menu Baru</button>
     </div>
 
     <div class="widget-card">
@@ -237,8 +285,9 @@
                                 </td>
                                 <td class="text-center">
                                     <div class="action-buttons">
-                                        <button class="btn btn-sm btn-warning text-white" style="font-size: 11px; border-radius: 6px;" data-bs-toggle="modal" data-bs-target="#modalEdit<?= $row['id'] ?>">Edit</button>
-                                        <a href="<?= base_url('admin/menu/delete/'.$row['id']) ?>" onclick="return confirm('Yakin ingin menghapus menu ini?')" class="btn btn-sm btn-danger" style="font-size: 11px; border-radius: 6px;">Hapus</a>
+                                        <button type="button" class="btn btn-sm btn-edit" data-bs-toggle="modal" data-bs-target="#modalEdit<?= $row['id'] ?>" style="font-size: 11px; border-radius: 6px;">Edit</button>
+                                        
+                                        <a href="<?= base_url('admin/menu/delete/'.$row['id']) ?>" class="btn btn-sm btn-delete" style="font-size: 11px; border-radius: 6px;" onclick="return confirm('Yakin ingin menghapus menu ini?')">Hapus</a>
                                     </div>
                                 </td>
                             </tr>

@@ -260,6 +260,22 @@
         @media (max-width: 479.98px) {
             .main-content { padding: 12px; }
         }
+
+        /* Warna tombol Tampilkan Laporan (Hijau Daun Resmi) */
+        .btn-tampilkan-laporan {
+            background-color: #4CAF50 !important; /* Hijau Daun Utama FO'Orders */
+            border-color: #4CAF50 !important;
+            color: #FFFFFF !important;
+            font-family: 'Poppins', sans-serif !important;
+            font-weight: 500;
+            padding: 8px 24px; /* Sesuaikan padding agar terlihat proporsional lebar */
+            transition: background-color 0.2s;
+        }
+
+        .btn-tampilkan-laporan:hover {
+            background-color: #3e9c43 !important; /* Hijau agak gelap saat di-hover */
+            border-color: #3e9c43 !important;
+        }
     </style>
 </head>
 <body>
@@ -335,7 +351,11 @@
             </button>
             <h4 class="fw-bold m-0">📈 Laporan Keuangan & Penjualan</h4>
         </div>
-        <div class="admin-profile">
+        <div class="admin-profile d-flex align-items-center">
+        <!-- Tombol Lonceng dengan Lingkaran, Border, dan Jarak (me-3) -->
+        <div class="notif-btn bg-white border d-flex align-items-center justify-content-center rounded-circle me-1" style="width: 40px; height: 40px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+            <i class="fa-solid fa-bell" style="color: #6B3A1E;"></i>
+        </div>
             <a href="<?= base_url('admin/pengaturan') ?>" class="profile-card">
                 <div class="profile-avatar"><i class="fa-solid fa-user-tie"></i></div>
                 <div class="small">
@@ -359,8 +379,9 @@
                 <input type="date" name="tgl_selesai" class="form-control" value="<?= $tgl_selesai; ?>">
             </div>
             <div class="col-md-4 col-12">
-                <button type="submit" class="btn btn-success w-100 p-2 fw-semibold" style="border-radius:8px;">
-                    <i class="fa-solid fa-magnifying-glass me-2"></i>Tampilkan Laporan
+                <!-- Sesudah diubah -->
+                <button type="submit" class="btn btn-tampilkan-laporan" style="border-radius: 8px;">
+                    <i class="fa-solid fa-magnifying-glass"></i> Tampilkan Laporan
                 </button>
             </div>
         </form>
@@ -372,12 +393,6 @@
             <div class="widget-card mini-box h-100" style="border-left-color:#4CAF50;">
                 <small class="text-muted fw-semibold d-block">TOTAL OMZET BRUTO</small>
                 <h4 class="fw-bold text-dark m-0 mt-1">Rp <?= number_format($total_omzet, 0, ',', '.'); ?></h4>
-            </div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-4">
-            <div class="widget-card mini-box h-100" style="border-left-color:#FF9800;">
-                <small class="text-muted fw-semibold d-block">TOTAL SETORAN PAJAK PPN</small>
-                <h4 class="fw-bold text-dark m-0 mt-1">Rp <?= number_format($total_pajak, 0, ',', '.'); ?></h4>
             </div>
         </div>
         <div class="col-12 col-sm-6 col-md-4">
