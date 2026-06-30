@@ -139,6 +139,34 @@ class Dashboard extends BaseController
         return redirect()->to(base_url('admin/meja'))->with('success', 'Meja baru berhasil ditambahkan!');
     }
 
+    // ==========================================
+    // PROSES UPDATE MEJA KAFE
+    // ==========================================
+    public function updateMeja($id)
+    {
+        $tableModel = new \App\Models\TableModel();
+
+        $data = [
+            'table_number' => $this->request->getPost('table_number'),
+            'capacity'     => $this->request->getPost('capacity'),
+            'status'       => $this->request->getPost('status')
+        ];
+
+        $tableModel->update($id, $data);
+        return redirect()->to(base_url('admin/meja'))->with('success', 'Data meja berhasil diperbarui!');
+    }
+
+    // ==========================================
+    // PROSES HAPUS MEJA KAFE
+    // ==========================================
+    public function deleteMeja($id)
+    {
+        $tableModel = new \App\Models\TableModel();
+        $tableModel->delete($id);
+
+        return redirect()->to(base_url('admin/meja'))->with('success', 'Meja berhasil dihapus!');
+    }
+
     public function pelanggan()
     {
         return view('admin/pelanggan/index');

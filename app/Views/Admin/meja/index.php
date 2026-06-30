@@ -199,6 +199,7 @@
                         <th>Nomor Meja</th>
                         <th>Kapasitas</th>
                         <th>Status</th>
+                        <th class="text-center">Aksi</th> </tr>
                     </tr>
                 </thead>
                 <tbody>
@@ -213,6 +214,17 @@
                                     <?php else : ?>
                                         <span class="badge bg-danger-subtle text-danger px-2 py-1" style="border-radius: 6px;"><?= esc($row['status']) ?></span>
                                     <?php endif; ?>
+                                    <td class="text-center">
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <button class="btn btn-sm text-white" data-bs-toggle="modal" data-bs-target="#modalEditMeja<?= $row['id'] ?>" style="border-radius: 6px; background-color: #4CAF50; border-color: #4CAF50; font-size: 13px; font-weight: 500; padding: 5px 12px;">
+                                                <i class="fa-solid fa-pen-to-square"></i> Edit
+                                            </button>
+                                            
+                                            <a href="<?= base_url('admin/meja/delete/'.$row['id']) ?>" class="btn btn-sm text-white" onclick="return confirm('Apakah Anda yakin ingin menghapus meja ini?')" style="border-radius: 6px; background-color: #5C3A21; border-color: #5C3A21; font-size: 13px; font-weight: 500; padding: 5px 12px;">
+                                                <i class="fa-solid fa-trash"></i> Hapus
+                                            </a>
+                                        </div>
+                                    </td>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -248,13 +260,52 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-tambah">Simpan</button>
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal" style="border-radius: 8px;">Batal</button>
+                    <button type="submit" class="btn btn-sm text-white" style="border-radius: 8px; background-color: #4CAF50; border-color: #4CAF50; padding: 8px 16px;">Simpan Perubahan</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+<?php if (!empty($meja) && is_array($meja)) : ?>
+    <?php foreach ($meja as $row) : ?>
+        <div class="modal fade" id="modalEditMeja<?= $row['id'] ?>" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="<?= base_url('admin/meja/update/'.$row['id']) ?>" method="post">
+                        <?= csrf_field() ?>
+                        <div class="modal-header">
+                            <h5 class="modal-title">Edit Meja <?= esc($row['table_number']) ?></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label">Nomor Meja</label>
+                                <input type="number" name="table_number" class="form-control" value="<?= esc($row['table_number']) ?>" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Kapasitas</label>
+                                <input type="number" name="capacity" class="form-control" value="<?= intval($row['capacity']) ?>" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Status Meja</label>
+                                <select name="status" class="form-select" required>
+                                    <option value="Kosong" <?= $row['status'] == 'Kosong' ? 'selected' : '' ?>>Kosong</option>
+                                    <option value="Terisi" <?= $row['status'] == 'Terisi' ? 'selected' : '' ?>>Terisi</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary" style="background-color: #4CAF50; border-color: #4CAF50;">Simpan Perubahan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <?php endforeach; ?>
+<?php endif; ?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
