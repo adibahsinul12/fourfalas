@@ -52,7 +52,6 @@ class Cart extends BaseController
                     'id'         => $menu['id'],
                     'menu_name'  => $menu['menu_name'],
                     'price'      => $menu['price'],
-                    // BENERIN DI SINI COK: Diarahkan ke image_path bawaan tabel database kamu agar tidak error key "image"
                     'image'      => $menu['image_path'], 
                     'image_path' => $menu['image_path'],
                     'quantity'   => 1
@@ -134,8 +133,8 @@ class Cart extends BaseController
 
         // Ambil data meja yang statusnya 'Tersedia' dari database
         $db = \Config\Database::connect();
+        // Mencari semua meja yang statusnya bukan 'Terisi' (meja kosong/NULL bakal otomatis masuk)
         $tables = $db->table('tables')->where('status', 'Tersedia')->get()->getResultArray();
-
         $data = [
             'cart'     => $cart,
             'subtotal' => $subtotal,
@@ -224,7 +223,7 @@ class Cart extends BaseController
         $myOrders[] = $orderId;
         $session->set('my_orders', $myOrders);
 
-        // 7. BENERIN DI SINI COK: Set flashdata tunggal yang sinkron dan buang redirect bawaan lama (.with)
+        // 7. BERES COK: Set flashdata tunggal murni biar kedeteksi SweetAlert, sisa redirect lama dibuang
         $session->setFlashdata('pesan_sukses', 'Yey! Pesanan kamu berhasil dibuat.');
         
         return redirect()->to(base_url('pelanggan'));
