@@ -1,2 +1,3 @@
-writable/logs/*.log
+writable/logs/
 writable/debugbar/
+writable/session/
