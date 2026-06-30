@@ -31,8 +31,13 @@ class Cart extends BaseController
     public function add()
     {
         $menuId = $this->request->getPost('menu_id');
-        $returnUrl = $this->request->getPost('return_url');
-        if (!$menuId) return redirect()->back();
+
+        if (!$menuId) {
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON(['success' => false, 'message' => 'Menu tidak valid']);
+            }
+            return redirect()->back();
+        }
 
         $cart = $this->session->get('cart') ?? [];
 
@@ -55,7 +60,25 @@ class Cart extends BaseController
 
         $this->session->set('cart', $cart);
 
-        // Redirect ke halaman asal yang dikirim form, atau ke menu jika tidak ada
+        // Hitung ulang jumlah item & total harga keranjang
+        $cartCount = 0;
+        $cartTotal = 0;
+        foreach ($cart as $ci) {
+            $cartCount += $ci['quantity'];
+            $cartTotal += $ci['price'] * $ci['quantity'];
+        }
+
+        // Kalau request datang dari AJAX (fetch), balikin JSON, JANGAN redirect
+        if ($this->request->isAJAX()) {
+            return $this->response->setJSON([
+                'success'   => true,
+                'cartCount' => $cartCount,
+                'cartTotal' => $cartTotal,
+            ]);
+        }
+
+        // Fallback: kalau bukan AJAX (misal JS browser dimatikan), tetap redirect seperti biasa
+        $returnUrl = $this->request->getPost('return_url');
         $target = !empty($returnUrl) ? $returnUrl : base_url('menu');
         return redirect()->to($target)->with('success', 'Menu ditambahkan!');
     }
