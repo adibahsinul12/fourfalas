@@ -38,6 +38,7 @@
                             
                             <form action="<?= base_url('cart/add'); ?>" method="post" style="display:inline; margin:0; padding:0;">
                                 <input type="hidden" name="menu_id" value="<?= $id; ?>">
+                                <input type="hidden" name="return_url" value="<?= base_url('cart') ?>">
                                 <button type="submit" class="qty-btn" style="border:none; cursor:pointer;">+</button>
                             </form>
                         </div>
@@ -65,7 +66,7 @@
                 <svg viewBox="0 0 24 24" style="margin: 0 auto 4px auto;"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                 <span style="font-family: 'Poppins', sans-serif;">Beranda</span>
             </div>
-            <div class="nav-item" style="cursor: pointer; flex: 1; text-align: center;">
+            <div class="nav-item" onclick="location.href='<?= base_url('pesanan'); ?>'" style="cursor: pointer; flex: 1; text-align: center;">
                 <svg viewBox="0 0 24 24" style="margin: 0 auto 4px auto;"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
                 <span style="font-family: 'Poppins', sans-serif;">Pesanan</span>
             </div>

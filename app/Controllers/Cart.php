@@ -31,6 +31,7 @@ class Cart extends BaseController
     public function add()
     {
         $menuId = $this->request->getPost('menu_id');
+        $returnUrl = $this->request->getPost('return_url');
         if (!$menuId) return redirect()->back();
 
         $cart = $this->session->get('cart') ?? [];
@@ -53,7 +54,10 @@ class Cart extends BaseController
         }
 
         $this->session->set('cart', $cart);
-        return redirect()->back()->with('success', 'Menu ditambahkan!');
+
+        // Redirect ke halaman asal yang dikirim form, atau ke menu jika tidak ada
+        $target = !empty($returnUrl) ? $returnUrl : base_url('menu');
+        return redirect()->to($target)->with('success', 'Menu ditambahkan!');
     }
 
     // Tombol (-) Kurangi kuantitas
@@ -189,6 +193,11 @@ class Cart extends BaseController
 
         // 6. Jika sukses, kosongkan keranjang dari session
         $session->remove('cart');
+
+        // 6b. Simpan order ID ke riwayat pesanan pelanggan di session
+        $myOrders = $session->get('my_orders') ?? [];
+        $myOrders[] = $orderId;
+        $session->set('my_orders', $myOrders);
 
         // 7. Arahkan kembali ke halaman depan dengan pesan sukses
         // (Nantinya ini bisa diarahkan ke halaman "Pesanan Berhasil" atau struk digital)

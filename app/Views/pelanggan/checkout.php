@@ -89,7 +89,7 @@
                 <span style="font-size: 12px; color: #888888; font-family: 'Poppins', sans-serif;">Beranda</span>
             </div>
             
-            <div class="nav-item" style="cursor: pointer; flex: 1; text-align: center;">
+            <div class="nav-item" onclick="location.href='<?= base_url('pesanan'); ?>'" style="cursor: pointer; flex: 1; text-align: center;">
                 <svg viewBox="0 0 24 24" style="margin: 0 auto 4px auto; width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; color: #888888;"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
                 <span style="font-size: 12px; color: #888888; font-family: 'Poppins', sans-serif;">Pesanan</span>
             </div>

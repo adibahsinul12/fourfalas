@@ -9,6 +9,12 @@
         <h1 style="margin: 0; font-size: 22px; font-weight: 700; color: #6B3A1E;">Semua Menu</h1>
     </div>
 
+    <?php if (session()->getFlashdata('success')): ?>
+        <div style="background:#e8f5e9; color:#2e7d32; padding:12px 16px; border-radius:8px; margin-bottom:16px; font-size:14px; font-family:'Poppins', sans-serif;">
+            <?= session()->getFlashdata('success'); ?>
+        </div>
+    <?php endif; ?>
+
     <h2 style="font-size: 16px; font-weight: 600; color: #333333; margin-bottom: 14px;">Kategori Menu</h2>
     <div class="category-container">
         <span class="category-tab <?= empty($_GET['category']) ? 'active' : '' ?>"
@@ -60,6 +66,7 @@
 
                             <form action="<?= base_url('cart/add'); ?>" method="post" style="margin: 0; padding: 0; display: inline;">
                                 <input type="hidden" name="menu_id" value="<?= $menu['id']; ?>">
+                                <input type="hidden" name="return_url" value="<?= current_url(true) ?>">
                                 <button type="submit" class="btn-add">+</button>
                             </form>
                         </div>
@@ -76,12 +83,35 @@
 
 </div>
 
+<?php
+    // Hitung jumlah item & total harga di keranjang untuk floating cart bar
+    $cartData = session()->get('cart') ?? [];
+    $cartCount = 0;
+    $cartTotal = 0;
+    foreach ($cartData as $ci) {
+        $cartCount += $ci['quantity'];
+        $cartTotal += $ci['price'] * $ci['quantity'];
+    }
+?>
+
+<?php if ($cartCount > 0): ?>
+    <div onclick="location.href='<?= base_url('cart'); ?>'" style="position: fixed; bottom: 78px; left: 16px; right: 16px; max-width: 1200px; margin: 0 auto; background: #4CAF50; color: #ffffff; border-radius: 14px; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 6px 20px rgba(76,175,80,0.35); cursor: pointer; z-index: 998; font-family: 'Poppins', sans-serif;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="background: rgba(255,255,255,0.25); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;">
+                <?= $cartCount; ?>
+            </div>
+            <span style="font-size: 14px; font-weight: 600;">Lihat Keranjang</span>
+        </div>
+        <span style="font-size: 14px; font-weight: 700;">Rp <?= number_format($cartTotal, 0, ',', '.'); ?></span>
+    </div>
+<?php endif; ?>
+
 <div class="bottom-nav">
     <div class="nav-item" onclick="location.href='<?= base_url('pelanggan'); ?>'">
         <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
         <span>Beranda</span>
     </div>
-    <div class="nav-item">
+    <div class="nav-item" onclick="location.href='<?= base_url('pesanan'); ?>'">
         <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
         <span>Pesanan</span>
     </div>
