@@ -52,6 +52,7 @@ class Cart extends BaseController
                     'id'         => $menu['id'],
                     'menu_name'  => $menu['menu_name'],
                     'price'      => $menu['price'],
+                    'image'      => $menu['image'], // Memastikan mengambil kolom image dari db agar foto muncul
                     'image_path' => $menu['image_path'],
                     'quantity'   => 1
                 ];
@@ -222,8 +223,9 @@ class Cart extends BaseController
         $myOrders[] = $orderId;
         $session->set('my_orders', $myOrders);
 
-        // 7. Arahkan kembali ke halaman depan dengan pesan sukses
-        // (Nantinya ini bisa diarahkan ke halaman "Pesanan Berhasil" atau struk digital)
+        // 7. DIUBAH DI SINI: Ditambahkan flashdata 'pesan_sukses' untuk memicu SweetAlert di halaman beranda
+        $session->setFlashdata('pesan_sukses', 'Yey! Pesanan kamu berhasil dibuat.');
+        
         return redirect()->to(base_url('pelanggan'))->with('success', 'Yey! Pesanan kamu berhasil dibuat.');
     }
 }
