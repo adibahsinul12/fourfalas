@@ -51,6 +51,8 @@ $routes->group('admin', ['filter' => 'auth'], function($routes) {
 
     // RUTE PROSES TAMBAH MEJA (DITAROH DI SINI)
     $routes->post('meja/simpan', 'Admin\Dashboard::simpanMeja');
+    $routes->post('meja/update/(:num)', 'Admin\Dashboard::updateMeja/$1'); // <-- TAMBAH INI
+    $routes->get('meja/delete/(:num)', 'Admin\Dashboard::deleteMeja/$1');  // <-- TAMBAH INI
     
     // Manajemen Detail Order, Update Status Dapur, dan Pembayaran Kasir
     $routes->get('detail/(:num)', 'Admin\Dashboard::detail/$1');
