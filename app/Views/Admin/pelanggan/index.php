@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Pelanggan - FO'Orders</title>
+    <title>Data Member - FO'Orders</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -143,7 +143,7 @@
             <li class="sidebar-item"><a href="<?= base_url('admin/pesanan') ?>" class="sidebar-link"><i class="fa-solid fa-utensils"></i> <span>Pesanan</span></a></li>
             <li class="sidebar-item"><a href="<?= base_url('admin/menu') ?>" class="sidebar-link"><i class="fa-solid fa-bowl-food"></i> <span>Menu</span></a></li>
             <li class="sidebar-item"><a href="<?= base_url('admin/meja') ?>" class="sidebar-link"><i class="fa-solid fa-chair"></i> <span>Meja</span></a></li>
-            <li class="sidebar-item"><a href="<?= base_url('admin/pelanggan') ?>" class="sidebar-link active"><i class="fa-solid fa-users"></i> <span>Pelanggan</span></a></li>
+            <li class="sidebar-item"><a href="<?= base_url('admin/pelanggan') ?>" class="sidebar-link active"><i class="fa-solid fa-users"></i> <span>Member</span></a></li>
             <li class="sidebar-item"><a href="<?= base_url('admin/transaksi') ?>" class="sidebar-link"><i class="fa-solid fa-file-invoice-dollar"></i> <span>Transaksi</span></a></li>
             <li class="sidebar-item"><a href="<?= base_url('admin/laporan') ?>" class="sidebar-link"><i class="fa-solid fa-chart-line"></i> <span>Laporan</span></a></li>
             <li class="sidebar-item"><a href="<?= base_url('admin/pengaturan') ?>" class="sidebar-link"><i class="fa-solid fa-gear"></i> <span>Pengaturan</span></a></li>
@@ -170,7 +170,7 @@
     </div>
 
     <div class="d-flex justify-content-between align-items-center mb-4 page-header">
-        <h4>👥 Data Pelanggan Café</h4>
+        <h4>👥 Data Member Café</h4>
     </div>
 
     <div class="widget-card">
@@ -178,7 +178,7 @@
             <table class="table custom-table m-0">
                 <thead>
                     <tr>
-                        <th>Nama Pelanggan</th>
+                        <th>Nama Member</th>
                         <th>Nomor Telepon</th>
                         <th>Tanggal Gabung</th>
                     </tr>
