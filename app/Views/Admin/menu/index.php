@@ -241,19 +241,33 @@
     <div class="widget-card">
         <div class="table-responsive">
             <table class="table custom-table m-0">
-                <thead>
-                    <tr>
-                        <th>Nama Menu</th>
-                        <th>Kategori</th>
-                        <th>Harga</th>
-                        <th>Status</th>
-                        <th class="text-center">Aksi</th>
-                    </tr>
-                </thead>
+               <thead>
+    <tr>
+        <th>Foto</th>
+        <th>Nama Menu</th>
+        <th>Kategori</th>
+        <th>Harga</th>
+        <th>Status</th>
+        <th class="text-center">Aksi</th>
+    </tr>
+</thead>
                 <tbody>
                     <?php if(!empty($daftar_menu)): ?>
                         <?php foreach($daftar_menu as $row): ?>
                             <tr>
+                                <td>
+    <?php if (!empty($row['image_path'])): ?>
+        <img src="<?= base_url('uploads/menus/'.$row['image_path']) ?>"
+             width="60"
+             height="60"
+             style="object-fit:cover;border-radius:8px;">
+    <?php else: ?>
+        <img src="<?= base_url('uploads/menus/default_menus.jpg') ?>"
+             width="60"
+             height="60"
+             style="object-fit:cover;border-radius:8px;">
+    <?php endif; ?>
+</td>
                                 <td><b><?= $row['menu_name']; ?></b></td>
                                 <td>
                                     <?php 
@@ -295,7 +309,7 @@
                             <div class="modal fade" id="modalEdit<?= $row['id'] ?>" tabindex="-1" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
-                                        <form action="<?= base_url('admin/menu/edit/'.$row['id']) ?>" method="POST">
+                                       <form action="<?= base_url('admin/menu/edit/'.$row['id']) ?>" method="POST" enctype="multipart/form-data">
                                             <div class="modal-header"><h5>✏️ Edit Menu</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
                                             <div class="modal-body">
                                                 <div class="mb-3"><label class="form-label">Nama Menu</label><input type="text" name="menu_name" class="form-control" value="<?= $row['menu_name'] ?>" required></div>
@@ -338,7 +352,7 @@
 <div class="modal fade" id="modalTambah" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="<?= base_url('admin/menu/add') ?>" method="POST">
+           <form action="<?= base_url('admin/menu/add') ?>" method="POST" enctype="multipart/form-data">
                 <div class="modal-header"><h5>➕ Tambah Menu Baru</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
                 <div class="modal-body">
                     <div class="mb-3"><label class="form-label">Nama Menu</label><input type="text" name="menu_name" class="form-control" placeholder="Masukkan nama makanan/minuman" required></div>
@@ -362,6 +376,10 @@
                     </div>
                     <div class="mb-3"><label class="form-label">Harga (Rp)</label><input type="number" name="price" class="form-control" placeholder="Contoh: 15000" required></div>
                     <div class="mb-3"><label class="form-label">Stok Awal</label><input type="number" name="stock" class="form-control" value="20" required></div>
+                    <div class="mb-3">
+    <label class="form-label">Foto Menu</label>
+    <input type="file" name="image" class="form-control" accept="image/*">
+</div>
                 </div>
                 <div class="modal-footer"><button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button><button type="submit" class="btn btn-success btn-sm">Simpan Data</button></div>
             </form>

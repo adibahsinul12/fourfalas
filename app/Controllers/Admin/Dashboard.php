@@ -173,29 +173,53 @@ class Dashboard extends BaseController
     // ==========================================
 
     public function addMenu()
-    {
-        $db = \Config\Database::connect();
-        $db->table('menus')->insert([
-            'menu_name'   => $this->request->getPost('menu_name'),
-            'category_id' => $this->request->getPost('category_id'),
-            'price'       => $this->request->getPost('price'),
-            'stock'       => $this->request->getPost('stock'),
-            'is_active'   => 1
-        ]);
-        return redirect()->to(base_url('admin/menu'));
+{
+    $db = \Config\Database::connect();
+
+    $image = $this->request->getFile('image');
+    $namaGambar = 'default_menus.jpg';
+
+    if ($image && $image->isValid() && !$image->hasMoved()) {
+        $namaGambar = $image->getRandomName();
+        $image->move(FCPATH . 'uploads/menus/', $namaGambar);
     }
 
-    public function updateMenu($id)
-    {
-        $db = \Config\Database::connect();
-        $db->table('menus')->where('id', $id)->update([
-            'menu_name'   => $this->request->getPost('menu_name'),
-            'category_id' => $this->request->getPost('category_id'),
-            'price'       => $this->request->getPost('price'),
-            'stock'       => $this->request->getPost('stock')
-        ]);
-        return redirect()->to(base_url('admin/menu'));
+    $db->table('menus')->insert([
+        'menu_name'   => $this->request->getPost('menu_name'),
+        'category_id' => $this->request->getPost('category_id'),
+        'price'       => $this->request->getPost('price'),
+        'stock'       => $this->request->getPost('stock'),
+        'image_path'  => $namaGambar,
+        'is_active'   => 1
+    ]);
+
+    return redirect()->to(base_url('admin/menu'))->with('success','Menu berhasil ditambahkan');
+}
+   public function updateMenu($id)
+{
+    $db = \Config\Database::connect();
+
+    $data = [
+        'menu_name'   => $this->request->getPost('menu_name'),
+        'category_id' => $this->request->getPost('category_id'),
+        'price'       => $this->request->getPost('price'),
+        'stock'       => $this->request->getPost('stock')
+    ];
+
+    $image = $this->request->getFile('image');
+
+    if ($image && $image->isValid() && !$image->hasMoved()) {
+        $namaGambar = $image->getRandomName();
+        $image->move(FCPATH . 'uploads/menus/', $namaGambar);
+        $data['image_path'] = $namaGambar;
     }
+
+    $db->table('menus')
+       ->where('id', $id)
+       ->update($data);
+
+    return redirect()->to(base_url('admin/menu'))->with('success','Menu berhasil diperbarui');
+}
 
     public function deleteMenu($id)
     {
