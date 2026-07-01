@@ -16,12 +16,14 @@
     --border:#E5E5E5;
     --text-muted:#8a8a8a;
 }
+html{ scrollbar-gutter: stable; }
 *{ margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
 body{ background:var(--cream); display:flex; min-height:100vh; }
 
 .sidebar{
     width:260px; background:var(--brown); color:#fff;
     display:flex; flex-direction:column; padding:24px 18px; flex-shrink:0;
+    position:sticky; top:0; height:100vh; overflow-y:auto;
 }
 .sidebar .logo{
     display:flex; align-items:center; gap:10px;
@@ -38,7 +40,19 @@ body{ background:var(--cream); display:flex; min-height:100vh; }
 .nav-item.active{ background:var(--green); color:#fff; font-weight:600; }
 .nav-bottom{ margin-top:auto; }
 
-.main{ flex:1; padding:28px 32px; }
+.main{ flex:1; padding:28px 32px; min-width:0; overflow-x:hidden; }
+
+/* ===== Hamburger & overlay (khusus layar kecil) ===== */
+.topbar-mobile{ display:none; align-items:center; margin-bottom:14px; }
+.hamburger{
+    display:none; background:#fff; border:1px solid var(--border);
+    width:38px; height:38px; border-radius:8px; align-items:center;
+    justify-content:center; font-size:16px; color:var(--brown); cursor:pointer;
+}
+.sidebar-overlay{
+    display:none; position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:40;
+}
+.sidebar-overlay.show{ display:block; }
 
 h1{ font-size:20px; color:#333; margin-bottom:4px; }
 .subtitle{ font-size:13px; color:var(--text-muted); margin-bottom:20px; }
@@ -52,20 +66,23 @@ h1{ font-size:20px; color:#333; margin-bottom:4px; }
 .filter-chip{
     padding:8px 16px; border-radius:20px; font-size:13px; text-decoration:none;
     color:#555; background:#fff; border:1px solid var(--border);
+    white-space:nowrap;
 }
 .filter-chip.active{ background:var(--green); color:#fff; border-color:var(--green); font-weight:600; }
 
 .table-wrap{
     background:#fff; border-radius:14px; padding:8px 20px;
-    box-shadow:0 4px 14px rgba(0,0,0,.03); overflow-x:auto;
+    box-shadow:0 4px 14px rgba(0,0,0,.03);
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
 }
-table{ width:100%; border-collapse:collapse; font-size:13px; }
+table{ width:100%; min-width:720px; border-collapse:collapse; font-size:13px; }
 th{
     text-align:left; padding:14px 10px; color:var(--text-muted);
     font-weight:600; font-size:11px; text-transform:uppercase;
-    border-bottom:1px solid var(--border);
+    border-bottom:1px solid var(--border); white-space:nowrap;
 }
-td{ padding:14px 10px; border-bottom:1px solid var(--border); color:#333; }
+td{ padding:14px 10px; border-bottom:1px solid var(--border); color:#333; white-space:nowrap; }
 tr:last-child td{ border-bottom:none; }
 
 .badge{
@@ -82,6 +99,37 @@ tr:last-child td{ border-bottom:none; }
 .btn-toggle.to-aktif{ background:#E8F5E9; color:#2E7D32; }
 
 .empty-note{ text-align:center; color:#aaa; font-size:13px; padding:30px 0; }
+
+.scroll-hint{
+    display:none; font-size:11px; color:var(--text-muted); margin-bottom:10px;
+    align-items:center; gap:6px;
+}
+
+/* ===== TABLET (<=1100px) ===== */
+@media (max-width: 1100px){
+    .sidebar{ width:220px; }
+}
+
+/* ===== TABLET KECIL / HP LANDSCAPE (<=900px) ===== */
+@media (max-width: 900px){
+    .sidebar{
+        position:fixed; left:0; top:0; width:240px; height:100vh; z-index:50;
+        transform:translateX(-100%); transition:transform .25s ease;
+    }
+    .sidebar.open{ transform:translateX(0); }
+    .main{ padding:20px 18px; width:100%; }
+    .topbar-mobile{ display:flex; }
+    .hamburger{ display:flex; }
+    .scroll-hint{ display:flex; }
+}
+
+/* ===== HP (<=600px) ===== */
+@media (max-width: 600px){
+    main.main{ padding:16px 14px; }
+    h1{ font-size:18px; }
+    .table-wrap{ padding:8px 12px; }
+    .filter-chip{ padding:7px 12px; font-size:12px; }
+}
 </style>
 </head>
 <body>
@@ -89,11 +137,12 @@ tr:last-child td{ border-bottom:none; }
 <aside class="sidebar">
     <div class="logo"><i class="fa-solid fa-mug-saucer"></i> FO'orders</div>
 
-    <a href="<?= base_url('owner') ?>" class="nav-item"><i class="fa-solid fa-gauge"></i> Dashboard</a>
-    <a href="<?= base_url('owner/karyawan') ?>" class="nav-item active"><i class="fa-solid fa-users"></i> Tenaga Kerja</a>
-    <a href="#" class="nav-item"><i class="fa-solid fa-star"></i> Rating &amp; Ulasan</a>
-    <a href="#" class="nav-item"><i class="fa-solid fa-chart-line"></i> Laporan Keuangan</a>
-    <a href="#" class="nav-item"><i class="fa-solid fa-gear"></i> Pengaturan</a>
+    <a href="<?= base_url('owner') ?>" class="nav-item active"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+    <a href="<?= base_url('owner/karyawan') ?>" class="nav-item"><i class="fa-solid fa-users"></i> Tenaga Kerja</a>
+    <a href="<?= base_url('owner/rating') ?>" class="nav-item"><i class="fa-solid fa-star"></i> Rating & Ulasan</a>
+    <a href="<?= base_url('owner/laporan') ?>" class="nav-item"><i class="fa-solid fa-chart-line"></i> Laporan Keuangan</a>
+    <a href="<?= base_url('owner/pengaturan') ?>" class="nav-item"><i class="fa-solid fa-gear"></i> Pengaturan</a>
+
 
     <div class="nav-bottom">
         <a href="<?= base_url('logout') ?>" class="nav-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
@@ -101,6 +150,10 @@ tr:last-child td{ border-bottom:none; }
 </aside>
 
 <main class="main">
+    <div class="topbar-mobile">
+        <button type="button" class="hamburger" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+    </div>
+
     <h1>Tenaga Kerja</h1>
     <div class="subtitle">Pantau &amp; kelola status aktif staf per bidang</div>
 
@@ -117,6 +170,8 @@ tr:last-child td{ border-bottom:none; }
             </a>
         <?php endforeach; ?>
     </div>
+
+    <div class="scroll-hint"><i class="fa-solid fa-arrows-left-right"></i> Geser tabel ke samping untuk melihat semua kolom</div>
 
     <div class="table-wrap">
         <?php if (empty($karyawan)) : ?>
@@ -170,6 +225,15 @@ tr:last-child td{ border-bottom:none; }
         <?php endif; ?>
     </div>
 </main>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<script>
+function toggleSidebar(){
+    document.querySelector('.sidebar').classList.toggle('open');
+    document.getElementById('sidebarOverlay').classList.toggle('show');
+}
+</script>
 
 </body>
 </html>

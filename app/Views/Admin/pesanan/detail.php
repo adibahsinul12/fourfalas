@@ -247,7 +247,7 @@
                 </div>
                 <div class="mb-3">
                     <small class="text-muted d-block">LOKASI ANTRIAN</small>
-                    <span class="badge bg-secondary fw-bold">Meja <?= $order['table_id']; ?></span>
+                    <span class="badge">Meja <?= $order['table_number'] ?></span>
                 </div>
                 <div class="mb-4">
                     <small class="text-muted d-block">WAKTU MASUK</small>

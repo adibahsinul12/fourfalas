@@ -8,31 +8,68 @@ class RatingModel extends Model
 {
     protected $table         = 'rating';
     protected $primaryKey    = 'id';
-    protected $returnType    = 'array';
+    protected $allowedFields = ['id_pesanan', 'nama_pelanggan', 'rating', 'komentar', 'tanggal'];
     protected $useTimestamps = false;
+    protected $returnType    = 'array';
 
-    protected $allowedFields = [
-        'id_pesanan',
-        'nama_pelanggan',
-        'rating',
-        'komentar',
-        'tanggal',
-    ];
+    // =========================================================
+    // METHOD LAMA — dipakai di Owner\Dashboard::index()
+    // Tetap dipertahankan biar Dashboard tidak error.
+    // =========================================================
 
-    /**
-     * Rata-rata rating dibulatkan 1 angka desimal. 0 kalau belum ada data.
-     */
-    public function getAverageRating(): float
+    public function getAverageRating()
     {
-        $result = $this->selectAvg('rating', 'avg_rating')->first();
-        return round((float) ($result['avg_rating'] ?? 0), 1);
+        $row = $this->selectAvg('rating')->first();
+        return $row['rating'] ? round($row['rating'], 1) : 0;
     }
 
-    /**
-     * Rating terbaru untuk ditampilkan di dashboard.
-     */
-    public function getRecent(int $limit = 5): array
+    public function getRecent(int $jumlah = 5)
     {
-        return $this->orderBy('tanggal', 'DESC')->findAll($limit);
+        return $this->orderBy('tanggal', 'DESC')
+                     ->findAll($jumlah);
+    }
+
+    // =========================================================
+    // METHOD BARU — dipakai di Owner\Rating::index()
+    // =========================================================
+
+    public function getRataRating()
+    {
+        $row = $this->selectAvg('rating')->first();
+        return $row['rating'] ?? 0;
+    }
+
+    public function getTotalRating()
+    {
+        return $this->countAllResults();
+    }
+
+    public function getDistribusiBintang()
+    {
+        $distribusi = [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0];
+
+        $result = $this->select('rating, COUNT(*) as jumlah')
+                        ->groupBy('rating')
+                        ->findAll();
+
+        foreach ($result as $row) {
+            $bintang = (int) $row['rating'];
+            if (isset($distribusi[$bintang])) {
+                $distribusi[$bintang] = (int) $row['jumlah'];
+            }
+        }
+
+        return $distribusi;
+    }
+
+    public function getUlasan($filterBintang = null)
+    {
+        $builder = $this->orderBy('tanggal', 'DESC');
+
+        if ($filterBintang !== null && $filterBintang !== '') {
+            $builder = $builder->where('rating', (int) $filterBintang);
+        }
+
+        return $builder->findAll();
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
+use App\Models\MemberModel;
 
 class Dashboard extends BaseController
 {
@@ -21,9 +22,8 @@ class Dashboard extends BaseController
         // 2. Hitung Total Pesanan (COUNT semua baris yang ada di tabel orders)
         $data['total_pesanan'] = $db->table('orders')->countAllResults();
 
-        // 3. Hitung Total Pelanggan (COUNT semua pelanggan unik dari tabel orders/pelanggan)
-        // Jika kelompokmu punya tabel khusus 'customers', ganti 'orders' menjadi 'customers'
-        $data['total_pelanggan'] = $db->table('orders')->distinct()->select('customer_name')->countAllResults();
+        // 3. Hitung Total Pelanggan (sekarang dari tabel members, bukan orders lagi)
+        $data['total_pelanggan'] = $db->table('members')->countAllResults();
 
         // 4. Hitung Total Menu (COUNT semua menu makanan & minuman yang aktif dari tabel menus)
         $data['total_menu'] = $db->table('menus')->where('is_active', 1)->countAllResults();
@@ -64,8 +64,13 @@ class Dashboard extends BaseController
     {
         $db = \Config\Database::connect();
 
-        // 1. Ambil data utama pesanan berdasarkan ID yang diklik
-        $data['order'] = $db->table('orders')->where('id', $id)->get()->getRowArray();
+        // 1. Ambil data utama pesanan berdasarkan ID yang diklik (JOIN ke tables biar dapat nomor meja asli)
+        $data['order'] = $db->table('orders')
+                            ->select('orders.*, tables.table_number')
+                            ->join('tables', 'tables.id = orders.table_id', 'left')
+                            ->where('orders.id', $id)
+                            ->get()
+                            ->getRowArray();
 
         // 2. Ambil semua item makanan/minuman yang dibeli di dalam pesanan tersebut
         $data['order_items'] = $db->table('order_items')
@@ -81,10 +86,12 @@ class Dashboard extends BaseController
 
     public function processPayment($id)
     {
+        log_message('error', '=== processPayment DIPANGGIL, id=' . $id);
         $db = \Config\Database::connect();
 
         // 1. Ambil dulu data pesanan yang mau dibayar, supaya tahu total_payment-nya
         $order = $db->table('orders')->where('id', $id)->get()->getRowArray();
+        log_message('error', '=== order table_id: ' . json_encode($order['table_id'] ?? 'TIDAK ADA'));
 
         if (!$order) {
             return redirect()->to(base_url('admin/pesanan'))->with('error', 'Pesanan tidak ditemukan!');
@@ -246,9 +253,51 @@ class Dashboard extends BaseController
         return redirect()->to(base_url('admin/meja'))->with('success', 'Meja berhasil dihapus!');
     }
 
+    // ==========================================
+    // MANAJEMEN MEMBER / PELANGGAN
+    // ==========================================
     public function pelanggan()
     {
-        return view('admin/pelanggan/index');
+        $memberModel = new MemberModel();
+
+        // Ambil semua member, terbaru dulu
+        $data['members'] = $memberModel->orderBy('tanggal_gabung', 'DESC')->findAll();
+
+        return view('admin/pelanggan/index', $data);
+    }
+
+    public function pelanggan_tambah()
+    {
+        $memberModel = new MemberModel();
+
+        $nama  = $this->request->getPost('nama');
+        $noHp  = $this->request->getPost('no_hp');
+        $email = $this->request->getPost('email');
+
+        if (empty($nama) || empty($noHp)) {
+            return redirect()->to(base_url('admin/pelanggan'))->with('error', 'Nama dan No HP wajib diisi.');
+        }
+
+        if ($memberModel->findByPhone($noHp)) {
+            return redirect()->to(base_url('admin/pelanggan'))->with('error', 'No HP sudah terdaftar sebagai member.');
+        }
+
+        $memberModel->insert([
+            'nama'           => $nama,
+            'no_hp'          => $noHp,
+            'email'          => $email ?: null,
+            'tanggal_gabung' => date('Y-m-d H:i:s'),
+        ]);
+
+        return redirect()->to(base_url('admin/pelanggan'))->with('success', 'Member baru berhasil ditambahkan.');
+    }
+
+    public function pelanggan_hapus($id)
+    {
+        $memberModel = new MemberModel();
+        $memberModel->delete($id);
+
+        return redirect()->to(base_url('admin/pelanggan'))->with('success', 'Member berhasil dihapus.');
     }
 
     public function transaksi()
@@ -408,5 +457,5 @@ class Dashboard extends BaseController
         return redirect()->to(base_url('admin/pengaturan'))->with('success', 'Konfigurasi kafe berhasil diperbarui!');
     }
 
-    
+
 }

@@ -199,7 +199,7 @@
                         <th>Nomor Meja</th>
                         <th>Kapasitas</th>
                         <th>Status</th>
-                        <th class="text-center">Aksi</th> </tr>
+                        <th class="text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -209,28 +209,28 @@
                                 <td><b>Meja <?= esc($row['table_number']) ?></b></td>
                                 <td><?= esc($row['capacity']) ?> Orang</td>
                                 <td>
-                                    <?php if ($row['status'] == 'Kosong') : ?>
-                                        <span class="badge-status">Kosong</span>
+                                    <?php if ($row['status'] == 'Tersedia') : ?>
+                                        <span class="badge-status">Tersedia</span>
                                     <?php else : ?>
                                         <span class="badge bg-danger-subtle text-danger px-2 py-1" style="border-radius: 6px;"><?= esc($row['status']) ?></span>
                                     <?php endif; ?>
-                                    <td class="text-center">
-                                        <div class="d-flex justify-content-center gap-2">
-                                            <button class="btn btn-sm text-white" data-bs-toggle="modal" data-bs-target="#modalEditMeja<?= $row['id'] ?>" style="border-radius: 6px; background-color: #4CAF50; border-color: #4CAF50; font-size: 13px; font-weight: 500; padding: 5px 12px;">
-                                                <i class="fa-solid fa-pen-to-square"></i> Edit
-                                            </button>
-                                            
-                                            <a href="<?= base_url('admin/meja/delete/'.$row['id']) ?>" class="btn btn-sm text-white" onclick="return confirm('Apakah Anda yakin ingin menghapus meja ini?')" style="border-radius: 6px; background-color: #5C3A21; border-color: #5C3A21; font-size: 13px; font-weight: 500; padding: 5px 12px;">
-                                                <i class="fa-solid fa-trash"></i> Hapus
-                                            </a>
-                                        </div>
-                                    </td>
+                                </td>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <button class="btn btn-sm text-white" data-bs-toggle="modal" data-bs-target="#modalEditMeja<?= $row['id'] ?>" style="border-radius: 6px; background-color: #4CAF50; border-color: #4CAF50; font-size: 13px; font-weight: 500; padding: 5px 12px;">
+                                            <i class="fa-solid fa-pen-to-square"></i> Edit
+                                        </button>
+
+                                        <a href="<?= base_url('admin/meja/delete/'.$row['id']) ?>" class="btn btn-sm text-white" onclick="return confirm('Apakah Anda yakin ingin menghapus meja ini?')" style="border-radius: 6px; background-color: #5C3A21; border-color: #5C3A21; font-size: 13px; font-weight: 500; padding: 5px 12px;">
+                                            <i class="fa-solid fa-trash"></i> Hapus
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else : ?>
                         <tr>
-                            <td colspan="3" class="text-center text-muted py-4">Belum ada data meja di database.</td>
+                            <td colspan="4" class="text-center text-muted py-4">Belum ada data meja di database.</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
@@ -291,7 +291,7 @@
                             <div class="mb-3">
                                 <label class="form-label">Status Meja</label>
                                 <select name="status" class="form-select" required>
-                                    <option value="Kosong" <?= $row['status'] == 'Kosong' ? 'selected' : '' ?>>Kosong</option>
+                                    <option value="Tersedia" <?= $row['status'] == 'Tersedia' ? 'selected' : '' ?>>Tersedia</option>
                                     <option value="Terisi" <?= $row['status'] == 'Terisi' ? 'selected' : '' ?>>Terisi</option>
                                 </select>
                             </div>
