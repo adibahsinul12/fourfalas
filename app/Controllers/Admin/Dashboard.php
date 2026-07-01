@@ -101,6 +101,13 @@ class Dashboard extends BaseController
             'amount_change' => $amountChange,
         ]);
 
+        // 4. Kembalikan status meja jadi "Tersedia" karena pesanan sudah lunas
+        if (!empty($order['table_id'])) {
+            $db->table('tables')->where('id', $order['table_id'])->update([
+                'status' => 'Tersedia',
+            ]);
+        }
+
         return redirect()->to(base_url('admin/detail/' . $id))->with('success', 'Pembayaran berhasil dicatat. Pesanan lunas!');
     }
 
@@ -108,10 +115,20 @@ class Dashboard extends BaseController
     {
         $db = \Config\Database::connect();
 
+        // Ambil dulu data order-nya (butuh table_id sebelum status diubah)
+        $order = $db->table('orders')->where('id', $id)->get()->getRowArray();
+
         // Update status pesanan dari "Diproses" jadi "Selesai" (misal: masakan selesai disajikan)
         $db->table('orders')->where('id', $id)->update([
             'order_status' => 'Selesai',
         ]);
+
+        // Kembalikan status meja jadi "Tersedia" karena pesanan sudah selesai
+        if ($order && !empty($order['table_id'])) {
+            $db->table('tables')->where('id', $order['table_id'])->update([
+                'status' => 'Tersedia',
+            ]);
+        }
 
         return redirect()->to(base_url('admin/detail/' . $id))->with('success', 'Status pesanan diperbarui!');
     }
@@ -120,10 +137,20 @@ class Dashboard extends BaseController
     {
         $db = \Config\Database::connect();
 
-        // Update status pesanan jadi Batal
+        // Ambil dulu data order-nya (butuh table_id sebelum status diubah)
+        $order = $db->table('orders')->where('id', $id)->get()->getRowArray();
+
+        // Update status pesanan jadi Dibatalkan (disamakan penulisannya dengan bagian lain)
         $db->table('orders')->where('id', $id)->update([
-            'order_status' => 'Batal',
+            'order_status' => 'Dibatalkan',
         ]);
+
+        // Kembalikan status meja jadi "Tersedia" karena pesanan batal
+        if ($order && !empty($order['table_id'])) {
+            $db->table('tables')->where('id', $order['table_id'])->update([
+                'status' => 'Tersedia',
+            ]);
+        }
 
         return redirect()->to(base_url('admin/detail/' . $id))->with('success', 'Pesanan dibatalkan.');
     }
@@ -178,7 +205,7 @@ class Dashboard extends BaseController
             'table_number' => $nomorMejaAngka,     // Sekarang isinya murni angka (cth: 2)
             'capacity'     => $kapasitas,          // Simpan angka kapasitas saja tanpa text tambahan
             'type'         => 'Reguler',
-            'status'       => 'Kosong'
+            'status'       => 'Tersedia'           // Disamakan dengan status yang dicek di Cart::checkout()
         ];
 
         $tableModel = new \App\Models\TableModel();
@@ -376,4 +403,6 @@ class Dashboard extends BaseController
 
         return redirect()->to(base_url('admin/pengaturan'))->with('success', 'Konfigurasi kafe berhasil diperbarui!');
     }
+
+    
 }
