@@ -94,11 +94,15 @@ class Dashboard extends BaseController
         $amountPaid = $this->request->getPost('amount_paid') ?? $order['total_payment'];
         $amountChange = $amountPaid - $order['total_payment'];
 
-        // 3. Update status pesanan jadi Selesai/Lunas, simpan juga uang dibayar & kembalian
+        // 2b. Tangkap metode pembayaran dari dropdown kasir (Tunai/QRIS/Debit dll), default 'Tunai' kalau kosong
+        $paymentMethod = $this->request->getPost('payment_method') ?? 'Tunai';
+
+        // 3. Update status pesanan jadi Selesai/Lunas, simpan juga uang dibayar, kembalian, dan metode pembayaran
         $db->table('orders')->where('id', $id)->update([
-            'order_status' => 'Selesai',
-            'amount_paid'  => $amountPaid,
-            'amount_change' => $amountChange,
+            'order_status'   => 'Selesai',
+            'amount_paid'    => $amountPaid,
+            'amount_change'  => $amountChange,
+            'payment_method' => $paymentMethod,
         ]);
 
         // 4. Kembalikan status meja jadi "Tersedia" karena pesanan sudah lunas

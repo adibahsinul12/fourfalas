@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Riwayat Transaksi - FO'Orders</title>
+    <title>Transaksi - FO'Orders</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -217,14 +217,14 @@
                     <?php if(!empty($daftar_transaksi)): ?>
                         <?php foreach($daftar_transaksi as $row): ?>
                             <tr
-                                data-order="<?= strtolower($row['order_number'] ?? $row['id']) ?>"
-                                data-cust="<?= strtolower($row['customer_name'] ?? 'pelanggan') ?>"
+                                data-order="<?= esc(strtolower($row['order_number'] ?? $row['id'])) ?>"
+                                data-cust="<?= esc(strtolower($row['customer_name'] ?? 'pelanggan')) ?>"
                             >
                                 <td><b>#TX-<?= 1000 + $row['id']; ?></b></td>
-                                <td class="text-success fw-semibold order-num">#<?= $row['order_number'] ?? $row['id']; ?></td>
-                                <td class="cust-name"><?= $row['customer_name'] ?? 'Pelanggan'; ?></td>
+                                <td class="text-success fw-semibold order-num">#<?= esc($row['order_number'] ?? $row['id']); ?></td>
+                                <td class="cust-name"><?= esc($row['customer_name'] ?? 'Pelanggan'); ?></td>
                                 <td>Rp <?= number_format($row['total_payment'], 0, ',', '.'); ?></td>
-                                <td><span class="method-pill">Tunai</span></td>
+                                <td><span class="method-pill"><?= esc($row['payment_method'] ?? 'Tunai'); ?></span></td>
                                 <td><span class="badge-status">Lunas</span></td>
                             </tr>
                         <?php endforeach; ?>
@@ -245,23 +245,23 @@
             <?php if(!empty($daftar_transaksi)): ?>
                 <?php foreach($daftar_transaksi as $row): ?>
                     <div class="tx-card"
-                         data-order="<?= strtolower($row['order_number'] ?? $row['id']) ?>"
-                         data-cust="<?= strtolower($row['customer_name'] ?? 'pelanggan') ?>">
+                         data-order="<?= esc(strtolower($row['order_number'] ?? $row['id'])) ?>"
+                         data-cust="<?= esc(strtolower($row['customer_name'] ?? 'pelanggan')) ?>">
                         <div class="tx-card-header">
                             <div>
                                 <div class="tx-card-id">#TX-<?= 1000 + $row['id']; ?></div>
-                                <div class="tx-card-order">#<?= $row['order_number'] ?? $row['id']; ?></div>
+                                <div class="tx-card-order">#<?= esc($row['order_number'] ?? $row['id']); ?></div>
                             </div>
                             <span class="badge-status">Lunas</span>
                         </div>
                         <div class="tx-card-body">
                             <div class="tx-card-row">
                                 <span class="tx-card-label"><i class="fa-solid fa-user fa-xs me-1"></i>Pelanggan</span>
-                                <span><?= $row['customer_name'] ?? 'Pelanggan'; ?></span>
+                                <span><?= esc($row['customer_name'] ?? 'Pelanggan'); ?></span>
                             </div>
                             <div class="tx-card-row">
                                 <span class="tx-card-label"><i class="fa-solid fa-money-bill fa-xs me-1"></i>Metode</span>
-                                <span class="method-pill">Tunai</span>
+                                <span class="method-pill"><?= esc($row['payment_method'] ?? 'Tunai'); ?></span>
                             </div>
                             <div class="tx-card-amount">Rp <?= number_format($row['total_payment'], 0, ',', '.'); ?></div>
                         </div>

@@ -88,7 +88,7 @@
         .widget-header { flex-wrap: wrap; gap: 10px; }
 
         /* Panel eksekusi (tombol aksi staf) */
-        .action-panel-buttons { display: flex; gap: 8px; flex-wrap: wrap; width: 100%; }
+        .action-panel-buttons { display: flex; align-items: flex-end; gap: 8px; flex-wrap: wrap; width: 100%; }
         .action-panel-buttons > * { flex: 1 1 220px; }
 
         /* =========================================================
@@ -149,7 +149,6 @@
         <button class="menu-toggle-btn" id="menuToggleBtn" aria-label="Buka menu">
             <i class="fa-solid fa-bars"></i>
         </button>
-        <a href="<?= base_url('admin/pesanan'); ?>" class="btn btn-sm btn-secondary" style="border-radius: 8px;"><i class="fa-solid fa-arrow-left me-1"></i> Kembali ke Antrean</a>
     </div>
 
     <div class="row g-4">
@@ -206,29 +205,33 @@
                 <hr>
                 <div class="action-panel-buttons">
                     <?php if ($status == 'Menunggu') : ?>
-                        <form action="<?= base_url('admin/pay/' . $order['id']); ?>" method="POST" class="w-100">
-                            <div class="mb-3">
-                                <label class="form-label small fw-bold text-muted mb-1">METODE PEMBAYARAN KASIR</label>
-                                <select name="payment_method" class="form-select fw-semibold" style="border-radius: 8px; padding: 10px; border: 1px solid #ccc;" required>
+                    <form action="<?= base_url('admin/pay/' . $order['id']); ?>" method="POST" class="w-100">
+                        <?= csrf_field() ?>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted mb-1">METODE PEMBAYARAN KASIR</label>
+                            <div class="d-flex gap-2">
+                                <select name="payment_method" class="form-select fw-semibold flex-grow-1" style="border-radius: 8px; padding: 10px; border: 1px solid #ccc;" required>
                                     <option value="Tunai" selected>💵 Tunai (Cash)</option>
                                     <option value="QRIS">📱 QRIS / E-Wallet (Dana/OVO/Gopay)</option>
                                     <option value="Transfer Bank">🏦 Transfer Bank</option>
                                 </select>
+                                <button type="submit" form="batalkanForm" formnovalidate class="btn btn-outline-danger fw-semibold px-3 flex-shrink-0" style="border-radius: 8px; white-space: nowrap;"><i class="fa-solid fa-ban me-2"></i>Batalkan</button>
                             </div>
-                            <button type="submit" class="btn btn-success w-100 p-2 fw-semibold" style="border-radius: 10px;"><i class="fa-solid fa-cash-register me-2"></i>Terima Uang Kasir (Lunas)</button>
-                        </form>
-                    <?php elseif ($status == 'Diproses') : ?>
-                        <form action="<?= base_url('admin/update-status/' . $order['id']); ?>" method="POST" class="w-100">
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100 p-2 fw-semibold" style="border-radius: 10px;"><i class="fa-solid fa-cash-register me-2"></i>Terima Uang Kasir (Lunas)</button>
+                    </form>
+                    <form id="batalkanForm" action="<?= base_url('admin/batalkan/' . $order['id']); ?>" method="POST" onsubmit="return confirm('Yakin ingin membatalkan pesanan kafe ini?')" style="display:none;"></form>
+                <?php elseif ($status == 'Diproses') : ?>
+                        <form action="<?= base_url('admin/update-status/' . $order['id']); ?>" method="POST">
                             <button type="submit" class="btn btn-warning text-white w-100 p-2 fw-semibold" style="border-radius: 10px;"><i class="fa-solid fa-utensils me-2"></i>Masakan Selesai (Sajikan)</button>
+                        </form>
+                        <form action="<?= base_url('admin/batalkan/' . $order['id']); ?>" method="POST" onsubmit="return confirm('Yakin ingin membatalkan pesanan kafe ini?')">
+                            <button type="submit" class="btn btn-outline-danger w-100 p-2 fw-semibold" style="border-radius: 10px;"><i class="fa-solid fa-ban me-2"></i>Batalkan Pesanan</button>
                         </form>
                     <?php else : ?>
                         <button class="btn btn-secondary w-100 p-2 fw-semibold" style="border-radius: 10px;" disabled><i class="fa-solid fa-circle-check me-2"></i>Transaksi Selesai Diarsip</button>
-                    <?php endif; ?>
-                    
-                    <?php if ($status != 'Selesai' && $status != 'Batal') : ?>
-                        <form action="<?= base_url('admin/batalkan/' . $order['id']); ?>" method="POST" onsubmit="return confirm('Yakin ingin membatalkan pesanan kafe ini?')" class="w-100 mt-2">
-                            <button type="submit" class="btn btn-outline-danger w-100 p-2 fw-semibold" style="border-radius: 10px;"><i class="fa-solid fa-ban me-2"></i>Batalkan Pesanan</button>
-                        </form>
                     <?php endif; ?>
                 </div>
             </div>
@@ -290,28 +293,6 @@
     window.addEventListener('resize', function () {
         if (window.innerWidth >= 992) {
             closeSidebar();
-        }
-    });
-
-    // ========================================================
-    // SOLUSI TOTAL KASIR: PAKSA SUNTIK VALUE DROPDOWN KE FORM SEBELUM SUBMIT
-    // ========================================================
-    document.addEventListener('DOMContentLoaded', function() {
-        const payForm = document.querySelector('form[action*="pay"]');
-        if (payForm) {
-            payForm.addEventListener('submit', function(e) {
-                const selectPayment = document.querySelector('select[name="payment_method"]');
-                if (selectPayment) {
-                    let hiddenInput = payForm.querySelector('input[name="payment_method"]');
-                    if (!hiddenInput) {
-                        hiddenInput = document.createElement('input');
-                        hiddenInput.type = 'hidden';
-                        hiddenInput.name = 'payment_method';
-                        payForm.appendChild(hiddenInput);
-                    }
-                    hiddenInput.value = selectPayment.value;
-                }
-            });
         }
     });
 </script>
