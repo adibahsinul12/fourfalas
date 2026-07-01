@@ -75,6 +75,7 @@ class Cart extends BaseController
                 'success'   => true,
                 'cartCount' => $cartCount,
                 'cartTotal' => $cartTotal,
+                'itemQty'   => isset($cart[$menuId]) ? $cart[$menuId]['quantity'] : 0, // <-- TAMBAHAN DATA BIAR REALTIME DI BERANDA
             ]);
         }
 
@@ -84,7 +85,7 @@ class Cart extends BaseController
         return redirect()->to($target)->with('success', 'Menu ditambahkan!');
     }
 
-    // Tombol (-) Kurangi kuantitas
+    // Tombol (-) Kurangi kuantitas biasa (menggunakan redirect ke halaman cart)
     public function decrease($menuId)
     {
         $cart = $this->session->get('cart') ?? [];
@@ -100,6 +101,43 @@ class Cart extends BaseController
 
         $this->session->set('cart', $cart);
         return redirect()->to(base_url('cart'));
+    }
+
+    // FUNGSI BARU KHUSUS MENGURANGI QTY SECARA AJAX DI HALAMAN BERANDA
+    public function decrease_ajax()
+    {
+        $menuId = $this->request->getPost('menu_id');
+
+        if (!$menuId) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Menu tidak valid']);
+        }
+
+        $cart = $this->session->get('cart') ?? [];
+
+        if (isset($cart[$menuId])) {
+            if ($cart[$menuId]['quantity'] > 1) {
+                $cart[$menuId]['quantity'] -= 1;
+            } else {
+                unset($cart[$menuId]);
+            }
+        }
+
+        $this->session->set('cart', $cart);
+
+        // Hitung ulang status keranjang melayang
+        $cartCount = 0;
+        $cartTotal = 0;
+        foreach ($cart as $ci) {
+            $cartCount += $ci['quantity'];
+            $cartTotal += $ci['price'] * $ci['quantity'];
+        }
+
+        return $this->response->setJSON([
+            'success'   => true,
+            'cartCount' => $cartCount,
+            'cartTotal' => $cartTotal,
+            'itemQty'   => isset($cart[$menuId]) ? $cart[$menuId]['quantity'] : 0,
+        ]);
     }
 
     // Tombol (Hapus) menghilangkan item dari keranjang

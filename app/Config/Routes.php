@@ -17,6 +17,7 @@ $routes->get('cart', 'Cart::index');
 $routes->post('cart/add', 'Cart::add');       
 $routes->get('cart/remove/(:any)', 'Cart::remove/$1');
 $routes->get('cart/decrease/(:any)', 'Cart::decrease/$1');
+$routes->post('cart/decrease_ajax', 'Cart::decrease_ajax');
 
 // Rute untuk Fitur Checkout Pelanggan
 $routes->get('checkout', 'Cart::checkout');

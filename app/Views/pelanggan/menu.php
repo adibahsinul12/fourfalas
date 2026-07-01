@@ -47,6 +47,10 @@
 
     <div class="menu-grid" style="margin-top: 20px;">
         <?php if (!empty($all_menus)): ?>
+            <?php 
+            // Ambil data keranjang saat ini untuk memetakan tombol awal
+            $sessionCart = session()->get('cart') ?? []; 
+            ?>
             <?php foreach ($all_menus as $menu): 
                 $filename = $menu['image_path'] ?? 'default.jpg';
                 $path = 'uploads/menus/' . $filename;
@@ -56,6 +60,9 @@
                 } else {
                     $imgUrl = base_url('uploads/menus/default_menus.jpg');
                 }
+
+                // Cari kuantitas item ini di dalam session keranjang belanja
+                $currentQty = isset($sessionCart[$menu['id']]) ? $sessionCart[$menu['id']]['quantity'] : 0;
             ?>
                 <div class="menu-card">
                     <img class="menu-img" src="<?= $imgUrl; ?>" alt="<?= esc($menu['menu_name']); ?>">
@@ -63,7 +70,17 @@
                         <h3><?= esc($menu['menu_name']); ?></h3>
                         <div class="menu-footer">
                             <span class="price">Rp <?= number_format($menu['price'], 0, ',', '.'); ?></span>
-                            <button type="button" class="btn-add" onclick="addToCart(<?= $menu['id']; ?>, this)">+</button>
+                            
+                            <div class="quantity-control-wrapper" id="wrapper-<?= $menu['id']; ?>">
+                                <button type="button" class="btn-add" id="btn-initial-<?= $menu['id']; ?>" onclick="updateCartQuantity(<?= $menu['id']; ?>, 'add', this)" style="display: <?= $currentQty == 0 ? 'block' : 'none'; ?>;">+</button>
+                                
+                                <div class="counter-control" id="counter-<?= $menu['id']; ?>" style="display: <?= $currentQty > 0 ? 'flex' : 'none'; ?>; align-items: center; gap: 8px;">
+                                    <button type="button" class="btn-add" style="background-color: #d33 !important;" onclick="updateCartQuantity(<?= $menu['id']; ?>, 'decrease', this)">-</button>
+                                    <span id="qty-val-<?= $menu['id']; ?>" style="font-weight: 600; font-size: 14px; min-width: 16px; text-align: center; color: #333; font-family: 'Poppins', sans-serif;"><?= $currentQty; ?></span>
+                                    <button type="button" class="btn-add" style="background-color: #4CAF50 !important;" onclick="updateCartQuantity(<?= $menu['id']; ?>, 'add', this)">+</button>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -79,7 +96,6 @@
 </div>
 
 <?php
-    // Hitung jumlah item & total harga di keranjang untuk floating cart bar
     $cartData = session()->get('cart') ?? [];
     $cartCount = 0;
     $cartTotal = 0;
@@ -114,11 +130,20 @@
     </div>
 </div>
 
+<?= $this->endSection(); ?>
+
+<?= $this->section('scripts'); ?>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
-function addToCart(menuId, btn) {
+// FUNGSI UTAMA UNTUK UPDATE KUANTITAS MIN/PLUS REALTIME VIA AJAX FETCH
+function updateCartQuantity(menuId, action, btn) {
     btn.disabled = true;
 
-    fetch('<?= base_url('cart/add'); ?>', {
+    // Menentukan URL endpoint berdasarkan aksi (tambah atau kurang)
+    let url = action === 'add' ? '<?= base_url('cart/add'); ?>' : '<?= base_url('cart/decrease_ajax'); ?>';
+
+    fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -134,11 +159,31 @@ function addToCart(menuId, btn) {
             const countEl = document.getElementById('cartBarCount');
             const totalEl = document.getElementById('cartBarTotal');
 
-            countEl.textContent = data.cartCount;
-            totalEl.textContent = 'Rp ' + new Intl.NumberFormat('id-ID').format(data.cartTotal);
-            bar.style.display = 'flex';
+            // Update info data total belanjaan di bawah secara realtime
+            if (data.cartCount > 0) {
+                countEl.textContent = data.cartCount;
+                totalEl.textContent = 'Rp ' + new Intl.NumberFormat('id-ID').format(data.cartTotal);
+                bar.style.display = 'flex';
+            } else {
+                bar.style.display = 'none';
+            }
+
+            // Manipulasi pergantian elemen tombol [- Qty +] secara realtime
+            const btnInitial = document.getElementById('btn-initial-' + menuId);
+            const counterDiv = document.getElementById('counter-' + menuId);
+            const qtyVal = document.getElementById('qty-val-' + menuId);
+
+            if (data.itemQty > 0) {
+                btnInitial.style.display = 'none';
+                counterDiv.style.display = 'flex';
+                qtyVal.textContent = data.itemQty;
+            } else {
+                btnInitial.style.display = 'block';
+                counterDiv.style.display = 'none';
+                qtyVal.textContent = 0;
+            }
         } else {
-            alert(data.message || 'Gagal menambahkan ke keranjang');
+            alert(data.message || 'Gagal memperbarui keranjang');
         }
     })
     .catch(err => {
@@ -148,5 +193,4 @@ function addToCart(menuId, btn) {
     });
 }
 </script>
-
 <?= $this->endSection(); ?>
