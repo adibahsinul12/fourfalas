@@ -16,6 +16,9 @@
     --border:#E5E5E5;
     --text-muted:#8a8a8a;
 }
+html{
+    scrollbar-gutter: stable; /* FIX: mencegah lebar halaman "loncat" saat scrollbar muncul/hilang antar menu */
+}
 *{ margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
 body{ background:var(--cream); display:flex; min-height:100vh; }
 
@@ -28,6 +31,10 @@ body{ background:var(--cream); display:flex; min-height:100vh; }
     flex-direction:column;
     padding:24px 18px;
     flex-shrink:0;
+    position:sticky;   /* FIX: sidebar tidak ikut ke-scroll bersama konten */
+    top:0;              /* FIX */
+    height:100vh;        /* FIX */
+    overflow-y:auto;     /* FIX: jaga-jaga kalau menu sidebar makin panjang */
 }
 .sidebar .logo{
     display:flex;
@@ -57,7 +64,12 @@ body{ background:var(--cream); display:flex; min-height:100vh; }
 .nav-bottom{ margin-top:auto; }
 
 /* ===== Main content ===== */
-.main{ flex:1; padding:28px 32px; }
+.main{
+    flex:1;
+    padding:28px 32px;
+    min-width:0; /* FIX: mencegah main mendorong lebar sidebar saat konten (mis. grafik/tabel) melebar */
+    overflow-x:hidden; /* FIX: cegah scroll horizontal tak sengaja ikut menggeser layout */
+}
 .topbar{
     display:flex;
     justify-content:flex-end;
@@ -177,9 +189,64 @@ body{ background:var(--cream); display:flex; min-height:100vh; }
 .rating-item .date{ font-size:10px; color:#aaa; }
 .empty-note{ font-size:12px; color:#aaa; text-align:center; padding:20px 0; }
 
+/* ===== Hamburger (muncul hanya di layar kecil) ===== */
+.hamburger{
+    display:none;
+    background:#fff;
+    border:1px solid var(--border);
+    width:38px; height:38px;
+    border-radius:8px;
+    align-items:center;
+    justify-content:center;
+    font-size:16px;
+    color:var(--brown);
+    cursor:pointer;
+    margin-right:auto; /* dorong owner-chip ke kanan */
+}
+
+.sidebar-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.4);
+    z-index:40;
+}
+.sidebar-overlay.show{ display:block; }
+
+/* ===== TABLET (<=1100px) ===== */
 @media (max-width: 1100px){
     .cards{ grid-template-columns:repeat(2,1fr); }
     .panels{ grid-template-columns:1fr; }
+    .sidebar{ width:220px; }
+}
+
+/* ===== TABLET KECIL / HP LANDSCAPE (<=900px) ===== */
+@media (max-width: 900px){
+    .sidebar{
+        position:fixed;
+        left:0; top:0;
+        width:240px;
+        height:100vh;
+        z-index:50;
+        transform:translateX(-100%);
+        transition:transform .25s ease;
+    }
+    .sidebar.open{ transform:translateX(0); }
+    .main{ padding:20px 18px; width:100%; }
+    .hamburger{ display:flex; }
+    .topbar{ justify-content:space-between; }
+}
+
+/* ===== HP (<=600px) ===== */
+@media (max-width: 600px){
+    .cards{ grid-template-columns:1fr; }
+    .card{ padding:16px; }
+    .owner-chip{ padding:6px 10px; font-size:12px; }
+    .owner-chip .role{ font-size:10px; }
+    .panel{ padding:16px; }
+    .bidang-grid{ grid-template-columns:1fr; }
+    .chart-placeholder{ height:180px; }
+    main.main{ padding:16px 14px; }
 }
 </style>
 </head>
@@ -201,6 +268,7 @@ body{ background:var(--cream); display:flex; min-height:100vh; }
 
 <main class="main">
     <div class="topbar">
+        <button type="button" class="hamburger" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
         <div class="owner-chip">
             <i class="fa-solid fa-user-tie"></i>
             <div>
@@ -309,6 +377,15 @@ body{ background:var(--cream); display:flex; min-height:100vh; }
         </div>
     </div>
 </main>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<script>
+function toggleSidebar(){
+    document.querySelector('.sidebar').classList.toggle('open');
+    document.getElementById('sidebarOverlay').classList.toggle('show');
+}
+</script>
 
 </body>
 </html>
