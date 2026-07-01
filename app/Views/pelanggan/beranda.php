@@ -122,7 +122,7 @@
     }
 ?>
 
-<div id="floatingCartBar" onclick="location.href='<?= base_url('cart'); ?>'" style="position: fixed; bottom: 78px; left: 16px; right: 16px; max-width: 1200px; margin: 0 auto; background: #4CAF50; color: #ffffff; border-radius: 14px; padding: 14px 20px; justify-content: space-between; align-items: center; box-shadow: 0 6px 20px rgba(76,175,80,0.35); cursor: pointer; z-index: 998; font-family: 'Poppins', sans-serif; display: <?= $cartCount > 0 ? 'flex' : 'none' ?>;">
+<div id="floatingCartBar" onclick="location.href='<?= base_url('cart'); ?>'" style="position: fixed; bottom: 78px; left: 13px; right: 13px; max-width: 1160px; margin: 0 auto; background: #4CAF50; color: #ffffff; border-radius: 14px; padding: 14px 20px; justify-content: space-between; align-items: center; box-shadow: 0 6px 20px rgba(76,175,80,0.35); cursor: pointer; z-index: 998; font-family: 'Poppins', sans-serif; display: <?= $cartCount > 0 ? 'flex' : 'none' ?>;">
     <div style="display: flex; align-items: center; gap: 10px;">
         <div id="cartBarCount" style="background: rgba(255,255,255,0.25); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;">
             <?= $cartCount; ?>
