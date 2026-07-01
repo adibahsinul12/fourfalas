@@ -4,12 +4,8 @@
 
 <div style="padding: 24px; padding-bottom: 100px;">
 
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h1 style="margin: 0; font-size: 22px; font-weight: 700; color: #6B3A1E; font-family: 'Poppins', sans-serif;">Pesanan Saya</h1>
-        <a href="<?= base_url('pesanan/riwayat'); ?>" style="display:inline-flex; align-items:center; gap:6px; background:#FFF3E0; color:#A67C52; font-size:12px; font-weight:600; padding:8px 14px; border-radius:20px; text-decoration:none; font-family:'Poppins', sans-serif; white-space:nowrap;">
-            📜 Riwayat
-        </a>
-    </div>
+    <h1 style="margin: 0 0 4px 0; font-size: 22px; font-weight: 700; color: #6B3A1E; font-family: 'Poppins', sans-serif;">Riwayat Pesanan</h1>
+    <a href="<?= base_url('pesanan'); ?>" style="display:inline-block; margin-bottom:20px; font-size:13px; color:#6B3A1E; text-decoration:underline; font-family: 'Poppins', sans-serif;">&larr; Kembali ke Pesanan Aktif</a>
 
     <?php if (empty($orders)): ?>
         <div class="empty-state" style="margin-top: 40px; text-align: center;">
@@ -19,8 +15,8 @@
                 <line x1="35" y1="50" x2="65" y2="50" stroke="#A67C52" stroke-width="3" stroke-linecap="round"/>
                 <line x1="35" y1="60" x2="55" y2="60" stroke="#A67C52" stroke-width="3" stroke-linecap="round"/>
             </svg>
-            <h4 style="margin-top: 16px; color: #333333; font-family: 'Poppins', sans-serif;">Belum Ada Pesanan</h4>
-            <p style="color: #888888; font-family: 'Poppins', sans-serif;">Yuk, pesan menu favoritmu sekarang!</p>
+            <h4 style="margin-top: 16px; color: #333333; font-family: 'Poppins', sans-serif;">Belum Ada Riwayat</h4>
+            <p style="color: #888888; font-family: 'Poppins', sans-serif;">Pesanan yang sudah selesai akan muncul di sini.</p>
             <a href="<?= base_url('menu'); ?>" class="btn-promo" style="display:inline-block; margin-top:16px; text-decoration:none;">Lihat Menu</a>
         </div>
     <?php else: ?>
@@ -103,12 +99,5 @@
         <span>Keranjang</span>
     </div>
 </div>
-
-<script>
-    // Auto-refresh halaman tiap 15 detik supaya status pesanan ter-update otomatis
-    setTimeout(function() {
-        location.reload();
-    }, 15000);
-</script>
 
 <?= $this->endSection(); ?>
