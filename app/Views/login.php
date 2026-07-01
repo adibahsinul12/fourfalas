@@ -198,7 +198,7 @@ body{
         </div>
     <?php endif; ?>
 
-    <form action="<?= base_url('login/auth') ?>" method="post">
+    <form action="<?= base_url('login') ?>" method="post">
 
         <div class="form-group">
             <i class="fa-regular fa-user left-icon"></i>
@@ -235,6 +235,13 @@ body{
         <button type="submit" class="btn-login">
             Masuk
         </button>
+
+        <div style="text-align:center; margin-top:14px; font-size:12px; color:#666;">
+            Belum punya akun?
+            <a href="<?= base_url('register') ?>" style="color:var(--green); font-weight:600; text-decoration:none;">
+                Daftar di sini
+            </a>
+        </div>
 
     </form>
 

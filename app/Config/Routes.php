@@ -25,9 +25,12 @@ $routes->get('checkout', 'Cart::checkout');
 $routes->post('checkout/process', 'Cart::process');
 
 // Rute untuk Fitur Autentikasi Login & Logout
-$routes->get('login', 'Auth::index');       
-$routes->post('login/auth', 'Auth::login'); 
-$routes->get('logout', 'Auth::logout');     
+$routes->get('login', 'Auth::index');   // GET -> tampilkan form login
+$routes->post('login', 'Auth::login');  // POST -> proses login
+$routes->post('login/store', 'Auth::attemptLogin'); // sesuaikan nama method
+$routes->get('register', 'Auth::register');
+$routes->post('register/store', 'Auth::store');
+$routes->get('logout', 'Auth::logout');
 
 // ====================================================================
 // HALAMAN ADMIN (GRUP RUTE YANG SUDAH DIPROTEKSI DENGAN FILTER 'auth')
@@ -68,4 +71,18 @@ $routes->group('admin', ['filter' => 'auth'], function($routes) {
     // Jalur Proses Simpan Pengaturan & Password
     $routes->post('pengaturan/update-password', 'Admin\Dashboard::updatePassword');
     $routes->post('pengaturan/update-settings', 'Admin\Dashboard::updateSettings');
+});
+
+$routes->group('owner', ['filter' => 'auth'], function($routes) {
+    $routes->get('/', 'Owner\Dashboard::index');
+    $routes->get('laporan', 'Owner\Dashboard::laporan');
+    $routes->get('transaksi', 'Owner\Dashboard::transaksi');
+
+    // Karyawan
+    $routes->get('karyawan', 'Owner\Karyawan::index');
+    $routes->get('karyawan/create', 'Owner\Karyawan::create');
+    $routes->post('karyawan/store', 'Owner\Karyawan::store');
+    $routes->get('karyawan/edit/(:num)', 'Owner\Karyawan::edit/$1');
+    $routes->post('karyawan/update-status/(:num)', 'Owner\Karyawan::updateStatus/$1');
+    $routes->get('karyawan/delete/(:num)', 'Owner\Karyawan::delete/$1');
 });

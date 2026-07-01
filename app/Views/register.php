@@ -4,32 +4,17 @@ namespace App\Controllers;
 
 class Auth extends BaseController
 {
-    /**
-     * Tentukan URL tujuan berdasarkan role user.
-     * Sesuaikan path di sini dengan route yang sudah kamu buat di Routes.php
-     */
-    private function redirectByRole(string $role): string
-    {
-        switch ($role) {
-            case 'Owner':
-                return '/owner';
-            case 'Kasir':
-                return '/kasir';
-            case 'Admin':
-            default:
-                return '/admin';
-        }
-    }
-
+    // Tampilkan form login
     public function index()
     {
         if (session()->get('logged_in')) {
-            $role = session()->get('role') ?? 'Admin';
-            return redirect()->to($this->redirectByRole($role));
+            $role = session()->get('role');
+            return redirect()->to($role === 'Owner' ? '/owner' : '/admin');
         }
         return view('login');
     }
 
+    // Proses login (POST)
     public function login()
     {
         $session  = session();
@@ -37,7 +22,6 @@ class Auth extends BaseController
         $password = $this->request->getPost('password');
 
         // 1. JALUR CADANGAN MANUAL (Bypass Langsung Tanpa Cek Database)
-        // Kalau kamu ketik admin & admin123, langsung lolos masuk tanpa peduli phpMyAdmin!
         if ($username === 'admin' && $password === 'admin123') {
             $sessionData = [
                 'id'        => 1,
@@ -46,16 +30,14 @@ class Auth extends BaseController
                 'logged_in' => true
             ];
             $session->set($sessionData);
-            return redirect()->to($this->redirectByRole($sessionData['role']));
+            return redirect()->to('/admin');
         }
 
-        // 2. JALUR UTAMA DATABASE (Tetap jalan untuk dinilai dosen)
+        // 2. JALUR UTAMA DATABASE
         try {
             $db = \Config\Database::connect();
-
-            // Cek tabel 'admins'
             $builder = $db->table('admins');
-            $admin   = $builder->getWhere(['username' => $username])->getRowArray();
+            $admin = $builder->getWhere(['username' => $username])->getRowArray();
 
             if ($admin) {
                 $db_password = $admin['password'] ?? ($admin['password_hash'] ?? '');
@@ -68,38 +50,51 @@ class Auth extends BaseController
                         'logged_in' => true
                     ];
                     $session->set($sessionData);
-                    return redirect()->to($this->redirectByRole($sessionData['role']));
+
+                    // Redirect sesuai role
+                    if ($sessionData['role'] === 'Owner') {
+                        return redirect()->to('/owner');
+                    }
+
+                    return redirect()->to('/admin');
                 }
             }
         } catch (\Exception $e) {
             // Jika database error/tidak connect, biarkan sistem lanjut ke bawah
         }
 
-        // Jika semua jalur di atas gagal, baru lempar error salah password
+        // Jika semua jalur di atas gagal
         $session->setFlashdata('msg', 'Username atau Password Salah!');
         return redirect()->to('/login');
     }
 
+    // Tampilkan form register
     public function register()
     {
         return view('register');
     }
 
+    // Proses register (POST)
     public function store()
     {
         $username = $this->request->getPost('username');
         $password = $this->request->getPost('password');
         $confirm  = $this->request->getPost('confirm_password');
+        $role     = $this->request->getPost('role');
 
         if ($password !== $confirm) {
             session()->setFlashdata('msg', 'Konfirmasi password tidak cocok!');
             return redirect()->to('/register');
         }
 
-        $db      = \Config\Database::connect();
+        if (empty($role)) {
+            session()->setFlashdata('msg', 'Silakan pilih role terlebih dahulu!');
+            return redirect()->to('/register');
+        }
+
+        $db = \Config\Database::connect();
         $builder = $db->table('admins');
 
-        // cek username sudah dipakai atau belum
         $exists = $builder->getWhere(['username' => $username])->getRowArray();
         if ($exists) {
             session()->setFlashdata('msg', 'Username sudah digunakan!');
@@ -108,14 +103,15 @@ class Auth extends BaseController
 
         $builder->insert([
             'username'      => $username,
-            'password_hash' => password_hash($password, PASSWORD_DEFAULT), // sesuai nama kolom asli
-            'role'          => 'Kasir', // harus salah satu dari: Admin, Kasir, Owner
+            'password_hash' => password_hash($password, PASSWORD_DEFAULT),
+            'role'          => $role, // Owner atau Admin, sesuai pilihan form
         ]);
 
         session()->setFlashdata('msg', 'Registrasi berhasil, silakan login!');
         return redirect()->to('/login');
     }
 
+    // Logout
     public function logout()
     {
         $session = session();
