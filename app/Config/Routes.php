@@ -56,11 +56,14 @@ $routes->group('admin', ['filter' => 'auth'], function($routes) {
     $routes->post('meja/update/(:num)', 'Admin\Dashboard::updateMeja/$1'); // <-- TAMBAH INI
     $routes->get('meja/delete/(:num)', 'Admin\Dashboard::deleteMeja/$1');  // <-- TAMBAH INI
     
-    // Manajemen Detail Order, Update Status Dapur, dan Pembayaran Kasir
-    $routes->get('detail/(:num)', 'Admin\Dashboard::detail/$1');
-    $routes->post('update-status/(:num)', 'Admin\Dashboard::updateStatus/$1');
-    $routes->post('pay/(:num)', 'Admin\Dashboard::processPayment/$1');
-    $routes->post('batalkan/(:num)', 'Admin\Dashboard::batalkan/$1');
+    // ====================================================================
+    // PERBAIKAN DI SINI: Diarahkan murni ke Controller Admin (\App\Controllers\Admin)
+    // agar pembacaan $_POST['payment_method'] dari dropdown detail.php berfungsi!
+    // ====================================================================
+    $routes->get('detail/(:num)', 'Admin::detail/$1');
+    $routes->post('update-status/(:num)', 'Admin::updateStatus/$1');
+    $routes->post('pay/(:num)', 'Admin::processPayment/$1');
+    $routes->post('batalkan/(:num)', 'Admin::batalkan/$1');
     
     // Jalur Proses Simpan Pengaturan & Password
     $routes->post('pengaturan/update-password', 'Admin\Dashboard::updatePassword');

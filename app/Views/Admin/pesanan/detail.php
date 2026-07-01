@@ -92,12 +92,8 @@
         .action-panel-buttons > * { flex: 1 1 220px; }
 
         /* =========================================================
-           BREAKPOINTS RESPONSIF
-           >= 992px (lg)  : Desktop / PC -> sidebar selalu tampil
-           768-991px (md) : Tablet       -> sidebar off-canvas
-           < 768px (sm/xs): Mobile / HP  -> sidebar off-canvas, layout 1 kolom
+            BREAKPOINTS RESPONSIF
            ========================================================= */
-
         @media (max-width: 991.98px) {
             .sidebar {
                 left: -280px;
@@ -114,12 +110,8 @@
             .main-content { padding: 16px; }
             .widget-card { padding: 16px; border-radius: 14px; }
             .widget-card.mb-4 { margin-bottom: 16px !important; }
-
             .item-table th, .item-table td { padding: 10px 8px; font-size: 12px; }
-
             .action-panel-buttons > * { flex: 1 1 100%; }
-
-            /* Nota tagihan: angka total jangan terlalu besar di HP kecil */
             .widget-card h5 { font-size: 14px; }
         }
 
@@ -214,11 +206,19 @@
                 <hr>
                 <div class="action-panel-buttons">
                     <?php if ($status == 'Menunggu') : ?>
-                        <form action="<?= base_url('admin/pay/' . $order['id']); ?>" method="POST">
+                        <form action="<?= base_url('admin/pay/' . $order['id']); ?>" method="POST" class="w-100">
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold text-muted mb-1">METODE PEMBAYARAN KASIR</label>
+                                <select name="payment_method" class="form-select fw-semibold" style="border-radius: 8px; padding: 10px; border: 1px solid #ccc;" required>
+                                    <option value="Tunai" selected>💵 Tunai (Cash)</option>
+                                    <option value="QRIS">📱 QRIS / E-Wallet (Dana/OVO/Gopay)</option>
+                                    <option value="Transfer Bank">🏦 Transfer Bank</option>
+                                </select>
+                            </div>
                             <button type="submit" class="btn btn-success w-100 p-2 fw-semibold" style="border-radius: 10px;"><i class="fa-solid fa-cash-register me-2"></i>Terima Uang Kasir (Lunas)</button>
                         </form>
                     <?php elseif ($status == 'Diproses') : ?>
-                        <form action="<?= base_url('admin/update-status/' . $order['id']); ?>" method="POST">
+                        <form action="<?= base_url('admin/update-status/' . $order['id']); ?>" method="POST" class="w-100">
                             <button type="submit" class="btn btn-warning text-white w-100 p-2 fw-semibold" style="border-radius: 10px;"><i class="fa-solid fa-utensils me-2"></i>Masakan Selesai (Sajikan)</button>
                         </form>
                     <?php else : ?>
@@ -226,7 +226,7 @@
                     <?php endif; ?>
                     
                     <?php if ($status != 'Selesai' && $status != 'Batal') : ?>
-                        <form action="<?= base_url('admin/batalkan/' . $order['id']); ?>" method="POST" onsubmit="return confirm('Yakin ingin membatalkan pesanan kafe ini?')">
+                        <form action="<?= base_url('admin/batalkan/' . $order['id']); ?>" method="POST" onsubmit="return confirm('Yakin ingin membatalkan pesanan kafe ini?')" class="w-100 mt-2">
                             <button type="submit" class="btn btn-outline-danger w-100 p-2 fw-semibold" style="border-radius: 10px;"><i class="fa-solid fa-ban me-2"></i>Batalkan Pesanan</button>
                         </form>
                     <?php endif; ?>
@@ -283,13 +283,35 @@
         overlay.classList.remove('show');
     }
 
-    menuToggleBtn.addEventListener('click', openSidebar);
-    sidebarCloseBtn.addEventListener('click', closeSidebar);
-    overlay.addEventListener('click', closeSidebar);
+    if(menuToggleBtn) menuToggleBtn.addEventListener('click', openSidebar);
+    if(sidebarCloseBtn) sidebarCloseBtn.addEventListener('click', closeSidebar);
+    if(overlay) overlay.addEventListener('click', closeSidebar);
 
     window.addEventListener('resize', function () {
         if (window.innerWidth >= 992) {
             closeSidebar();
+        }
+    });
+
+    // ========================================================
+    // SOLUSI TOTAL KASIR: PAKSA SUNTIK VALUE DROPDOWN KE FORM SEBELUM SUBMIT
+    // ========================================================
+    document.addEventListener('DOMContentLoaded', function() {
+        const payForm = document.querySelector('form[action*="pay"]');
+        if (payForm) {
+            payForm.addEventListener('submit', function(e) {
+                const selectPayment = document.querySelector('select[name="payment_method"]');
+                if (selectPayment) {
+                    let hiddenInput = payForm.querySelector('input[name="payment_method"]');
+                    if (!hiddenInput) {
+                        hiddenInput = document.createElement('input');
+                        hiddenInput.type = 'hidden';
+                        hiddenInput.name = 'payment_method';
+                        payForm.appendChild(hiddenInput);
+                    }
+                    hiddenInput.value = selectPayment.value;
+                }
+            });
         }
     });
 </script>
