@@ -36,7 +36,7 @@
 
     <h2 style="font-size: 16px; font-weight: 600; color: #333333; margin-bottom: 14px;">Kategori Menu</h2>
     <div class="category-container">
-        <span class="category-tab active" onclick="location.href='<?= base_url('menu'); ?>'">
+        <span class="category-tab active" onclick="filterBerandaCategory('all', this)">
             <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
             Semua
         </span>
@@ -53,7 +53,7 @@
                 $icon = '<svg viewBox="0 0 24 24"><path d="M12 2l3 3h4v4l3 3-3 3v4h-4l-3 3-3-3H6v-4L3 12l3-3V6h4z"></path></svg>';
             }
         ?>
-            <span class="category-tab" onclick="location.href='<?= base_url('menu') . '?category=' . $cat['id']; ?>'">
+            <span class="category-tab" onclick="filterBerandaCategory(<?= $cat['id']; ?>, this)">
                 <?= $icon; ?>
                 <?= esc($cat['category_name']); ?>
             </span>
@@ -68,7 +68,6 @@
     <div class="menu-grid">
         <?php if (!empty($recommended_menus)): ?>
             <?php 
-            // Ambil data keranjang dari session aktif untuk penentuan tombol dinamis
             $sessionCart = session()->get('cart') ?? []; 
             ?>
             <?php foreach ($recommended_menus as $menu): 
@@ -81,10 +80,9 @@
                     $imgUrl = base_url('uploads/menus/default_menus.jpg');
                 }
                 
-                // Cari total kuantitas menu saat ini di dalam session keranjang
                 $currentQty = isset($sessionCart[$menu['id']]) ? $sessionCart[$menu['id']]['quantity'] : 0;
             ?>
-                <div class="menu-card">
+                <div class="menu-card" data-category="<?= $menu['category_id']; ?>">
                     <img class="menu-img" src="<?= $imgUrl; ?>" alt="<?= esc($menu['menu_name']); ?>">
                     <div class="menu-info">
                         <h3><?= esc($menu['menu_name']); ?></h3>
@@ -170,8 +168,30 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
+// FUNGSI BARU COK: Filter kategori menu rekomendasi tanpa pindah halaman
+function filterBerandaCategory(categoryId, tabElement) {
+    // 1. Reset status active dari semua tab kategori
+    document.querySelectorAll('.category-container .category-tab').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    // Set active ke tab yang baru diklik
+    tabElement.classList.add('active');
+
+    // 2. Saring item menu-card secara realtime
+    document.querySelectorAll('.menu-grid .menu-card').forEach(card => {
+        if (categoryId === 'all') {
+            card.style.display = 'block';
+        } else {
+            if (card.getAttribute('data-category') == categoryId) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Menangkap flashdata 'pesan_sukses' dari fungsi Cart::process()
     <?php if (session()->getFlashdata('pesan_sukses')) : ?>
         Swal.fire({
             target: document.body,
@@ -188,11 +208,9 @@ document.addEventListener('DOMContentLoaded', function() {
     <?php endif; ?>
 });
 
-// FUNGSI UTAMAMU KITA MODIFIKASI JADI MULTIFUNGSI (ADD & DECREASE AJAX)
 function updateCartQuantity(menuId, action, btn) {
     btn.disabled = true;
 
-    // Menentukan URL endpoint berdasarkan aksi
     let url = action === 'add' ? '<?= base_url('cart/add'); ?>' : '<?= base_url('cart/decrease_ajax'); ?>';
 
     fetch(url, {
@@ -211,7 +229,6 @@ function updateCartQuantity(menuId, action, btn) {
             const countEl = document.getElementById('cartBarCount');
             const totalEl = document.getElementById('cartBarTotal');
 
-            // Update info data total belanjaan di bawah secara realtime
             if (data.cartCount > 0) {
                 countEl.textContent = data.cartCount;
                 totalEl.textContent = 'Rp ' + new Intl.NumberFormat('id-ID').format(data.cartTotal);
@@ -220,7 +237,6 @@ function updateCartQuantity(menuId, action, btn) {
                 bar.style.display = 'none';
             }
 
-            // Atur manipulasi interface tombol secara realtime tanpa reload halaman
             const btnInitial = document.getElementById('btn-initial-' + menuId);
             const counterDiv = document.getElementById('counter-' + menuId);
             const qtyVal = document.getElementById('qty-val-' + menuId);
