@@ -118,7 +118,6 @@ button, input, textarea, select {
     background-size: 50px;
     opacity: 0.06;
 }
-display: none;
 .promo-banner .banner-content {
   position: relative;
   z-index: 2; /* Supaya teks tetap terbaca di atas elemen dekoratif */
