@@ -316,7 +316,7 @@
                                                 <div class="mb-3"><label class="form-label fw-semibold">Nama Menu</label><input type="text" name="menu_name" class="form-control" value="<?= $row['menu_name'] ?>" required></div>
                                                 <div class="mb-3">
                                                     <label class="form-label fw-semibold">Kategori</label>
-                                                    <select name="category_id" class="form-select">
+                                                    <select name="category_id" class="form-select kategori-select">
                                                         <option value="1" <?= $row['category_id'] == 1 ? 'selected' : '' ?>>Snack</option>
                                                         <option value="2" <?= $row['category_id'] == 2 ? 'selected' : '' ?>>Teh & Susu</option>
                                                         <option value="3" <?= $row['category_id'] == 3 ? 'selected' : '' ?>>Ayam & Seafood</option>
@@ -333,8 +333,14 @@
                                                     </select>
                                                 </div>
 
+                                                <div class="mb-3 deskripsi-paket-wrapper" style="<?= $row['category_id'] == 8 ? '' : 'display:none;' ?>">
+                                                    <label class="form-label fw-semibold text-primary">📦 Deskripsi Isi Paket</label>
+                                                    <textarea name="description" class="form-control" rows="3" placeholder="Contoh: 1 Nasi Goreng + 1 Es Teh Manis + 1 Puding Coklat"><?= $row['description'] ?? '' ?></textarea>
+                                                    <small class="text-muted">Jelaskan apa saja isi paket ini. Hanya muncul untuk kategori "Paket Menu".</small>
+                                                </div>
+
                                                 <div class="mb-3">
-                                                    <label class="form-label fw-semibold text-primary">⚙️ Atur Ulang Varian Menu</label>
+                                                    <label class="form-label fw-semibold text-primary">⚙️ Atur Ulang Varian Menu <span class="variant-optional-note text-muted fw-normal" style="display:none; font-size:11px;">(opsional untuk Paket Menu)</span></label>
                                                     <div class="variant-box edit-variant-container" data-menu-id="<?= $row['id']; ?>">
                                                         <?php if(!empty($variants)): ?>
                                                             <?php foreach($variants as $index => $v): ?>
@@ -418,7 +424,7 @@
                     <div class="mb-3"><label class="form-label fw-semibold">Nama Menu</label><input type="text" name="menu_name" class="form-control" placeholder="Masukkan nama makanan/minuman" required></div>
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Kategori</label>
-                        <select name="category_id" class="form-select">
+                        <select name="category_id" class="form-select kategori-select">
                             <option value="1">Snack</option>
                             <option value="2">Teh & Susu</option>
                             <option value="3">Ayam & Seafood</option>
@@ -435,8 +441,14 @@
                         </select>
                     </div>
 
+                    <div class="mb-3 deskripsi-paket-wrapper" style="display:none;">
+                        <label class="form-label fw-semibold text-primary">📦 Deskripsi Isi Paket</label>
+                        <textarea name="description" class="form-control" rows="3" placeholder="Contoh: 1 Nasi Goreng + 1 Es Teh Manis + 1 Puding Coklat"></textarea>
+                        <small class="text-muted">Jelaskan apa saja isi paket ini. Hanya muncul untuk kategori "Paket Menu".</small>
+                    </div>
+
                     <div class="mb-3">
-                        <label class="form-label fw-semibold text-success">📋 Masukkan Varian Rasa / Ukuran / Level</label>
+                        <label class="form-label fw-semibold text-success">📋 Masukkan Varian Rasa / Ukuran / Level <span class="variant-optional-note text-muted fw-normal" style="display:none; font-size:11px;">(opsional untuk Paket Menu)</span></label>
                         <div class="variant-box" id="tambah-variant-container">
                             <div class="row g-2 mb-2 variant-row">
                                 <div class="col-md-5">
@@ -512,6 +524,11 @@
                     </div>
                 `;
                 tambahContainer.appendChild(newRow);
+
+                // Baris baru harus ikut aturan wajib/opsional sesuai kategori yang sedang dipilih
+                const form = tambahContainer.closest('form');
+                const catSelect = form ? form.querySelector('.kategori-select') : null;
+                if (catSelect) applyKategoriRules(catSelect);
             });
         }
 
@@ -533,6 +550,11 @@
                         </div>
                     `;
                     editContainer.appendChild(newRow);
+
+                    // Baris baru harus ikut aturan wajib/opsional sesuai kategori yang sedang dipilih
+                    const form = this.closest('form');
+                    const catSelect = form ? form.querySelector('.kategori-select') : null;
+                    if (catSelect) applyKategoriRules(catSelect);
                 }
             });
         });
@@ -542,6 +564,45 @@
             if (e.target.closest('.btn-remove-variant')) {
                 e.target.closest('.variant-row').remove();
             }
+        });
+
+        // 4. Aturan khusus untuk kategori "Paket Menu" (value 8), berlaku di modal
+        //    Tambah maupun semua modal Edit:
+        //    - Tampilkan field "Deskripsi Isi Paket"
+        //    - Field varian (nama/harga/stok) jadi OPSIONAL, tidak wajib diisi
+        const PAKET_MENU_VALUE = '8';
+
+        function applyKategoriRules(selectEl) {
+            const form = selectEl.closest('form');
+            if (!form) return;
+
+            const isPaket = selectEl.value === PAKET_MENU_VALUE;
+
+            // Toggle field deskripsi paket
+            const wrapper = form.querySelector('.deskripsi-paket-wrapper');
+            if (wrapper) {
+                wrapper.style.display = isPaket ? '' : 'none';
+            }
+
+            // Toggle label penanda opsional
+            const note = form.querySelector('.variant-optional-note');
+            if (note) {
+                note.style.display = isPaket ? '' : 'none';
+            }
+
+            // Toggle wajib/tidaknya semua input varian di form ini (termasuk baris yang baru ditambah)
+            form.querySelectorAll('input[name="variant_name[]"], input[name="variant_price[]"], input[name="variant_stock[]"]').forEach(input => {
+                input.required = !isPaket;
+            });
+        }
+
+        document.querySelectorAll('.kategori-select').forEach(select => {
+            // Set kondisi awal saat halaman/modal dimuat
+            applyKategoriRules(select);
+            // Update setiap kali kategori diganti
+            select.addEventListener('change', function() {
+                applyKategoriRules(this);
+            });
         });
     });
 </script>

@@ -89,19 +89,28 @@
                             </span>
                             
                             <div class="quantity-control-wrapper" id="wrapper-<?= $menu['id']; ?>">
-                                <button type="button" class="btn-add" id="btn-initial-<?= $menu['id']; ?>"
-                                    onclick='handleAddClick(<?= json_encode($menu['id']); ?>, <?= json_encode($menu['menu_name']); ?>, <?= json_encode($variants); ?>, <?= json_encode($singleVariantId); ?>, this)'
+                                <button type="button" class="btn-add js-add-btn" id="btn-initial-<?= $menu['id']; ?>"
+                                    data-menu-id="<?= esc($menu['id'], 'attr'); ?>"
+                                    data-menu-name="<?= esc($menu['menu_name'], 'attr'); ?>"
+                                    data-variants='<?= esc(json_encode($variants), 'attr'); ?>'
+                                    data-single-variant-id="<?= esc($singleVariantId, 'attr'); ?>"
                                     style="display: <?= $menuQty == 0 ? 'block' : 'none'; ?>;">+</button>
 
                                 <?php if (!$hasMultipleVariants): ?>
                                     <div class="counter-control" id="counter-<?= $menu['id']; ?>" style="display: <?= $menuQty > 0 ? 'flex' : 'none'; ?>; align-items: center; gap: 8px;">
-                                        <button type="button" class="btn-add" style="background-color: #d33 !important;" onclick="updateCartQuantity(<?= json_encode($singleVariantId); ?>, 'decrease', this, <?= $menu['id']; ?>)">-</button>
+                                        <button type="button" class="btn-add js-decrease-btn" style="background-color: #d33 !important;"
+                                            data-variant-id="<?= esc($singleVariantId, 'attr'); ?>"
+                                            data-menu-id="<?= esc($menu['id'], 'attr'); ?>">-</button>
                                         <span id="qty-val-<?= $menu['id']; ?>" style="font-weight: 600; font-size: 14px; min-width: 16px; text-align: center; color: #333; font-family: 'Poppins', sans-serif;"><?= $menuQty; ?></span>
-                                        <button type="button" class="btn-add" style="background-color: #4CAF50 !important;" onclick="updateCartQuantity(<?= json_encode($singleVariantId); ?>, 'add', this, <?= $menu['id']; ?>)">+</button>
+                                        <button type="button" class="btn-add js-increase-btn" style="background-color: #4CAF50 !important;"
+                                            data-variant-id="<?= esc($singleVariantId, 'attr'); ?>"
+                                            data-menu-id="<?= esc($menu['id'], 'attr'); ?>">+</button>
                                     </div>
                                 <?php else: ?>
-                                    <div class="counter-control" id="counter-<?= $menu['id']; ?>" style="display: <?= $menuQty > 0 ? 'flex' : 'none'; ?>; align-items: center; gap: 8px; cursor:pointer;"
-                                        onclick='openVariantPicker(<?= json_encode($menu['id']); ?>, <?= json_encode($menu['menu_name']); ?>, <?= json_encode($variants); ?>)'>
+                                    <div class="counter-control js-open-variant" id="counter-<?= $menu['id']; ?>" style="display: <?= $menuQty > 0 ? 'flex' : 'none'; ?>; align-items: center; gap: 8px; cursor:pointer;"
+                                        data-menu-id="<?= esc($menu['id'], 'attr'); ?>"
+                                        data-menu-name="<?= esc($menu['menu_name'], 'attr'); ?>"
+                                        data-variants='<?= esc(json_encode($variants), 'attr'); ?>'>
                                         <span style="background-color:#4CAF50; color:#fff; border-radius:20px; padding:5px 12px; font-weight:600; font-size:12px;">
                                             <span id="qty-val-<?= $menu['id']; ?>"><?= $menuQty; ?></span> di keranjang
                                         </span>
@@ -185,6 +194,40 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
+// Event delegation: menangkap semua klik tombol +/- dan buka-varian di dalam menu-grid
+document.addEventListener('click', function(e) {
+    const addBtn = e.target.closest('.js-add-btn');
+    if (addBtn) {
+        const menuId = addBtn.dataset.menuId;
+        const menuName = addBtn.dataset.menuName;
+        const variants = JSON.parse(addBtn.dataset.variants || '[]');
+        const singleVariantId = addBtn.dataset.singleVariantId;
+        handleAddClick(menuId, menuName, variants, singleVariantId, addBtn);
+        return;
+    }
+
+    const decBtn = e.target.closest('.js-decrease-btn');
+    if (decBtn) {
+        updateCartQuantity(decBtn.dataset.variantId, 'decrease', decBtn, decBtn.dataset.menuId);
+        return;
+    }
+
+    const incBtn = e.target.closest('.js-increase-btn');
+    if (incBtn) {
+        updateCartQuantity(incBtn.dataset.variantId, 'add', incBtn, incBtn.dataset.menuId);
+        return;
+    }
+
+    const openVariantEl = e.target.closest('.js-open-variant');
+    if (openVariantEl) {
+        const menuId = openVariantEl.dataset.menuId;
+        const menuName = openVariantEl.dataset.menuName;
+        const variants = JSON.parse(openVariantEl.dataset.variants || '[]');
+        openVariantPicker(menuId, menuName, variants);
+        return;
+    }
+});
+
 // Diklik saat tombol "+" pertama kali ditekan di sebuah kartu menu.
 function handleAddClick(menuId, menuName, variants, singleVariantId, btn) {
     if (variants.length <= 1) {

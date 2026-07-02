@@ -160,13 +160,17 @@ class Admin extends BaseController
 
         $isRecommended = $this->request->getPost('is_recommended') ?? 0;
 
+        // Deskripsi hanya relevan untuk kategori "Paket Menu" (category_id 8),
+        // tapi kita tetap simpan apa pun yang dikirim form (kosong jika bukan paket).
+        $description = $this->request->getPost('description') ?? '';
+
         $db = \Config\Database::connect();
         
         // Menggunakan insert builder langsung ke tabel menus tanpa lewat model logic
         $db->table('menus')->insert([
             'category_id'    => $this->request->getPost('category_id'),
             'menu_name'      => $this->request->getPost('menu_name'),
-            'description'    => '',
+            'description'    => $description,
             'image_path'     => $namaFile,
             'is_recommended' => $isRecommended, 
             'is_active'      => 1
@@ -199,9 +203,14 @@ class Admin extends BaseController
     {
         $isRecommended = $this->request->getPost('is_recommended') ?? 0;
 
+        // Deskripsi hanya relevan untuk kategori "Paket Menu" (category_id 8),
+        // tapi kita tetap simpan apa pun yang dikirim form (kosong jika bukan paket).
+        $description = $this->request->getPost('description') ?? '';
+
         $menuData = [
             'category_id'    => $this->request->getPost('category_id'),
             'menu_name'      => $this->request->getPost('menu_name'),
+            'description'    => $description,
             'is_recommended' => $isRecommended
         ];
 
