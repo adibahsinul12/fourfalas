@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        * { box-sizing: border-box; }
         body { font-family: 'Poppins', sans-serif; background-color: #F7F3EE; color: #333333; margin: 0; padding: 0; overflow-x: hidden; }
 
         /* ===== SIDEBAR ===== */
@@ -24,6 +25,7 @@
             justify-content: space-between;
             z-index: 1050;
             transition: left 0.3s ease;
+            overflow-y: auto;
         }
         .sidebar-brand { color: #FFFFFF; font-size: 1.5rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 10px; padding-left: 12px; margin-bottom: 30px; }
         .sidebar-menu { list-style: none; padding: 0; margin: 0; flex-grow: 1; }
@@ -55,7 +57,7 @@
         .sidebar-overlay.show { display: block; }
 
         /* ===== MAIN CONTENT ===== */
-        .main-content { margin-left: 260px; padding: 30px; min-height: 100vh; transition: margin-left 0.3s ease; }
+        .main-content { margin-left: 260px; padding: 30px; min-height: 100vh; transition: margin-left 0.3s ease; max-width: 100%; }
 
         /* ===== TOPBAR ===== */
         .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; gap: 12px; flex-wrap: wrap; }
@@ -85,8 +87,8 @@
         .page-header h4 { font-size: 1.15rem; margin: 0; }
 
         /* ===== CUSTOM BUTTON GREEN ===== */
-        .btn-tambah { 
-            background-color: #4CAF50 !important; 
+        .btn-tambah {
+            background-color: #4CAF50 !important;
             border-color: #4CAF50 !important;
             color: #FFFFFF !important;
             font-weight: 500;
@@ -98,24 +100,36 @@
 
         /* ===== WIDGET / TABLE ===== */
         .widget-card { background-color: #FFFFFF; border-radius: 16px; padding: 24px; border: 1px solid rgba(229, 229, 229, 0.5); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.01); }
+        .custom-table { width: 100%; }
         .custom-table th { font-size: 12px; text-transform: uppercase; color: #888888; font-weight: 600; padding: 12px 16px; border-bottom: 2px solid #F7F3EE; white-space: nowrap; }
         .custom-table td { font-size: 13px; padding: 14px 16px; vertical-align: middle; border-bottom: 1px solid #F7F3EE; }
         .badge-status { padding: 4px 12px; border-radius: 6px; font-weight: 600; font-size: 11px; display: inline-block; background-color: #E8F5E9; color: #4CAF50; white-space: nowrap; }
         .table-responsive { -webkit-overflow-scrolling: touch; }
+
+        .aksi-group { display: flex; justify-content: center; gap: 8px; }
+        .btn-edit-meja, .btn-hapus-meja {
+            white-space: nowrap;
+        }
 
         /* ===== MODAL CUSTOM ===== */
         .modal-dialog { margin: 1.75rem auto; }
         .modal-content { border-radius: 14px; font-family: 'Poppins', sans-serif; }
         button, input, select, textarea, .btn { font-family: 'Poppins', sans-serif !important; }
 
+        /* =======================================================
+           TABLET (768px - 991.98px): sidebar jadi drawer + main content full width
+        ======================================================= */
         @media (max-width: 991.98px) {
             .sidebar { left: -280px; width: 260px; box-shadow: 4px 0 20px rgba(0,0,0,0.15); }
             .sidebar.show { left: 0; }
             .sidebar-close-btn { display: block; }
-            .main-content { margin-left: 0; padding: 20px; }
+            .main-content { margin-left: 0; padding: 24px; }
             .menu-toggle-btn { display: flex; }
         }
 
+        /* =======================================================
+           TABLET KECIL / HP LANDSCAPE (576px - 767.98px)
+        ======================================================= */
         @media (max-width: 767.98px) {
             .main-content { padding: 16px; }
             .topbar { margin-bottom: 20px; }
@@ -128,8 +142,70 @@
             .custom-table th, .custom-table td { padding: 10px 12px; font-size: 12px; }
         }
 
+        /* =======================================================
+           HP / MOBILE (di bawah 576px): tabel -> tampilan kartu
+        ======================================================= */
+        @media (max-width: 575.98px) {
+            .page-header { flex-direction: column; align-items: stretch !important; }
+            .page-header .btn-tambah { width: 100%; justify-content: center; padding: 10px 12px; }
+
+            .widget-card { padding: 12px; }
+
+            /* Sembunyikan header tabel asli, ubah tiap baris jadi kartu */
+            .custom-table thead { display: none; }
+            .custom-table, .custom-table tbody, .custom-table tr, .custom-table td { display: block; width: 100%; }
+            .custom-table tr {
+                margin-bottom: 14px;
+                border: 1px solid #F0EBE4;
+                border-radius: 12px;
+                padding: 10px 4px;
+                background-color: #FFFDFB;
+            }
+            .custom-table tr:last-child { margin-bottom: 0; }
+            .custom-table td {
+                border-bottom: none;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                text-align: right;
+            }
+            .custom-table td::before {
+                content: attr(data-label);
+                font-size: 11px;
+                font-weight: 600;
+                text-transform: uppercase;
+                color: #888888;
+                text-align: left;
+            }
+            .custom-table td.aksi-cell {
+                display: block;
+                text-align: left;
+            }
+            .custom-table td.aksi-cell::before { content: ""; }
+            .aksi-group { flex-direction: column; }
+            .aksi-group .btn-edit-meja, .aksi-group .btn-hapus-meja {
+                width: 100%;
+                justify-content: center;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+
+            /* Modal full-width nyaman di HP */
+            .modal-dialog { margin: 0.75rem; }
+        }
+
         @media (max-width: 479.98px) {
             .sidebar-brand span { font-size: 1.2rem; }
+        }
+
+        /* =======================================================
+           DESKTOP BESAR (>=1400px): batasi lebar konten biar tidak melebar berlebihan
+        ======================================================= */
+        @media (min-width: 1400px) {
+            .main-content { padding: 40px 60px; }
+            .widget-card { padding: 30px; }
         }
     </style>
 </head>
@@ -206,22 +282,22 @@
                     <?php if (!empty($meja) && is_array($meja)) : ?>
                         <?php foreach ($meja as $row) : ?>
                             <tr>
-                                <td><b>Meja <?= esc($row['table_number']) ?></b></td>
-                                <td><?= esc($row['capacity']) ?> Orang</td>
-                                <td>
+                                <td data-label="Nomor Meja"><b>Meja <?= esc($row['table_number']) ?></b></td>
+                                <td data-label="Kapasitas"><?= esc($row['capacity']) ?> Orang</td>
+                                <td data-label="Status">
                                     <?php if ($row['status'] == 'Tersedia') : ?>
                                         <span class="badge-status">Tersedia</span>
                                     <?php else : ?>
                                         <span class="badge bg-danger-subtle text-danger px-2 py-1" style="border-radius: 6px;"><?= esc($row['status']) ?></span>
                                     <?php endif; ?>
                                 </td>
-                                <td class="text-center">
-                                    <div class="d-flex justify-content-center gap-2">
-                                        <button class="btn btn-sm text-white" data-bs-toggle="modal" data-bs-target="#modalEditMeja<?= $row['id'] ?>" style="border-radius: 6px; background-color: #4CAF50; border-color: #4CAF50; font-size: 13px; font-weight: 500; padding: 5px 12px;">
+                                <td class="aksi-cell" data-label="Aksi">
+                                    <div class="aksi-group">
+                                        <button class="btn btn-sm btn-edit-meja text-white" data-bs-toggle="modal" data-bs-target="#modalEditMeja<?= $row['id'] ?>" style="border-radius: 6px; background-color: #4CAF50; border-color: #4CAF50; font-size: 13px; font-weight: 500; padding: 5px 12px;">
                                             <i class="fa-solid fa-pen-to-square"></i> Edit
                                         </button>
 
-                                        <a href="<?= base_url('admin/meja/delete/'.$row['id']) ?>" class="btn btn-sm text-white" onclick="return confirm('Apakah Anda yakin ingin menghapus meja ini?')" style="border-radius: 6px; background-color: #5C3A21; border-color: #5C3A21; font-size: 13px; font-weight: 500; padding: 5px 12px;">
+                                        <a href="<?= base_url('admin/meja/delete/'.$row['id']) ?>" class="btn btn-sm btn-hapus-meja text-white" onclick="return confirm('Apakah Anda yakin ingin menghapus meja ini?')" style="border-radius: 6px; background-color: #5C3A21; border-color: #5C3A21; font-size: 13px; font-weight: 500; padding: 5px 12px;">
                                             <i class="fa-solid fa-trash"></i> Hapus
                                         </a>
                                     </div>

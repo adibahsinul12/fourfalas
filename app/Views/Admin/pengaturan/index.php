@@ -221,6 +221,12 @@
             .menu-toggle-btn { display: flex; }
         }
 
+        /* ── TABLET (768px–991px): dua kolom tetap sejajar tapi lebih rapat ─ */
+        @media (min-width: 768px) and (max-width: 991.98px) {
+            .widget-card { padding: 20px; }
+            .search-box { width: 220px; }
+        }
+
         @media (max-width: 767.98px) {
             .main-content { padding: 16px; }
             .topbar { margin-bottom: 20px; }
@@ -234,10 +240,30 @@
             .row.g-4 .col-lg-7 { width: 100%; }
 
             h4 { font-size: 1rem !important; }
+
+            .widget-card { padding: 18px; }
+            h5 { font-size: 14px !important; }
+
+            /* Jam operasional: kecilkan label di input-group biar gak kepepet */
+            .input-group-text { padding: 8px 8px; font-size: 11px !important; }
+            .input-group .form-control[type="time"] { font-size: 12px; padding-left: 8px; padding-right: 8px; }
         }
 
         @media (max-width: 479.98px) {
             .main-content { padding: 12px; }
+            .widget-card { padding: 16px; }
+
+            /* Di HP kecil, tumpuk Buka/Tutup vertikal biar gak sesak */
+            .jam-operasional .col-6 { width: 100%; flex: 0 0 100%; max-width: 100%; }
+            .jam-operasional .col-6:first-child { margin-bottom: 8px; }
+
+            .btn { font-size: 12px; }
+            .notif-btn, .menu-toggle-btn { width: 36px; height: 36px; }
+        }
+
+        @media (max-width: 359.98px) {
+            .search-box input { font-size: 12px; padding-left: 36px; }
+            .profile-avatar { width: 28px; height: 28px; }
         }
 
 
@@ -443,7 +469,7 @@
                     <!-- Jam Operasional -->
                     <div class="mb-3">
                         <label class="form-label">Jam Operasional</label>
-                        <div class="row g-2">
+                        <div class="row g-2 jam-operasional">
                             <div class="col-6">
                                 <div class="input-group">
                                     <span class="input-group-text" style="font-size:12px;">Buka</span>
@@ -459,7 +485,6 @@
                         </div>
                     </div>
 
-                    <!-- Pajak -->
                     <!-- Kontak & Alamat -->
                     <div class="mb-4">
                         <label class="form-label">Kontak & Alamat Kafe</label>
