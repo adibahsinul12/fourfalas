@@ -192,14 +192,32 @@ table.transaksi tr:last-child td{ border-bottom:none; }
 
 <aside class="sidebar">
     <div class="logo"><i class="fa-solid fa-mug-saucer"></i> FO'orders</div>
+       <?php $current = uri_string(); // atau service('uri')->getPath() ?>
 
-    <a href="<?= base_url('owner') ?>" class="nav-item active"><i class="fa-solid fa-gauge"></i> Dashboard</a>
-    <a href="<?= base_url('owner/karyawan') ?>" class="nav-item"><i class="fa-solid fa-users"></i> Tenaga Kerja</a>
-    <a href="<?= base_url('owner/rating') ?>" class="nav-item"><i class="fa-solid fa-star"></i> Rating & Ulasan</a>
-    <a href="<?= base_url('owner/laporan') ?>" class="nav-item"><i class="fa-solid fa-chart-line"></i> Laporan Keuangan</a>
-    <a href="<?= base_url('owner/pengaturan') ?>" class="nav-item"><i class="fa-solid fa-gear"></i> Pengaturan</a>
+            <a href="<?= base_url('owner') ?>" 
+            class="nav-item <?= $current === 'owner' ? 'active' : '' ?>">
+            <i class="fa-solid fa-gauge"></i> Dashboard
+            </a>
 
+            <a href="<?= base_url('owner/karyawan') ?>" 
+            class="nav-item <?= str_starts_with($current, 'owner/karyawan') ? 'active' : '' ?>">
+            <i class="fa-solid fa-users"></i> Tenaga Kerja
+            </a>
 
+            <a href="<?= base_url('owner/rating') ?>" 
+            class="nav-item <?= str_starts_with($current, 'owner/rating') ? 'active' : '' ?>">
+            <i class="fa-solid fa-star"></i> Rating & Ulasan
+            </a>
+
+            <a href="<?= base_url('owner/laporan') ?>" 
+            class="nav-item <?= str_starts_with($current, 'owner/laporan') ? 'active' : '' ?>">
+            <i class="fa-solid fa-chart-line"></i> Laporan Keuangan
+            </a>
+
+            <a href="<?= base_url('owner/pengaturan') ?>" 
+            class="nav-item <?= str_starts_with($current, 'owner/pengaturan') ? 'active' : '' ?>">
+            <i class="fa-solid fa-gear"></i> Pengaturan
+            </a>
     <div class="nav-bottom">
         <a href="<?= base_url('logout') ?>" class="nav-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
     </div>
