@@ -12,13 +12,14 @@
 :root{
     --brown:#6B3A1E;
     --green:#4CAF50;
+    --green-deep:#3d8c40;
     --cream:#FAF6EB;
     --border:#E5E5E5;
     --text-muted:#8a8a8a;
 }
 html{ scrollbar-gutter: stable; }
 *{ margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
-body{ background:var(--cream); display:flex; min-height:100vh; }
+body{ background:var(--cream); display:flex; min-height:100vh; overflow-x:hidden; }
 
 /* ===== Sidebar ===== */
 .sidebar{
@@ -41,7 +42,7 @@ body{ background:var(--cream); display:flex; min-height:100vh; }
 .nav-bottom{ margin-top:auto; }
 
 /* ===== Main content ===== */
-.main{ flex:1; padding:28px 32px; min-width:0; overflow-x:hidden; }
+.main{ flex:1; padding:28px 32px; min-width:0; overflow-x:hidden; max-width:100%; }
 .topbar{ display:flex; justify-content:flex-end; align-items:center; gap:16px; margin-bottom:24px; }
 .owner-chip{ display:flex; align-items:center; gap:10px; background:#fff; padding:8px 14px; border-radius:10px; font-size:13px; }
 .owner-chip i{ background:var(--brown); color:#fff; padding:8px; border-radius:50%; }
@@ -61,10 +62,16 @@ body{ background:var(--cream); display:flex; min-height:100vh; }
 }
 .error-list ul{ margin:4px 0 0 18px; }
 
+.page-title{ font-size:19px; font-weight:600; color:#333; margin-bottom:20px; }
+
 /* ===== Panels ===== */
-.panels{ display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:start; }
+.panels{
+    display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:start;
+    max-width:1000px;
+}
 .panel{
     background:#fff; border-radius:14px; padding:24px; box-shadow:0 4px 14px rgba(0,0,0,.03); margin-bottom:20px;
+    min-width:0;
 }
 .panel h3{ font-size:15px; color:#333; margin-bottom:6px; }
 .panel .sub{ font-size:12px; color:var(--text-muted); margin-bottom:20px; }
@@ -78,56 +85,104 @@ body{ background:var(--cream); display:flex; min-height:100vh; }
     width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:8px;
     font-size:13px; font-family:inherit;
 }
-.field input:focus{ outline:none; border-color:var(--green); }
+.field input:focus{ outline:none; border-color:var(--green); box-shadow:0 0 0 3px rgba(76,175,80,.12); }
 .field .hint{ font-size:11px; color:var(--text-muted); margin-top:4px; }
 
 .field-row{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
 
-.logo-preview{
-    display:flex; align-items:center; gap:14px; margin-bottom:16px;
+/* ===== Upload logo (custom, ganti tampilan file input bawaan browser) ===== */
+.logo-upload{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+    padding:14px;
+    background:var(--cream);
+    border:1px dashed var(--border);
+    border-radius:12px;
 }
-.logo-preview img{
-    width:64px; height:64px; border-radius:10px; object-fit:cover; border:1px solid var(--border);
+.logo-upload img{
+    width:56px; height:56px; border-radius:10px; object-fit:cover;
+    border:1px solid var(--border); flex-shrink:0; background:#fff;
 }
-.logo-preview .placeholder{
-    width:64px; height:64px; border-radius:10px; border:1px dashed var(--border);
-    display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:20px;
+.logo-upload .placeholder{
+    width:56px; height:56px; border-radius:10px; border:1px dashed var(--border);
+    display:flex; align-items:center; justify-content:center; color:var(--text-muted);
+    font-size:18px; flex-shrink:0; background:#fff;
+}
+.logo-upload-info{ flex:1; min-width:0; }
+.logo-upload-info .label-title{ font-size:13px; font-weight:600; color:#333; margin-bottom:2px; }
+.logo-upload-info .label-sub{ font-size:11px; color:var(--text-muted); margin-bottom:8px; }
+
+.file-input-wrap{ position:relative; display:inline-block; max-width:100%; }
+.file-input-wrap input[type="file"]{
+    position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%;
+}
+.file-input-btn{
+    display:inline-flex; align-items:center; gap:8px;
+    background:#fff; border:1px solid var(--border); color:var(--brown);
+    padding:8px 14px; border-radius:8px; font-size:12px; font-weight:600;
+    white-space:nowrap;
+}
+.file-name{
+    display:block; font-size:11px; color:var(--text-muted); margin-top:6px;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:100%;
 }
 
 .btn-submit{
     background:var(--green); color:#fff; border:none; padding:11px 24px;
     border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; margin-top:6px;
+    width:100%;
+    display:flex; align-items:center; justify-content:center; gap:8px;
 }
-.btn-submit:hover{ opacity:.9; }
+.btn-submit:hover{ background:var(--green-deep); }
 .btn-submit.brown{ background:var(--brown); }
+.btn-submit.brown:hover{ background:#552e18; }
 
 /* ===== Hamburger ===== */
 .hamburger{
     display:none; background:#fff; border:1px solid var(--border); width:38px; height:38px;
     border-radius:8px; align-items:center; justify-content:center; font-size:16px; color:var(--brown);
-    cursor:pointer; margin-right:auto;
+    cursor:pointer; margin-right:auto; flex-shrink:0;
 }
 .sidebar-overlay{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:40; }
 .sidebar-overlay.show{ display:block; }
 
+/* ===== TABLET (<=1100px) ===== */
 @media (max-width: 1100px){
     .panels{ grid-template-columns:1fr; }
     .sidebar{ width:220px; }
 }
+
+/* ===== TABLET KECIL / HP LANDSCAPE (<=900px) ===== */
 @media (max-width: 900px){
     .sidebar{
         position:fixed; left:0; top:0; width:240px; height:100vh; z-index:50;
         transform:translateX(-100%); transition:transform .25s ease;
     }
     .sidebar.open{ transform:translateX(0); }
-    .main{ padding:20px 18px; width:100%; }
+    .main{ padding:20px 24px; width:100%; }
     .hamburger{ display:flex; }
     .topbar{ justify-content:space-between; }
 }
+
+/* ===== HP (<=600px) ===== */
 @media (max-width: 600px){
     .panel{ padding:18px; }
     .field-row{ grid-template-columns:1fr; }
-    main.main{ padding:16px 14px; }
+    main.main{ padding:16px 18px; }
+    .page-title{ font-size:17px; }
+
+    /* Upload logo ditumpuk vertikal biar gak sempit */
+    .logo-upload{ flex-direction:column; align-items:flex-start; text-align:left; }
+    .logo-upload img,
+    .logo-upload .placeholder{ width:64px; height:64px; }
+}
+
+/* ===== HP SANGAT KECIL (<=360px) ===== */
+@media (max-width: 360px){
+    main.main{ padding:14px 12px; }
+    .panel{ padding:14px; }
 }
 </style>
 </head>
@@ -136,32 +191,33 @@ body{ background:var(--cream); display:flex; min-height:100vh; }
 <aside class="sidebar">
     <div class="logo"><i class="fa-solid fa-mug-saucer"></i> FO'orders</div>
 
-            <?php $current = uri_string(); // atau service('uri')->getPath() ?>
+    <?php $current = uri_string(); ?>
 
-            <a href="<?= base_url('owner') ?>" 
-            class="nav-item <?= $current === 'owner' ? 'active' : '' ?>">
-            <i class="fa-solid fa-gauge"></i> Dashboard
-            </a>
+    <a href="<?= base_url('owner') ?>"
+       class="nav-item <?= $current === 'owner' ? 'active' : '' ?>">
+        <i class="fa-solid fa-gauge"></i> Dashboard
+    </a>
 
-            <a href="<?= base_url('owner/karyawan') ?>" 
-            class="nav-item <?= str_starts_with($current, 'owner/karyawan') ? 'active' : '' ?>">
-            <i class="fa-solid fa-users"></i> Tenaga Kerja
-            </a>
+    <a href="<?= base_url('owner/karyawan') ?>"
+       class="nav-item <?= str_starts_with($current, 'owner/karyawan') ? 'active' : '' ?>">
+        <i class="fa-solid fa-users"></i> Tenaga Kerja
+    </a>
 
-            <a href="<?= base_url('owner/rating') ?>" 
-            class="nav-item <?= str_starts_with($current, 'owner/rating') ? 'active' : '' ?>">
-            <i class="fa-solid fa-star"></i> Rating & Ulasan
-            </a>
+    <a href="<?= base_url('owner/rating') ?>"
+       class="nav-item <?= str_starts_with($current, 'owner/rating') ? 'active' : '' ?>">
+        <i class="fa-solid fa-star"></i> Rating & Ulasan
+    </a>
 
-            <a href="<?= base_url('owner/laporan') ?>" 
-            class="nav-item <?= str_starts_with($current, 'owner/laporan') ? 'active' : '' ?>">
-            <i class="fa-solid fa-chart-line"></i> Laporan Keuangan
-            </a>
+    <a href="<?= base_url('owner/laporan') ?>"
+       class="nav-item <?= str_starts_with($current, 'owner/laporan') ? 'active' : '' ?>">
+        <i class="fa-solid fa-chart-line"></i> Laporan Keuangan
+    </a>
 
-            <a href="<?= base_url('owner/pengaturan') ?>" 
-            class="nav-item <?= str_starts_with($current, 'owner/pengaturan') ? 'active' : '' ?>">
-            <i class="fa-solid fa-gear"></i> Pengaturan
-            </a>
+    <a href="<?= base_url('owner/pengaturan') ?>"
+       class="nav-item <?= str_starts_with($current, 'owner/pengaturan') ? 'active' : '' ?>">
+        <i class="fa-solid fa-gear"></i> Pengaturan
+    </a>
+
     <div class="nav-bottom">
         <a href="<?= base_url('logout') ?>" class="nav-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
     </div>
@@ -196,7 +252,7 @@ body{ background:var(--cream); display:flex; min-height:100vh; }
         </div>
     <?php endif; ?>
 
-    <h2 style="margin-bottom:20px; color:#333;">Pengaturan</h2>
+    <div class="page-title">Pengaturan</div>
 
     <div class="panels">
         <!-- Info Cafe -->
@@ -206,15 +262,20 @@ body{ background:var(--cream); display:flex; min-height:100vh; }
 
             <form method="post" action="<?= base_url('owner/pengaturan/update-settings') ?>" enctype="multipart/form-data">
 
-                <div class="logo-preview">
+                <div class="logo-upload">
                     <?php if (! empty($settings['logo_path'])) : ?>
                         <img src="<?= base_url($settings['logo_path']) ?>" alt="Logo cafe">
                     <?php else : ?>
                         <div class="placeholder"><i class="fa-solid fa-mug-saucer"></i></div>
                     <?php endif; ?>
-                    <div class="field" style="margin-bottom:0; flex:1;">
-                        <label>Ganti Logo (opsional)</label>
-                        <input type="file" name="logo" accept="image/*">
+                    <div class="logo-upload-info">
+                        <div class="label-title">Logo Cafe</div>
+                        <div class="label-sub">PNG atau JPG, disarankan rasio 1:1</div>
+                        <div class="file-input-wrap">
+                            <span class="file-input-btn"><i class="fa-solid fa-upload"></i> Ganti Logo</span>
+                            <input type="file" name="logo" accept="image/*" onchange="updateFileName(this)">
+                        </div>
+                        <span class="file-name" id="fileNameLabel">Belum ada file dipilih</span>
                     </div>
                 </div>
 
@@ -235,7 +296,6 @@ body{ background:var(--cream); display:flex; min-height:100vh; }
                                value="<?= esc(old('operating_hours_close', substr($settings['operating_hours_close'], 0, 5))) ?>" required>
                     </div>
                 </div>
-
 
                 <div class="field">
                     <label>Kontak (No. HP / Email)</label>
@@ -278,6 +338,10 @@ body{ background:var(--cream); display:flex; min-height:100vh; }
 function toggleSidebar(){
     document.querySelector('.sidebar').classList.toggle('open');
     document.getElementById('sidebarOverlay').classList.toggle('show');
+}
+function updateFileName(input){
+    const label = document.getElementById('fileNameLabel');
+    label.textContent = input.files.length ? input.files[0].name : 'Belum ada file dipilih';
 }
 </script>
 
