@@ -6,6 +6,7 @@ use App\Models\OrderModel;
 use App\Models\OrderItemModel;
 use App\Models\TableModel;
 use App\Models\MenuModel;
+use App\Models\VariantModel; // <-- Load model varian baru
 
 class Admin extends BaseController
 {
@@ -13,6 +14,7 @@ class Admin extends BaseController
     protected $orderItemModel;
     protected $tableModel;
     protected $menuModel;
+    protected $variantModel; // <-- Daftarkan properti model varian
 
     public function __construct()
     {
@@ -20,6 +22,7 @@ class Admin extends BaseController
         $this->orderItemModel = new OrderItemModel();
         $this->tableModel     = new TableModel();
         $this->menuModel      = new MenuModel();
+        $this->variantModel   = new VariantModel(); // <-- Inisialisasi model varian
     }
 
     // ================= DASHBOARD =================
@@ -31,7 +34,6 @@ class Admin extends BaseController
             ->orderBy('orders.created_at', 'DESC')
             ->findAll();
 
-        // BENERIN DI SINI: Diarahkan ke folder 'pesanan' bawaan lu cok!
         return view('admin/pesanan/index', $data);
     }
 
@@ -47,14 +49,16 @@ class Admin extends BaseController
             return redirect()->to(base_url('admin'));
         }
 
-        // BENERIN DI SINI: Key diganti 'order_items' biar kebaca sama file detail.php lu!
-        $data['order_items'] = $this->orderItemModel
-            ->select('order_items.*, menus.menu_name')
-            ->join('menus', 'menus.id=order_items.menu_id')
-            ->where('order_id', $orderId)
-            ->findAll();
+        // PERBAIKAN: Join ke tabel menu_variants agar kasir & dapur bisa baca varian itemnya
+        $db = \Config\Database::connect();
+        $data['order_items'] = $db->table('order_items')
+            ->select('order_items.*, menus.menu_name, menu_variants.variant_name')
+            ->join('menus', 'menus.id = order_items.menu_id')
+            ->join('menu_variants', 'menu_variants.id = order_items.variant_id', 'left')
+            ->where('order_items.order_id', $orderId)
+            ->get()
+            ->getResultArray();
 
-        // BENERIN DI SINI: Diarahkan ke folder 'pesanan' juga!
         return view('admin/pesanan/detail', $data);
     }
 
@@ -78,7 +82,6 @@ class Admin extends BaseController
 
     public function processPayment($orderId)
     {
-        // FIX KUNCI UTAMA: Kita ganti ke getVar() murni untuk memaksa CI4 melacak value dropdown apa pun kondisinya!
         $paymentMethod = $this->request->getVar('payment_method') ?? 'Tunai';
         $amountPaid    = $this->request->getPost('amount_paid');
         $totalPayment  = $this->request->getPost('total_payment');
@@ -136,7 +139,7 @@ class Admin extends BaseController
     }
 
     // =====================================================
-    //                      MENU
+    //                      MENU (CRUD + VARIANT)
     // =====================================================
 
     // Halaman Menu
@@ -147,7 +150,7 @@ class Admin extends BaseController
         return view('admin/menu/index', $data);
     }
 
-    // Tambah Menu
+    // Tambah Menu dengan Varian Looping (Tanpa kolom price/stock di tabel menus)
     public function add()
     {
         $gambar = $this->request->getFile('gambar');
@@ -158,28 +161,46 @@ class Admin extends BaseController
             $gambar->move(ROOTPATH . 'public/uploads/menus', $namaFile);
         }
 
+        // 1. Insert ke tabel menus utama
         $this->menuModel->insert([
-            'category_id' => $this->request->getPost('category_id'),
-            'menu_name' => $this->request->getPost('menu_name'),
-            'description' => '',
-            'price' => $this->request->getPost('price'),
-            'stock' => $this->request->getPost('stock'),
-            'image_path' => $namaFile,
+            'category_id'    => $this->request->getPost('category_id'),
+            'menu_name'      => $this->request->getPost('menu_name'),
+            'description'    => '',
+            'image_path'     => $namaFile,
             'is_recommended' => 0,
-            'is_active' => 1
+            'is_active'      => 1
         ]);
+
+        $menuId = $this->menuModel->getInsertID(); // Ambil ID menu yang baru masuk
+
+        // 2. Ambil data array varian dari form
+        $variantNames  = $this->request->getPost('variant_name');
+        $variantPrices = $this->request->getPost('variant_price');
+        $variantStocks = $this->request->getPost('variant_stock');
+
+        // 3. Masukkan data varian lewat perulangan (looping)
+        if (!empty($variantNames)) {
+            foreach ($variantNames as $index => $name) {
+                if (!empty($name)) {
+                    $this->variantModel->insert([
+                        'menu_id'      => $menuId,
+                        'variant_name' => $name,
+                        'price'        => $variantPrices[$index] ?? 0,
+                        'stock'        => $variantStocks[$index] ?? 0
+                    ]);
+                }
+            }
+        }
 
         return redirect()->to(base_url('admin/menu'));
     }
 
-    // Edit Menu
+    // Edit Menu & Perbarui Relasi Varian
     public function edit($id)
     {
         $data = [
             'category_id' => $this->request->getPost('category_id'),
-            'menu_name' => $this->request->getPost('menu_name'),
-            'price' => $this->request->getPost('price'),
-            'stock' => $this->request->getPost('stock')
+            'menu_name'   => $this->request->getPost('menu_name')
         ];
 
         $gambar = $this->request->getFile('gambar');
@@ -190,7 +211,29 @@ class Admin extends BaseController
             $data['image_path'] = $namaFile;
         }
 
-        $this->menuModel->update($id,$data);
+        $this->menuModel->update($id, $data);
+
+        // 1. Hapus varian lama milik menu ini untuk menghindari penumpukan sampah data
+        $this->variantModel->where('menu_id', $id)->delete();
+
+        // 2. Ambil data input varian dari form edit
+        $variantNames  = $this->request->getPost('variant_name');
+        $variantPrices = $this->request->getPost('variant_price');
+        $variantStocks = $this->request->getPost('variant_stock');
+
+        // 3. Re-insert varian baru hasil perubahan
+        if (!empty($variantNames)) {
+            foreach ($variantNames as $index => $name) {
+                if (!empty($name)) {
+                    $this->variantModel->insert([
+                        'menu_id'      => $id,
+                        'variant_name' => $name,
+                        'price'        => $variantPrices[$index] ?? 0,
+                        'stock'        => $variantStocks[$index] ?? 0
+                    ]);
+                }
+            }
+        }
 
         return redirect()->to(base_url('admin/menu'));
     }
