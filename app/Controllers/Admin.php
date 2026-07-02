@@ -6,7 +6,7 @@ use App\Models\OrderModel;
 use App\Models\OrderItemModel;
 use App\Models\TableModel;
 use App\Models\MenuModel;
-use App\Models\VariantModel; // <-- Load model varian baru
+use App\Models\VariantModel; 
 
 class Admin extends BaseController
 {
@@ -14,7 +14,7 @@ class Admin extends BaseController
     protected $orderItemModel;
     protected $tableModel;
     protected $menuModel;
-    protected $variantModel; // <-- Daftarkan properti model varian
+    protected $variantModel; 
 
     public function __construct()
     {
@@ -22,7 +22,7 @@ class Admin extends BaseController
         $this->orderItemModel = new OrderItemModel();
         $this->tableModel     = new TableModel();
         $this->menuModel      = new MenuModel();
-        $this->variantModel   = new VariantModel(); // <-- Inisialisasi model varian
+        $this->variantModel   = new VariantModel(); 
     }
 
     // ================= DASHBOARD =================
@@ -49,7 +49,6 @@ class Admin extends BaseController
             return redirect()->to(base_url('admin'));
         }
 
-        // PERBAIKAN: Join ke tabel menu_variants agar kasir & dapur bisa baca varian itemnya
         $db = \Config\Database::connect();
         $data['order_items'] = $db->table('order_items')
             ->select('order_items.*, menus.menu_name, menu_variants.variant_name')
@@ -142,15 +141,13 @@ class Admin extends BaseController
     //                      MENU (CRUD + VARIANT)
     // =====================================================
 
-    // Halaman Menu
     public function menu()
     {
         $data['daftar_menu'] = $this->menuModel->findAll();
-
         return view('admin/menu/index', $data);
     }
 
-    // Tambah Menu dengan Varian Looping (Tanpa kolom price/stock di tabel menus)
+    // FIXED TAMBAH MENU: Menggunakan Query Builder Murni agar kebal dari error Unknown Column 'price'
     public function add()
     {
         $gambar = $this->request->getFile('gambar');
@@ -161,28 +158,30 @@ class Admin extends BaseController
             $gambar->move(ROOTPATH . 'public/uploads/menus', $namaFile);
         }
 
-        // 1. Insert ke tabel menus utama
-        $this->menuModel->insert([
+        $isRecommended = $this->request->getPost('is_recommended') ?? 0;
+
+        $db = \Config\Database::connect();
+        
+        // Menggunakan insert builder langsung ke tabel menus tanpa lewat model logic
+        $db->table('menus')->insert([
             'category_id'    => $this->request->getPost('category_id'),
             'menu_name'      => $this->request->getPost('menu_name'),
             'description'    => '',
             'image_path'     => $namaFile,
-            'is_recommended' => 0,
+            'is_recommended' => $isRecommended, 
             'is_active'      => 1
         ]);
 
-        $menuId = $this->menuModel->getInsertID(); // Ambil ID menu yang baru masuk
+        $menuId = $db->insertID(); 
 
-        // 2. Ambil data array varian dari form
         $variantNames  = $this->request->getPost('variant_name');
         $variantPrices = $this->request->getPost('variant_price');
         $variantStocks = $this->request->getPost('variant_stock');
 
-        // 3. Masukkan data varian lewat perulangan (looping)
         if (!empty($variantNames)) {
             foreach ($variantNames as $index => $name) {
                 if (!empty($name)) {
-                    $this->variantModel->insert([
+                    $db->table('menu_variants')->insert([
                         'menu_id'      => $menuId,
                         'variant_name' => $name,
                         'price'        => $variantPrices[$index] ?? 0,
@@ -195,12 +194,15 @@ class Admin extends BaseController
         return redirect()->to(base_url('admin/menu'));
     }
 
-    // Edit Menu & Perbarui Relasi Varian
+    // FIXED EDIT MENU: Menggunakan Query Builder Murni agar kebal dari sisa data request price/stock
     public function edit($id)
     {
-        $data = [
-            'category_id' => $this->request->getPost('category_id'),
-            'menu_name'   => $this->request->getPost('menu_name')
+        $isRecommended = $this->request->getPost('is_recommended') ?? 0;
+
+        $menuData = [
+            'category_id'    => $this->request->getPost('category_id'),
+            'menu_name'      => $this->request->getPost('menu_name'),
+            'is_recommended' => $isRecommended
         ];
 
         $gambar = $this->request->getFile('gambar');
@@ -208,24 +210,25 @@ class Admin extends BaseController
         if ($gambar && $gambar->isValid() && !$gambar->hasMoved()) {
             $namaFile = $gambar->getRandomName();
             $gambar->move(ROOTPATH.'public/uploads/menus', $namaFile);
-            $data['image_path'] = $namaFile;
+            $menuData['image_path'] = $namaFile;
         }
 
-        $this->menuModel->update($id, $data);
+        $db = \Config\Database::connect();
+        
+        // Update paksa tabel menus murni
+        $db->table('menus')->where('id', $id)->update($menuData);
 
-        // 1. Hapus varian lama milik menu ini untuk menghindari penumpukan sampah data
-        $this->variantModel->where('menu_id', $id)->delete();
+        // Reset dan re-insert tabel varian menu
+        $db->table('menu_variants')->where('menu_id', $id)->delete();
 
-        // 2. Ambil data input varian dari form edit
         $variantNames  = $this->request->getPost('variant_name');
         $variantPrices = $this->request->getPost('variant_price');
         $variantStocks = $this->request->getPost('variant_stock');
 
-        // 3. Re-insert varian baru hasil perubahan
         if (!empty($variantNames)) {
             foreach ($variantNames as $index => $name) {
                 if (!empty($name)) {
-                    $this->variantModel->insert([
+                    $db->table('menu_variants')->insert([
                         'menu_id'      => $id,
                         'variant_name' => $name,
                         'price'        => $variantPrices[$index] ?? 0,
@@ -238,11 +241,9 @@ class Admin extends BaseController
         return redirect()->to(base_url('admin/menu'));
     }
 
-    // Hapus Menu
     public function delete($id)
     {
         $this->menuModel->delete($id);
-
         return redirect()->to(base_url('admin/menu'));
     }
 }

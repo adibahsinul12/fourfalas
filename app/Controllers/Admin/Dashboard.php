@@ -367,62 +367,116 @@ class Dashboard extends BaseController
     }
 
     // ==========================================
-    // PROSES CRUD MANAJEMEN MENU KAFE
+    // PROSES CRUD MANAJEMEN MENU KAFE (DENGAN VARIAN)
     // ==========================================
 
     public function addMenu()
-{
-    $db = \Config\Database::connect();
+    {
+        $db = \Config\Database::connect();
 
-    $image = $this->request->getFile('image');
-    $namaGambar = 'default_menus.jpg';
+        $image = $this->request->getFile('image');
+        $namaGambar = 'default_menus.jpg';
 
-    if ($image && $image->isValid() && !$image->hasMoved()) {
-        $namaGambar = $image->getRandomName();
-        $image->move(FCPATH . 'uploads/menus/', $namaGambar);
+        if ($image && $image->isValid() && !$image->hasMoved()) {
+            $namaGambar = $image->getRandomName();
+            $image->move(FCPATH . 'uploads/menus/', $namaGambar);
+        }
+
+        // Checkbox HTML hanya terkirim ke $_POST kalau dicentang.
+        // Kalau tidak dicentang, field ini tidak ada sama sekali -> defaultkan ke 0.
+        $isRecommended = $this->request->getPost('is_recommended') ? 1 : 0;
+
+        // 1. Insert data menu utama ke tabel 'menus' (TANPA price & stock,
+        //    karena kolom itu hanya ada di tabel 'menu_variants')
+        $db->table('menus')->insert([
+            'menu_name'      => $this->request->getPost('menu_name'),
+            'category_id'    => $this->request->getPost('category_id'),
+            'image_path'     => $namaGambar,
+            'is_recommended' => $isRecommended,
+            'is_active'      => 1
+        ]);
+
+        $menuId = $db->insertID();
+
+        // 2. Insert data varian (nama varian, harga, stok) ke tabel 'menu_variants'
+        $variantNames  = $this->request->getPost('variant_name');
+        $variantPrices = $this->request->getPost('variant_price');
+        $variantStocks = $this->request->getPost('variant_stock');
+
+        if (!empty($variantNames)) {
+            foreach ($variantNames as $index => $name) {
+                if (!empty($name)) {
+                    $db->table('menu_variants')->insert([
+                        'menu_id'      => $menuId,
+                        'variant_name' => $name,
+                        'price'        => $variantPrices[$index] ?? 0,
+                        'stock'        => $variantStocks[$index] ?? 0
+                    ]);
+                }
+            }
+        }
+
+        return redirect()->to(base_url('admin/menu'))->with('success', 'Menu berhasil ditambahkan');
     }
 
-    $db->table('menus')->insert([
-        'menu_name'   => $this->request->getPost('menu_name'),
-        'category_id' => $this->request->getPost('category_id'),
-        'price'       => $this->request->getPost('price'),
-        'stock'       => $this->request->getPost('stock'),
-        'image_path'  => $namaGambar,
-        'is_active'   => 1
-    ]);
+    public function updateMenu($id)
+    {
+        $db = \Config\Database::connect();
 
-    return redirect()->to(base_url('admin/menu'))->with('success','Menu berhasil ditambahkan');
-}
-   public function updateMenu($id)
-{
-    $db = \Config\Database::connect();
+        // Checkbox HTML hanya terkirim ke $_POST kalau dicentang.
+        // Kalau tidak dicentang, field ini tidak ada sama sekali -> defaultkan ke 0.
+        $isRecommended = $this->request->getPost('is_recommended') ? 1 : 0;
 
-    $data = [
-        'menu_name'   => $this->request->getPost('menu_name'),
-        'category_id' => $this->request->getPost('category_id'),
-        'price'       => $this->request->getPost('price'),
-        'stock'       => $this->request->getPost('stock')
-    ];
+        // 1. Update data menu utama (TANPA price & stock)
+        $data = [
+            'menu_name'      => $this->request->getPost('menu_name'),
+            'category_id'    => $this->request->getPost('category_id'),
+            'is_recommended' => $isRecommended,
+        ];
 
-    $image = $this->request->getFile('image');
+        $image = $this->request->getFile('image');
 
-    if ($image && $image->isValid() && !$image->hasMoved()) {
-        $namaGambar = $image->getRandomName();
-        $image->move(FCPATH . 'uploads/menus/', $namaGambar);
-        $data['image_path'] = $namaGambar;
+        if ($image && $image->isValid() && !$image->hasMoved()) {
+            $namaGambar = $image->getRandomName();
+            $image->move(FCPATH . 'uploads/menus/', $namaGambar);
+            $data['image_path'] = $namaGambar;
+        }
+
+        $db->table('menus')
+           ->where('id', $id)
+           ->update($data);
+
+        // 2. Hapus varian lama, lalu insert ulang varian baru
+        $db->table('menu_variants')->where('menu_id', $id)->delete();
+
+        $variantNames  = $this->request->getPost('variant_name');
+        $variantPrices = $this->request->getPost('variant_price');
+        $variantStocks = $this->request->getPost('variant_stock');
+
+        if (!empty($variantNames)) {
+            foreach ($variantNames as $index => $name) {
+                if (!empty($name)) {
+                    $db->table('menu_variants')->insert([
+                        'menu_id'      => $id,
+                        'variant_name' => $name,
+                        'price'        => $variantPrices[$index] ?? 0,
+                        'stock'        => $variantStocks[$index] ?? 0
+                    ]);
+                }
+            }
+        }
+
+        return redirect()->to(base_url('admin/menu'))->with('success', 'Menu berhasil diperbarui');
     }
-
-    $db->table('menus')
-       ->where('id', $id)
-       ->update($data);
-
-    return redirect()->to(base_url('admin/menu'))->with('success','Menu berhasil diperbarui');
-}
 
     public function deleteMenu($id)
     {
         $db = \Config\Database::connect();
+
+        // Hapus varian dulu (jaga-jaga kalau FK belum di-set ON DELETE CASCADE)
+        $db->table('menu_variants')->where('menu_id', $id)->delete();
         $db->table('menus')->where('id', $id)->delete();
+
         return redirect()->to(base_url('admin/menu'));
     }
 
@@ -456,6 +510,4 @@ class Dashboard extends BaseController
 
         return redirect()->to(base_url('admin/pengaturan'))->with('success', 'Konfigurasi kafe berhasil diperbarui!');
     }
-
-
 }

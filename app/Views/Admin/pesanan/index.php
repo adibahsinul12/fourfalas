@@ -104,12 +104,8 @@
         .status-dibatalkan { background-color: #FFEBEE; color: #F44336; }
 
         /* =========================================================
-           BREAKPOINTS RESPONSIF
-           >= 992px (lg)  : Desktop / PC -> sidebar selalu tampil
-           768-991px (md) : Tablet       -> sidebar off-canvas
-           < 768px (sm/xs): Mobile / HP  -> sidebar off-canvas, layout 1 kolom
+            BREAKPOINTS RESPONSIF
            ========================================================= */
-
         @media (max-width: 991.98px) {
             .sidebar {
                 left: -280px;
@@ -228,8 +224,7 @@
                                     ?>
                                 </td>
                                 <td class="text-center">
-                                    <a href="<?= base_url('admin/detail/'.$row['id']) ?>" class="btn btn-sm btn-success" style="font-size: 12px; border-radius: 8px; padding: 6px 14px;">
-                                        <i class="fa-solid fa-money-bill-wave me-1"></i> Proses / Detail
+                                <a href="<?= base_url('admin/detail/'.$row['id']) ?>" class="btn btn-sm btn-success" style="font-size: 12px; border-radius: 8px; padding: 6px 14px;">                                        <i class="fa-solid fa-money-bill-wave me-1"></i> Proses / Detail
                                     </a>
                                 </td>
                             </tr>

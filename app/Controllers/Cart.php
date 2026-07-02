@@ -2,8 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Models\MenuModel;
-
 class Cart extends BaseController
 {
     protected $session;
@@ -17,7 +15,7 @@ class Cart extends BaseController
     public function index()
     {
         $data['cart'] = $this->session->get('cart') ?? [];
-        
+
         // Hitung total harga belanjaan sementara
         $data['subtotal'] = 0;
         foreach ($data['cart'] as $item) {
@@ -27,34 +25,43 @@ class Cart extends BaseController
         return view('pelanggan/keranjang', $data);
     }
 
-    // Tombol (+) Tambah kuantitas
+    // Tombol (+) Tambah kuantitas — sekarang berbasis variant_id
     public function add()
     {
-        $menuId = $this->request->getPost('menu_id');
+        $variantId = $this->request->getPost('variant_id');
 
-        if (!$menuId) {
+        if (!$variantId) {
             if ($this->request->isAJAX()) {
-                return $this->response->setJSON(['success' => false, 'message' => 'Menu tidak valid']);
+                return $this->response->setJSON(['success' => false, 'message' => 'Varian tidak valid']);
             }
             return redirect()->back();
         }
 
         $cart = $this->session->get('cart') ?? [];
 
-        if (isset($cart[$menuId])) {
-            $cart[$menuId]['quantity'] += 1;
+        if (isset($cart[$variantId])) {
+            $cart[$variantId]['quantity'] += 1;
         } else {
-            $menuModel = new MenuModel();
-            $menu = $menuModel->find($menuId);
+            $db = \Config\Database::connect();
 
-            if ($menu) {
-                $cart[$menuId] = [
-                    'id'         => $menu['id'],
-                    'menu_name'  => $menu['menu_name'],
-                    'price'      => $menu['price'],
-                    'image'      => $menu['image_path'], 
-                    'image_path' => $menu['image_path'],
-                    'quantity'   => 1
+            // Ambil data varian + info menu induknya (nama, gambar)
+            $variant = $db->table('menu_variants')
+                ->select('menu_variants.*, menus.menu_name, menus.image_path')
+                ->join('menus', 'menus.id = menu_variants.menu_id')
+                ->where('menu_variants.id', $variantId)
+                ->get()
+                ->getRowArray();
+
+            if ($variant) {
+                $cart[$variantId] = [
+                    'id'           => $variant['id'],           // id varian (dipakai sebagai key keranjang)
+                    'menu_id'      => $variant['menu_id'],
+                    'menu_name'    => $variant['menu_name'],
+                    'variant_name' => $variant['variant_name'],
+                    'price'        => $variant['price'],
+                    'image'        => $variant['image_path'],
+                    'image_path'   => $variant['image_path'],
+                    'quantity'     => 1
                 ];
             }
         }
@@ -69,33 +76,43 @@ class Cart extends BaseController
             $cartTotal += $ci['price'] * $ci['quantity'];
         }
 
-        // Kalau request datang dari AJAX (fetch), balikin JSON, JANGAN redirect
+        // Total qty semua varian milik menu yang sama (dipakai untuk badge di kartu menu)
+        $menuId = $cart[$variantId]['menu_id'] ?? null;
+        $menuQty = 0;
+        if ($menuId) {
+            foreach ($cart as $ci) {
+                if ($ci['menu_id'] == $menuId) {
+                    $menuQty += $ci['quantity'];
+                }
+            }
+        }
+
         if ($this->request->isAJAX()) {
             return $this->response->setJSON([
                 'success'   => true,
                 'cartCount' => $cartCount,
                 'cartTotal' => $cartTotal,
-                'itemQty'   => isset($cart[$menuId]) ? $cart[$menuId]['quantity'] : 0, // <-- TAMBAHAN DATA BIAR REALTIME DI BERANDA
+                'itemQty'   => $cart[$variantId]['quantity'] ?? 0,
+                'menuQty'   => $menuQty,
+                'menuId'    => $menuId,
             ]);
         }
 
-        // Fallback: kalau bukan AJAX (misal JS browser dimatikan), tetap redirect seperti biasa
         $returnUrl = $this->request->getPost('return_url');
         $target = !empty($returnUrl) ? $returnUrl : base_url('menu');
         return redirect()->to($target)->with('success', 'Menu ditambahkan!');
     }
 
-    // Tombol (-) Kurangi kuantitas biasa (menggunakan redirect ke halaman cart)
-    public function decrease($menuId)
+    // Tombol (-) Kurangi kuantitas biasa (menggunakan redirect ke halaman cart) — berbasis variant_id
+    public function decrease($variantId)
     {
         $cart = $this->session->get('cart') ?? [];
 
-        if (isset($cart[$menuId])) {
-            if ($cart[$menuId]['quantity'] > 1) {
-                $cart[$menuId]['quantity'] -= 1;
+        if (isset($cart[$variantId])) {
+            if ($cart[$variantId]['quantity'] > 1) {
+                $cart[$variantId]['quantity'] -= 1;
             } else {
-                // Jika sisa 1 lalu dikurangi, otomatis hapus dari keranjang
-                unset($cart[$menuId]);
+                unset($cart[$variantId]);
             }
         }
 
@@ -103,28 +120,28 @@ class Cart extends BaseController
         return redirect()->to(base_url('cart'));
     }
 
-    // FUNGSI BARU KHUSUS MENGURANGI QTY SECARA AJAX DI HALAMAN BERANDA
+    // Kurangi qty via AJAX di halaman beranda/menu — berbasis variant_id
     public function decrease_ajax()
     {
-        $menuId = $this->request->getPost('menu_id');
+        $variantId = $this->request->getPost('variant_id');
 
-        if (!$menuId) {
-            return $this->response->setJSON(['success' => false, 'message' => 'Menu tidak valid']);
+        if (!$variantId) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Varian tidak valid']);
         }
 
         $cart = $this->session->get('cart') ?? [];
+        $menuId = $cart[$variantId]['menu_id'] ?? null;
 
-        if (isset($cart[$menuId])) {
-            if ($cart[$menuId]['quantity'] > 1) {
-                $cart[$menuId]['quantity'] -= 1;
+        if (isset($cart[$variantId])) {
+            if ($cart[$variantId]['quantity'] > 1) {
+                $cart[$variantId]['quantity'] -= 1;
             } else {
-                unset($cart[$menuId]);
+                unset($cart[$variantId]);
             }
         }
 
         $this->session->set('cart', $cart);
 
-        // Hitung ulang status keranjang melayang
         $cartCount = 0;
         $cartTotal = 0;
         foreach ($cart as $ci) {
@@ -132,21 +149,32 @@ class Cart extends BaseController
             $cartTotal += $ci['price'] * $ci['quantity'];
         }
 
+        $menuQty = 0;
+        if ($menuId) {
+            foreach ($cart as $ci) {
+                if ($ci['menu_id'] == $menuId) {
+                    $menuQty += $ci['quantity'];
+                }
+            }
+        }
+
         return $this->response->setJSON([
             'success'   => true,
             'cartCount' => $cartCount,
             'cartTotal' => $cartTotal,
-            'itemQty'   => isset($cart[$menuId]) ? $cart[$menuId]['quantity'] : 0,
+            'itemQty'   => isset($cart[$variantId]) ? $cart[$variantId]['quantity'] : 0,
+            'menuQty'   => $menuQty,
+            'menuId'    => $menuId,
         ]);
     }
 
-    // Tombol (Hapus) menghilangkan item dari keranjang
-    public function remove($menuId)
+    // Tombol (Hapus) menghilangkan item dari keranjang — berbasis variant_id
+    public function remove($variantId)
     {
         $cart = $this->session->get('cart') ?? [];
 
-        if (isset($cart[$menuId])) {
-            unset($cart[$menuId]);
+        if (isset($cart[$variantId])) {
+            unset($cart[$variantId]);
         }
 
         $this->session->set('cart', $cart);
@@ -158,20 +186,16 @@ class Cart extends BaseController
         $session = session();
         $cart = $session->get('cart') ?? [];
 
-        // Kalau keranjang kosong, kembalikan ke halaman keranjang
         if (empty($cart)) {
             return redirect()->to(base_url('cart'))->with('error', 'Keranjang belanja masih kosong!');
         }
 
-        // Hitung subtotal pesanan
         $subtotal = 0;
         foreach ($cart as $item) {
             $subtotal += $item['price'] * $item['quantity'];
         }
 
-        // Ambil data meja yang statusnya 'Tersedia' dari database
         $db = \Config\Database::connect();
-        // Mencari semua meja yang statusnya bukan 'Terisi' (meja kosong/NULL bakal otomatis masuk)
         $tables = $db->table('tables')->where('status', 'Tersedia')->get()->getResultArray();
         $data = [
             'cart'     => $cart,
@@ -180,8 +204,7 @@ class Cart extends BaseController
             'title'    => 'Checkout - FO\'Orders'
         ];
 
-        // Memanggil file view checkout.php
-        return view('pelanggan/checkout', $data); 
+        return view('pelanggan/checkout', $data);
     }
 
     public function process()
@@ -189,31 +212,25 @@ class Cart extends BaseController
         $session = session();
         $cart = $session->get('cart');
 
-        // Proteksi ganda: cegah checkout kalau keranjang kosong
         if (empty($cart)) {
             return redirect()->to(base_url('cart'))->with('error', 'Keranjang kosong!');
         }
 
         $db = \Config\Database::connect();
-        
-        // 1. Hitung total harga
+
         $total_price = 0;
         foreach ($cart as $item) {
             $total_price += $item['price'] * $item['quantity'];
         }
 
-        // 2. Ambil data inputan dari form checkout
         $customerName = $this->request->getPost('customer_name');
         $tableId      = $this->request->getPost('table_id');
         $notes        = $this->request->getPost('notes');
 
-        // Generate nomor order unik, max 10 karakter (sesuai kolom order_number char(10))
         $orderNumber = 'OR' . strtoupper(substr(uniqid(), -8));
 
-        // Gunakan Transaction agar jika terjadi error di tengah jalan, database dibatalkan (aman)
         $db->transStart();
 
-        // 3. Masukkan data ke tabel `orders` utama (disesuaikan dengan struktur tabel asli)
         $orderData = [
             'order_number'   => $orderNumber,
             'table_id'       => $tableId,
@@ -224,16 +241,16 @@ class Cart extends BaseController
             'total_payment'  => $total_price,
         ];
         $db->table('orders')->insert($orderData);
-        
-        // Dapatkan ID Pesanan yang baru saja dibuat
-        $orderId = $db->insertID(); 
 
-        // 4. Masukkan data detail menu ke tabel `order_items` (disesuaikan, ada kolom subtotal wajib diisi)
+        $orderId = $db->insertID();
+
+        // variant_id dari key keranjang disertakan supaya detail pesanan tahu varian apa yang dipesan
         $orderItems = [];
-        foreach ($cart as $id => $item) {
+        foreach ($cart as $variantId => $item) {
             $orderItems[] = [
                 'order_id'       => $orderId,
-                'menu_id'        => $id,
+                'menu_id'        => $item['menu_id'],
+                'variant_id'     => $variantId,
                 'quantity'       => $item['quantity'],
                 'price_at_order' => $item['price'],
                 'subtotal'       => $item['price'] * $item['quantity'],
@@ -241,29 +258,23 @@ class Cart extends BaseController
         }
         $db->table('order_items')->insertBatch($orderItems);
 
-        // 5. Ubah status meja menjadi 'Terisi'
         $db->table('tables')->where('id', $tableId)->update(['status' => 'Terisi']);
 
-        // Selesaikan transaksi
         $db->transComplete();
 
-        // Cek apakah penyimpanan berhasil
         if ($db->transStatus() === FALSE) {
             $error = $db->error();
             return redirect()->back()->with('error', 'Terjadi kesalahan saat memproses pesanan. DEBUG: ' . $error['message'] . ' (code: ' . $error['code'] . ')');
         }
 
-        // 6. Jika sukses, kosongkan keranjang dari session
         $session->remove('cart');
 
-        // 6b. Simpan order ID ke riwayat pesanan pelanggan di session
         $myOrders = $session->get('my_orders') ?? [];
         $myOrders[] = $orderId;
         $session->set('my_orders', $myOrders);
 
-        // 7. BERES COK: Set flashdata tunggal murni biar kedeteksi SweetAlert, sisa redirect lama dibuang
         $session->setFlashdata('pesan_sukses', 'Yey! Pesanan kamu berhasil dibuat.');
-        
+
         return redirect()->to(base_url('pelanggan'));
     }
 }

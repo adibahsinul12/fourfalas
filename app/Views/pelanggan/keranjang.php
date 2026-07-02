@@ -44,6 +44,9 @@
                     
                     <div class="item-info">
                         <h3><?= $item['menu_name']; ?></h3>
+                        <?php if (!empty($item['variant_name'])): ?>
+                            <p style="margin:2px 0 4px 0; font-size:12px; color:#A67C52; font-weight:600;">Varian: <?= esc($item['variant_name']); ?></p>
+                        <?php endif; ?>
                         <p class="item-price">Rp <?= number_format($item['price'], 0, ',', '.'); ?></p>
                     </div>
                     <div class="item-actions">
@@ -53,7 +56,7 @@
                             <span class="qty-num"><?= $item['quantity']; ?></span>
                             
                             <form action="<?= base_url('cart/add'); ?>" method="post" style="display:inline; margin:0; padding:0;">
-                                <input type="hidden" name="menu_id" value="<?= $id; ?>">
+                                <input type="hidden" name="variant_id" value="<?= $id; ?>">
                                 <input type="hidden" name="return_url" value="<?= base_url('cart') ?>">
                                 <button type="submit" class="qty-btn" style="border:none; cursor:pointer;">+</button>
                             </form>

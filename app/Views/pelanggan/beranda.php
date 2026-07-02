@@ -79,24 +79,58 @@
                 } else {
                     $imgUrl = base_url('uploads/menus/default_menus.jpg');
                 }
-                
-                $currentQty = isset($sessionCart[$menu['id']]) ? $sessionCart[$menu['id']]['quantity'] : 0;
+
+                $variants = $menu['variants'] ?? [];
+                $hasMultipleVariants = count($variants) > 1;
+
+                // Kalau cuma 1 varian, itu jadi "varian default" yang langsung dipakai tanpa popup
+                $singleVariantId = (count($variants) === 1) ? $variants[0]['id'] : null;
+
+                // Total qty di keranjang untuk SEMUA varian milik menu ini (dipakai untuk badge/counter)
+                $menuQty = 0;
+                foreach ($sessionCart as $ci) {
+                    if (($ci['menu_id'] ?? null) == $menu['id']) {
+                        $menuQty += $ci['quantity'];
+                    }
+                }
             ?>
                 <div class="menu-card" data-category="<?= $menu['category_id']; ?>">
                     <img class="menu-img" src="<?= $imgUrl; ?>" alt="<?= esc($menu['menu_name']); ?>">
                     <div class="menu-info">
-                        <h3><?= esc($menu['menu_name']); ?></h3>
+                        <h3>
+                            <?= esc($menu['menu_name']); ?>
+                            <?php if ($hasMultipleVariants): ?>
+                                <span style="display:inline-block; font-size:10px; font-weight:600; color:#A67C52; background:#F7EFE5; padding:2px 8px; border-radius:20px; margin-left:4px; vertical-align:middle;">
+                                    <?= count($variants); ?> pilihan
+                                </span>
+                            <?php endif; ?>
+                        </h3>
                         <div class="menu-footer">
-                            <span class="price">Rp <?= number_format($menu['price'], 0, ',', '.'); ?></span>
+                            <span class="price">
+                                <?= $hasMultipleVariants ? 'Mulai ' : ''; ?>Rp <?= number_format($menu['price'], 0, ',', '.'); ?>
+                            </span>
                             
                             <div class="quantity-control-wrapper" id="wrapper-<?= $menu['id']; ?>">
-                                <button type="button" class="btn-add" id="btn-initial-<?= $menu['id']; ?>" onclick="updateCartQuantity(<?= $menu['id']; ?>, 'add', this)" style="display: <?= $currentQty == 0 ? 'block' : 'none'; ?>;">+</button>
+                                <button type="button" class="btn-add" id="btn-initial-<?= $menu['id']; ?>"
+                                    onclick='handleAddClick(<?= json_encode($menu['id']); ?>, <?= json_encode($menu['menu_name']); ?>, <?= json_encode($variants); ?>, <?= json_encode($singleVariantId); ?>, this)'
+                                    style="display: <?= $menuQty == 0 ? 'block' : 'none'; ?>;">+</button>
                                 
-                                <div class="counter-control" id="counter-<?= $menu['id']; ?>" style="display: <?= $currentQty > 0 ? 'flex' : 'none'; ?>; align-items: center; gap: 8px;">
-                                    <button type="button" class="btn-add" style="background-color: #d33 !important;" onclick="updateCartQuantity(<?= $menu['id']; ?>, 'decrease', this)">-</button>
-                                    <span id="qty-val-<?= $menu['id']; ?>" style="font-weight: 600; font-size: 14px; min-width: 16px; text-align: center; color: #333; font-family: 'Poppins', sans-serif;"><?= $currentQty; ?></span>
-                                    <button type="button" class="btn-add" style="background-color: #4CAF50 !important;" onclick="updateCartQuantity(<?= $menu['id']; ?>, 'add', this)">+</button>
-                                </div>
+                                <?php if (!$hasMultipleVariants): ?>
+                                    <!-- Single varian: counter +/- langsung seperti biasa -->
+                                    <div class="counter-control" id="counter-<?= $menu['id']; ?>" style="display: <?= $menuQty > 0 ? 'flex' : 'none'; ?>; align-items: center; gap: 8px;">
+                                        <button type="button" class="btn-add" style="background-color: #d33 !important;" onclick="updateCartQuantity(<?= json_encode($singleVariantId); ?>, 'decrease', this, <?= $menu['id']; ?>)">-</button>
+                                        <span id="qty-val-<?= $menu['id']; ?>" style="font-weight: 600; font-size: 14px; min-width: 16px; text-align: center; color: #333; font-family: 'Poppins', sans-serif;"><?= $menuQty; ?></span>
+                                        <button type="button" class="btn-add" style="background-color: #4CAF50 !important;" onclick="updateCartQuantity(<?= json_encode($singleVariantId); ?>, 'add', this, <?= $menu['id']; ?>)">+</button>
+                                    </div>
+                                <?php else: ?>
+                                    <!-- Multi varian: tampilkan badge jumlah total, klik untuk buka popup pilih/atur varian -->
+                                    <div class="counter-control" id="counter-<?= $menu['id']; ?>" style="display: <?= $menuQty > 0 ? 'flex' : 'none'; ?>; align-items: center; gap: 8px; cursor:pointer;"
+                                        onclick='openVariantPicker(<?= json_encode($menu['id']); ?>, <?= json_encode($menu['menu_name']); ?>, <?= json_encode($variants); ?>)'>
+                                        <span style="background-color:#4CAF50; color:#fff; border-radius:20px; padding:5px 12px; font-weight:600; font-size:12px;">
+                                            <span id="qty-val-<?= $menu['id']; ?>"><?= $menuQty; ?></span> di keranjang
+                                        </span>
+                                    </div>
+                                <?php endif; ?>
                             </div>
 
                         </div>
@@ -106,7 +140,7 @@
         <?php else: ?>
             <div class="empty-state">
                 <svg viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg" style="width: 120px; height: 120px; max-width: 120px;">
-                    <path d="M30 40 L35 25 L40 40 L55 45 L40 50 L35 65 L30 50 L15 45 Z" fill="#F4A261" opacity="0.6"/>
+                    <path d="M30 40 L35 25 L40 40 L55 45 L40 50 L15 45 Z" fill="#F4A261" opacity="0.6"/>
                     <path d="M110 30 L113 20 L116 30 L126 33 L116 36 L113 46 L110 36 L100 33 Z" fill="#F4A261" opacity="0.4"/>
                     <path d="M60 45 Q50 35, 60 25 T60 5" stroke="#A67C52" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.5"/>
                     <path d="M85 50 Q95 40, 85 30 T85 10" stroke="#A67C52" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.5"/>
@@ -168,25 +202,18 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-// FUNGSI BARU COK: Filter kategori menu rekomendasi tanpa pindah halaman
+// FUNGSI FILTER kategori menu rekomendasi tanpa pindah halaman
 function filterBerandaCategory(categoryId, tabElement) {
-    // 1. Reset status active dari semua tab kategori
     document.querySelectorAll('.category-container .category-tab').forEach(tab => {
         tab.classList.remove('active');
     });
-    // Set active ke tab yang baru diklik
     tabElement.classList.add('active');
 
-    // 2. Saring item menu-card secara realtime
     document.querySelectorAll('.menu-grid .menu-card').forEach(card => {
         if (categoryId === 'all') {
             card.style.display = 'block';
         } else {
-            if (card.getAttribute('data-category') == categoryId) {
-                card.style.display = 'block';
-            } else {
-                card.style.display = 'none';
-            }
+            card.style.display = (card.getAttribute('data-category') == categoryId) ? 'block' : 'none';
         }
     });
 }
@@ -200,16 +227,69 @@ document.addEventListener('DOMContentLoaded', function() {
             icon: 'success',
             confirmButtonColor: '#4CAF50',
             background: '#FAF6EB',
-            customClass: {
-                title: 'font-poppins',
-                popup: 'border-radius-16'
-            }
+            customClass: { title: 'font-poppins', popup: 'border-radius-16' }
         });
     <?php endif; ?>
 });
 
-function updateCartQuantity(menuId, action, btn) {
-    btn.disabled = true;
+// Diklik saat tombol "+" pertama kali ditekan di sebuah kartu menu.
+// Kalau menu cuma punya 1 varian -> langsung masuk keranjang.
+// Kalau lebih dari 1 varian -> buka popup pemilihan varian dulu.
+function handleAddClick(menuId, menuName, variants, singleVariantId, btn) {
+    if (variants.length <= 1) {
+        updateCartQuantity(singleVariantId, 'add', btn, menuId);
+    } else {
+        openVariantPicker(menuId, menuName, variants);
+    }
+}
+
+// Popup SweetAlert2 untuk memilih varian mana yang mau ditambahkan
+function openVariantPicker(menuId, menuName, variants) {
+    const sessionCart = window.__cartSnapshot || {};
+
+    let optionsHtml = variants.map(v => {
+        const priceFmt = new Intl.NumberFormat('id-ID').format(v.price);
+        return `
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 4px; border-bottom:1px solid #F0EAE2;">
+                <div style="text-align:left;">
+                    <div style="font-weight:600; font-size:14px; color:#333;">${v.variant_name}</div>
+                    <div style="font-size:12px; color:#888;">Rp ${priceFmt}</div>
+                </div>
+                <button type="button" class="variant-pick-btn" data-variant-id="${v.id}"
+                    style="background:#4CAF50; color:#fff; border:none; border-radius:8px; padding:6px 14px; font-size:12px; font-weight:600; cursor:pointer;">
+                    + Tambah
+                </button>
+            </div>
+        `;
+    }).join('');
+
+    Swal.fire({
+        title: menuName,
+        html: `<div style="text-align:left; max-height:320px; overflow-y:auto;">${optionsHtml}</div>`,
+        showConfirmButton: false,
+        showCloseButton: true,
+        background: '#FAF6EB',
+        width: 380,
+        didOpen: () => {
+            document.querySelectorAll('.variant-pick-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const variantId = this.getAttribute('data-variant-id');
+                    this.textContent = '...';
+                    this.disabled = true;
+                    updateCartQuantity(variantId, 'add', this, menuId, function() {
+                        this.textContent = '✓ Ditambahkan';
+                        setTimeout(() => { this.textContent = '+ Tambah'; this.disabled = false; }, 800);
+                    });
+                });
+            });
+        }
+    });
+}
+
+// Menambah/mengurangi qty varian tertentu ke keranjang via AJAX,
+// lalu memperbarui tampilan badge/counter pada kartu menu induknya.
+function updateCartQuantity(variantId, action, btn, menuId, afterCallback) {
+    if (btn) btn.disabled = true;
 
     let url = action === 'add' ? '<?= base_url('cart/add'); ?>' : '<?= base_url('cart/decrease_ajax'); ?>';
 
@@ -219,11 +299,11 @@ function updateCartQuantity(menuId, action, btn) {
             'Content-Type': 'application/x-www-form-urlencoded',
             'X-Requested-With': 'XMLHttpRequest'
         },
-        body: 'menu_id=' + menuId
+        body: 'variant_id=' + variantId
     })
     .then(res => res.json())
     .then(data => {
-        btn.disabled = false;
+        if (btn) btn.disabled = false;
         if (data.success) {
             const bar = document.getElementById('floatingCartBar');
             const countEl = document.getElementById('cartBarCount');
@@ -237,25 +317,30 @@ function updateCartQuantity(menuId, action, btn) {
                 bar.style.display = 'none';
             }
 
-            const btnInitial = document.getElementById('btn-initial-' + menuId);
-            const counterDiv = document.getElementById('counter-' + menuId);
-            const qtyVal = document.getElementById('qty-val-' + menuId);
+            const mId = data.menuId || menuId;
+            const btnInitial = document.getElementById('btn-initial-' + mId);
+            const counterDiv = document.getElementById('counter-' + mId);
+            const qtyVal = document.getElementById('qty-val-' + mId);
 
-            if (data.itemQty > 0) {
-                btnInitial.style.display = 'none';
-                counterDiv.style.display = 'flex';
-                qtyVal.textContent = data.itemQty;
+            if (data.menuQty > 0) {
+                if (btnInitial) btnInitial.style.display = 'none';
+                if (counterDiv) counterDiv.style.display = 'flex';
+                if (qtyVal) qtyVal.textContent = data.menuQty;
             } else {
-                btnInitial.style.display = 'block';
-                counterDiv.style.display = 'none';
-                qtyVal.textContent = 0;
+                if (btnInitial) btnInitial.style.display = 'block';
+                if (counterDiv) counterDiv.style.display = 'none';
+                if (qtyVal) qtyVal.textContent = 0;
+            }
+
+            if (typeof afterCallback === 'function' && btn) {
+                afterCallback.call(btn);
             }
         } else {
             alert(data.message || 'Gagal memperbarui keranjang');
         }
     })
     .catch(err => {
-        btn.disabled = false;
+        if (btn) btn.disabled = false;
         console.error(err);
         alert('Terjadi kesalahan, coba lagi.');
     });

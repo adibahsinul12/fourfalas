@@ -93,12 +93,10 @@
         .status-habis { background-color: #FFEBEE; color: #F44336; }
         .table-responsive { -webkit-overflow-scrolling: touch; }
 
-        /* Tombol aksi (Edit/Hapus) supaya rapi & tidak bertumpuk aneh di kolom sempit */
         .action-buttons { display: flex; gap: 6px; justify-content: center; flex-wrap: nowrap; }
 
-        /* ===== TAMBAHAN WARNA TOMBOL EDIT DAN HAPUS SESUAI PALET ===== */
         .action-buttons .btn-edit {
-            background-color: #4CAF50; /* Hijau Daun (Primary Green) */
+            background-color: #4CAF50;
             color: #FFFFFF;
             border: none;
             padding: 6px 12px;
@@ -106,13 +104,10 @@
             font-weight: 500;
             transition: background-color 0.2s;
         }
-
-        .action-buttons .btn-edit:hover {
-            background-color: #3e9c43; /* Warna hijau sedikit lebih gelap saat di-hover */
-        }
+        .action-buttons .btn-edit:hover { background-color: #3e9c43; }
 
         .action-buttons .btn-delete {
-            background-color: #6B3A1E; /* Coklat Kopi (Secondary Button / Primary Brown) */
+            background-color: #6B3A1E;
             color: #FFFFFF;
             border: none;
             padding: 6px 12px;
@@ -120,57 +115,43 @@
             font-weight: 500;
             transition: background-color 0.2s;
         }
+        .action-buttons .btn-delete:hover { background-color: #552e18; }
 
-        .action-buttons .btn-delete:hover {
-            background-color: #552e18; /* Warna coklat sedikit lebih gelap saat di-hover */
-        }
-
-        /* ===== MODAL (Tambah / Edit Menu) ===== */
-        /* Update atau tambahkan ini di bagian CSS */
+        /* ===== MODAL ===== */
         .modal-dialog { 
-            max-width: 500px; /* Atur lebar modal di sini */
+            max-width: 550px; 
             margin: 1.75rem auto; 
         }
-
-        /* Biarkan body modal bisa di-scroll jika kepanjangan */
         .modal-body {
-            max-height: 70vh;
+            max-height: 75vh;
             overflow-y: auto;
         }
         .modal-content { border-radius: 14px; }
 
-        /* ===== TAMBAHAN FONT & WARNA TOMBOL TAMBAH BARU ===== */
-        /* Memaksa elemen button menggunakan font Poppins */
         button, input, select, textarea, .btn {
             font-family: 'Poppins', sans-serif !important;
         }
 
-        /* Mengubah warna tombol + Tambah Menu Baru */
         .btn-tambah { 
-            background-color: #4CAF50 !important; /* Hijau Daun Utama */
+            background-color: #4CAF50 !important;
             border-color: #4CAF50 !important;
             color: #FFFFFF !important;
         }
-
         .btn-tambah:hover {
-            background-color: #3e9c43 !important; /* Hijau agak gelap saat di-hover */
+            background-color: #3e9c43 !important;
             border-color: #3e9c43 !important;
         }
 
-
-        /* =========================================================
-           BREAKPOINTS RESPONSIF
-           >= 992px (lg)  : Desktop / PC -> sidebar selalu tampil
-           768-991px (md) : Tablet       -> sidebar off-canvas
-           < 768px (sm/xs): Mobile / HP  -> sidebar off-canvas, layout 1 kolom
-           ========================================================= */
+        /* Styling area pengelolaan varian di form */
+        .variant-box {
+            background-color: #FDFBF9;
+            border: 1px dashed #DDD1C7;
+            border-radius: 10px;
+            padding: 14px;
+        }
 
         @media (max-width: 991.98px) {
-            .sidebar {
-                left: -280px;
-                width: 260px;
-                box-shadow: 4px 0 20px rgba(0,0,0,0.15);
-            }
+            .sidebar { left: -280px; width: 260px; box-shadow: 4px 0 20px rgba(0,0,0,0.15); }
             .sidebar.show { left: 0; }
             .sidebar-close-btn { display: block; }
             .main-content { margin-left: 0; padding: 20px; }
@@ -183,24 +164,14 @@
             .search-box { order: 3; width: 100%; max-width: 100%; flex: 1 1 100%; }
             .admin-profile { gap: 10px; }
             .profile-card .small { display: none; }
-
             .page-header h4 { font-size: 1.05rem; width: 100%; }
             .page-header .btn { width: 100%; justify-content: center; }
             .page-header { display: flex; }
-            .page-header .btn-success { display: flex; align-items: center; gap: 6px; }
-
             .widget-card { padding: 16px; border-radius: 14px; }
             .custom-table th, .custom-table td { padding: 10px 12px; font-size: 12px; }
-
             .action-buttons { flex-direction: column; gap: 6px; }
             .action-buttons .btn, .action-buttons a { width: 100%; }
-
-            /* Modal full-width nyaman di HP, tetap ada jarak tipis di tepi */
             .modal-dialog { margin: 0.75rem; }
-        }
-
-        @media (max-width: 479.98px) {
-            .sidebar-brand span { font-size: 1.2rem; }
         }
     </style>
 </head>
@@ -251,34 +222,44 @@
     <div class="widget-card">
         <div class="table-responsive">
             <table class="table custom-table m-0">
-               <thead>
-    <tr>
-        <th>Foto</th>
-        <th>Nama Menu</th>
-        <th>Kategori</th>
-        <th>Harga</th>
-        <th>Status</th>
-        <th class="text-center">Aksi</th>
-    </tr>
-</thead>
+                <thead>
+                    <tr>
+                        <th>Foto</th>
+                        <th>Nama Menu</th>
+                        <th>Kategori</th>
+                        <th>Varian & Harga</th>
+                        <th class="text-center">Aksi</th>
+                    </tr>
+                </thead>
                 <tbody>
+                    <?php
+                        // Menampung HTML seluruh modal Edit agar dicetak SETELAH </table>.
+                        // Ini memperbaiki bug: <div class="modal"> tidak boleh berada langsung
+                        // di dalam <tbody>, karena browser akan otomatis memindahkannya
+                        // (foster-parenting) dan itu bisa merusak perilaku JavaScript.
+                        $modalsHtml = '';
+                    ?>
                     <?php if(!empty($daftar_menu)): ?>
-                        <?php foreach($daftar_menu as $row): ?>
+                        <?php 
+                        $db = \Config\Database::connect();
+                        foreach($daftar_menu as $row): 
+                            // Ambil list data varian dari menu ini langsung dari DB untuk ditampilkan di list tabel
+                            $variants = $db->table('menu_variants')->where('menu_id', $row['id'])->get()->getResultArray();
+                        ?>
                             <tr>
                                 <td>
-    <?php if (!empty($row['image_path'])): ?>
-        <img src="<?= base_url('uploads/menus/'.$row['image_path']) ?>"
-             width="60"
-             height="60"
-             style="object-fit:cover;border-radius:8px;">
-    <?php else: ?>
-        <img src="<?= base_url('uploads/menus/default_menus.jpg') ?>"
-             width="60"
-             height="60"
-             style="object-fit:cover;border-radius:8px;">
-    <?php endif; ?>
-</td>
-                                <td><b><?= $row['menu_name']; ?></b></td>
+                                    <?php if (!empty($row['image_path'])): ?>
+                                        <img src="<?= base_url('uploads/menus/'.$row['image_path']) ?>" width="60" height="60" style="object-fit:cover;border-radius:8px;">
+                                    <?php else: ?>
+                                        <img src="<?= base_url('uploads/menus/default_menus.jpg') ?>" width="60" height="60" style="object-fit:cover;border-radius:8px;">
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <b><?= $row['menu_name']; ?></b>
+                                    <?php if($row['is_recommended'] == 1): ?>
+                                        <span class="badge bg-warning text-dark ms-1" style="font-size: 10px;"><i class="fa-solid fa-star"></i> Best Seller</span>
+                                    <?php endif; ?>
+                                </td>
                                 <td>
                                     <?php 
                                         switch($row['category_id']) {
@@ -299,32 +280,42 @@
                                         }
                                     ?>
                                 </td>
-                                <td>Rp <?= number_format($row['price'], 0, ',', '.'); ?></td>
                                 <td>
-                                    <?php if ($row['is_active'] == 1 && $row['stock'] > 0): ?>
-                                        <span class="badge-status status-tersedia">Tersedia (<?= $row['stock']; ?>)</span>
+                                    <?php if(!empty($variants)): ?>
+                                        <ul class="list-unstyled m-0" style="font-size: 12px;">
+                                            <?php foreach($variants as $v): ?>
+                                                <li>
+                                                    🔹 <?= $v['variant_name']; ?>: 
+                                                    <span class="text-success fw-bold">Rp <?= number_format($v['price'], 0, ',', '.'); ?></span> 
+                                                    <small class="text-muted">(Stok: <?= $v['stock']; ?>)</small>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        </ul>
                                     <?php else: ?>
-                                        <span class="badge-status status-habis">Habis</span>
+                                        <span class="text-danger small"><i class="fa-solid fa-triangle-exclamation"></i> Belum ada varian!</span>
                                     <?php endif; ?>
                                 </td>
                                 <td class="text-center">
                                     <div class="action-buttons">
                                         <button type="button" class="btn btn-sm btn-edit" data-bs-toggle="modal" data-bs-target="#modalEdit<?= $row['id'] ?>" style="font-size: 11px; border-radius: 6px;">Edit</button>
-                                        
                                         <a href="<?= base_url('admin/menu/delete/'.$row['id']) ?>" class="btn btn-sm btn-delete" style="font-size: 11px; border-radius: 6px;" onclick="return confirm('Yakin ingin menghapus menu ini?')">Hapus</a>
                                     </div>
                                 </td>
                             </tr>
 
+                            <?php
+                                // === Susun HTML modal edit ke dalam variabel, BUKAN dicetak di sini ===
+                                ob_start();
+                            ?>
                             <div class="modal fade" id="modalEdit<?= $row['id'] ?>" tabindex="-1" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
-                                       <form action="<?= base_url('admin/menu/edit/'.$row['id']) ?>" method="POST" enctype="multipart/form-data">
-                                            <div class="modal-header"><h5>✏️ Edit Menu</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                                        <form action="<?= base_url('admin/menu/edit/'.$row['id']) ?>" method="POST" enctype="multipart/form-data">
+                                            <div class="modal-header"><h5>✏️ Edit Menu & Varian</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
                                             <div class="modal-body">
-                                                <div class="mb-3"><label class="form-label">Nama Menu</label><input type="text" name="menu_name" class="form-control" value="<?= $row['menu_name'] ?>" required></div>
+                                                <div class="mb-3"><label class="form-label fw-semibold">Nama Menu</label><input type="text" name="menu_name" class="form-control" value="<?= $row['menu_name'] ?>" required></div>
                                                 <div class="mb-3">
-                                                    <label class="form-label">Kategori</label>
+                                                    <label class="form-label fw-semibold">Kategori</label>
                                                     <select name="category_id" class="form-select">
                                                         <option value="1" <?= $row['category_id'] == 1 ? 'selected' : '' ?>>Snack</option>
                                                         <option value="2" <?= $row['category_id'] == 2 ? 'selected' : '' ?>>Teh & Susu</option>
@@ -341,45 +332,68 @@
                                                         <option value="13" <?= $row['category_id'] == 13 ? 'selected' : '' ?>>Minuman Tradisional</option>
                                                     </select>
                                                 </div>
-                                                <div class="mb-3"><label class="form-label">Harga (Rp)</label><input type="number" name="price" class="form-control" value="<?= (int)$row['price'] ?>" required></div>
-                                                <div class="mb-3"><label class="form-label">Stok</label><input type="number" name="stock" class="form-control" value="<?= $row['stock'] ?>" required></div>
 
                                                 <div class="mb-3">
-                                                    <label class="form-label">Harga (Rp)</label>
-                                                    <input type="number" name="price" class="form-control" value="<?= (int)$row['price'] ?>" required>
+                                                    <label class="form-label fw-semibold text-primary">⚙️ Atur Ulang Varian Menu</label>
+                                                    <div class="variant-box edit-variant-container" data-menu-id="<?= $row['id']; ?>">
+                                                        <?php if(!empty($variants)): ?>
+                                                            <?php foreach($variants as $index => $v): ?>
+                                                                <div class="row g-2 mb-2 variant-row">
+                                                                    <div class="col-md-5">
+                                                                        <input type="text" name="variant_name[]" class="form-control form-control-sm" value="<?= $v['variant_name']; ?>" placeholder="Nama Varian" required>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <input type="number" name="variant_price[]" class="form-control form-control-sm" value="<?= $v['price']; ?>" placeholder="Harga" required>
+                                                                    </div>
+                                                                    <div class="col-md-3 d-flex gap-1">
+                                                                        <input type="number" name="variant_stock[]" class="form-control form-control-sm" value="<?= $v['stock']; ?>" placeholder="Stok" required>
+                                                                        <?php if($index > 0): ?>
+                                                                            <button type="button" class="btn btn-danger btn-sm btn-remove-variant"><i class="fa-solid fa-trash"></i></button>
+                                                                        <?php endif; ?>
+                                                                    </div>
+                                                                </div>
+                                                            <?php endforeach; ?>
+                                                        <?php else: ?>
+                                                            <div class="row g-2 mb-2 variant-row">
+                                                                <div class="col-md-5"><input type="text" name="variant_name[]" class="form-control form-control-sm" placeholder="Nama Varian" required></div>
+                                                                <div class="col-md-4"><input type="number" name="variant_price[]" class="form-control form-control-sm" placeholder="Harga" required></div>
+                                                                <div class="col-md-3"><input type="number" name="variant_stock[]" class="form-control form-control-sm" placeholder="Stok" required></div>
+                                                            </div>
+                                                        <?php endif; ?>
+                                                    </div>
+                                                    <button type="button" class="btn btn-xs btn-outline-primary mt-2 btn-add-edit-variant" style="font-size:11px;"><i class="fa-solid fa-plus"></i> Tambah Varian</button>
+                                                </div>
+
+                                                <div class="mb-3 form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" name="is_recommended" value="1" id="editRekomendasi<?= $row['id'] ?>" <?= $row['is_recommended'] == 1 ? 'checked' : '' ?>>
+                                                    <label class="form-check-label fw-semibold text-warning" for="editRekomendasi<?= $row['id'] ?>">
+                                                        ⭐ Tandai sebagai Menu Rekomendasi (Best Seller)
+                                                    </label>
                                                 </div>
 
                                                 <div class="mb-3">
-                                                    <label class="form-label">Stok</label>
-                                                    <input type="number" name="stock" class="form-control" value="<?= $row['stock'] ?>" required>
+                                                    <label class="form-label fw-semibold">Foto Saat Ini</label><br>
+                                                    <?php if (!empty($row['image_path'])): ?>
+                                                        <img src="<?= base_url('uploads/menus/'.$row['image_path']) ?>" width="100" class="img-thumbnail mb-2">
+                                                    <?php else: ?>
+                                                        <img src="<?= base_url('uploads/menus/default_menus.jpg') ?>" width="100" class="img-thumbnail mb-2">
+                                                    <?php endif; ?>
                                                 </div>
 
                                                 <div class="mb-3">
-                                                <label class="form-label">Foto Saat Ini</label><br>
-
-                                                <?php if (!empty($row['image_path'])): ?>
-                                                    <img src="<?= base_url('uploads/menus/'.$row['image_path']) ?>"
-                                                        width="100"
-                                                        class="img-thumbnail mb-2">
-                                                <?php else: ?>
-                                                    <img src="<?= base_url('uploads/menus/default_menus.jpg') ?>"
-                                                        width="100"
-                                                        class="img-thumbnail mb-2">
-                                                <?php endif; ?>
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <label class="form-label">Ganti Foto Menu</label>
-                                                <input type="file" name="image" class="form-control" accept="image/*">
-                                                <small class="text-muted">Kosongkan jika tidak ingin mengganti foto.</small>
-                                            </div>
-
+                                                    <label class="form-label fw-semibold">Ganti Foto Menu</label>
+                                                    <input type="file" name="gambar" class="form-control" accept="image/*">
+                                                    <small class="text-muted">Kosongkan jika tidak ingin mengganti foto.</small>
+                                                </div>
                                             </div>
                                             <div class="modal-footer"><button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button><button type="submit" class="btn btn-warning btn-sm text-white">Simpan Perubahan</button></div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
+                            <?php
+                                $modalsHtml .= ob_get_clean();
+                            ?>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr><td colspan="5" class="text-center text-muted py-4">Belum ada data menu di database.</td></tr>
@@ -390,15 +404,20 @@
     </div>
 </div>
 
+<?php
+    // Cetak semua modal Edit DI SINI, di luar <table>.
+    echo $modalsHtml;
+?>
+
 <div class="modal fade" id="modalTambah" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
            <form action="<?= base_url('admin/menu/add') ?>" method="POST" enctype="multipart/form-data">
                 <div class="modal-header"><h5>➕ Tambah Menu Baru</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
                 <div class="modal-body">
-                    <div class="mb-3"><label class="form-label">Nama Menu</label><input type="text" name="menu_name" class="form-control" placeholder="Masukkan nama makanan/minuman" required></div>
+                    <div class="mb-3"><label class="form-label fw-semibold">Nama Menu</label><input type="text" name="menu_name" class="form-control" placeholder="Masukkan nama makanan/minuman" required></div>
                     <div class="mb-3">
-                        <label class="form-label">Kategori</label>
+                        <label class="form-label fw-semibold">Kategori</label>
                         <select name="category_id" class="form-select">
                             <option value="1">Snack</option>
                             <option value="2">Teh & Susu</option>
@@ -415,12 +434,36 @@
                             <option value="13">Minuman Tradisional</option>
                         </select>
                     </div>
-                    <div class="mb-3"><label class="form-label">Harga (Rp)</label><input type="number" name="price" class="form-control" placeholder="Contoh: 15000" required></div>
-                    <div class="mb-3"><label class="form-label">Stok Awal</label><input type="number" name="stock" class="form-control" value="20" required></div>
+
                     <div class="mb-3">
-    <label class="form-label">Foto Menu</label>
-    <input type="file" name="image" class="form-control" accept="image/*">
-</div>
+                        <label class="form-label fw-semibold text-success">📋 Masukkan Varian Rasa / Ukuran / Level</label>
+                        <div class="variant-box" id="tambah-variant-container">
+                            <div class="row g-2 mb-2 variant-row">
+                                <div class="col-md-5">
+                                    <input type="text" name="variant_name[]" class="form-control form-control-sm" placeholder="Nama Varian (e.g., Ice / Large / Level 1)" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="number" name="variant_price[]" class="form-control form-control-sm" placeholder="Harga (Rp)" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="number" name="variant_stock[]" class="form-control form-control-sm" placeholder="Stok" value="20" required>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-xs btn-outline-success mt-2" id="btn-add-tambah-variant" style="font-size: 11px;"><i class="fa-solid fa-plus"></i> Tambah Baris Varian</button>
+                    </div>
+
+                    <div class="mb-3 form-check form-switch">
+                        <input class="form-check-input" type="checkbox" name="is_recommended" value="1" id="checkRekomendasi">
+                        <label class="form-check-label fw-semibold text-warning" for="checkRekomendasi">
+                            ⭐ Tandai sebagai Menu Rekomendasi (Best Seller)
+                        </label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Foto Menu</label>
+                        <input type="file" name="gambar" class="form-control" accept="image/*">
+                    </div>
                 </div>
                 <div class="modal-footer"><button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button><button type="submit" class="btn btn-success btn-sm">Simpan Data</button></div>
             </form>
@@ -430,28 +473,76 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    // Handle Sidebar Responsive
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebarOverlay');
     const menuToggleBtn = document.getElementById('menuToggleBtn');
     const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
 
-    function openSidebar() {
-        sidebar.classList.add('show');
-        overlay.classList.add('show');
-    }
-    function closeSidebar() {
-        sidebar.classList.remove('show');
-        overlay.classList.remove('show');
-    }
+    function openSidebar() { sidebar.classList.add('show'); overlay.classList.add('show'); }
+    function closeSidebar() { sidebar.classList.remove('show'); overlay.classList.remove('show'); }
 
-    menuToggleBtn.addEventListener('click', openSidebar);
-    sidebarCloseBtn.addEventListener('click', closeSidebar);
-    overlay.addEventListener('click', closeSidebar);
+    if(menuToggleBtn) menuToggleBtn.addEventListener('click', openSidebar);
+    if(sidebarCloseBtn) sidebarCloseBtn.addEventListener('click', closeSidebar);
+    if(overlay) overlay.addEventListener('click', closeSidebar);
 
     window.addEventListener('resize', function () {
-        if (window.innerWidth >= 992) {
-            closeSidebar();
+        if (window.innerWidth >= 992) { closeSidebar(); }
+    });
+
+    // ========================================================
+    // JAVASCRIPT DINAMIS UNTUK PENGELOLAAN DATA BANYAK VARIAN
+    // ========================================================
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        // 1. Dinamis di Modal Tambah Menu
+        const tambahContainer = document.getElementById('tambah-variant-container');
+        const btnAddTambah = document.getElementById('btn-add-tambah-variant');
+
+        if(btnAddTambah && tambahContainer) {
+            btnAddTambah.addEventListener('click', function() {
+                const newRow = document.createElement('div');
+                newRow.className = 'row g-2 mb-2 variant-row';
+                newRow.innerHTML = `
+                    <div class="col-md-5"><input type="text" name="variant_name[]" class="form-control form-control-sm" placeholder="Nama Varian" required></div>
+                    <div class="col-md-4"><input type="number" name="variant_price[]" class="form-control form-control-sm" placeholder="Harga (Rp)" required></div>
+                    <div class="col-md-3 d-flex gap-1">
+                        <input type="number" name="variant_stock[]" class="form-control form-control-sm" placeholder="Stok" value="20" required>
+                        <button type="button" class="btn btn-danger btn-sm btn-remove-variant"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+                tambahContainer.appendChild(newRow);
+            });
         }
+
+        // 2. Dinamis di Banyak Modal Edit Menu Sekaligus
+        document.querySelectorAll('.btn-add-edit-variant').forEach(button => {
+            button.addEventListener('click', function() {
+                const modalBody = this.closest('.modal-body');
+                const editContainer = modalBody.querySelector('.edit-variant-container');
+                
+                if(editContainer) {
+                    const newRow = document.createElement('div');
+                    newRow.className = 'row g-2 mb-2 variant-row';
+                    newRow.innerHTML = `
+                        <div class="col-md-5"><input type="text" name="variant_name[]" class="form-control form-control-sm" placeholder="Nama Varian" required></div>
+                        <div class="col-md-4"><input type="number" name="variant_price[]" class="form-control form-control-sm" placeholder="Harga" required></div>
+                        <div class="col-md-3 d-flex gap-1">
+                            <input type="number" name="variant_stock[]" class="form-control form-control-sm" placeholder="Stok" value="20" required>
+                            <button type="button" class="btn btn-danger btn-sm btn-remove-variant"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    `;
+                    editContainer.appendChild(newRow);
+                }
+            });
+        });
+
+        // 3. Fungsi Global untuk Aksi Hapus Baris Varian (Berlaku di Modal Tambah & Edit)
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.btn-remove-variant')) {
+                e.target.closest('.variant-row').remove();
+            }
+        });
     });
 </script>
 </body>

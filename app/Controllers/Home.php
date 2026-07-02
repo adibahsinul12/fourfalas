@@ -4,25 +4,61 @@ namespace App\Controllers;
 
 use App\Models\MenuModel;
 use App\Models\CategoryModel;
+use App\Models\VariantModel;
 
 class Home extends BaseController
 {
+    // Helper: gabungkan daftar menu dengan varian masing-masing + harga termurah untuk ditampilkan di kartu
+    private function attachVariants(array $menus): array
+    {
+        $variantModel = new VariantModel();
+        $allVariants  = $variantModel->orderBy('id', 'ASC')->findAll();
+
+        // Kelompokkan varian berdasarkan menu_id supaya gampang dicocokkan
+        $variantsByMenu = [];
+        foreach ($allVariants as $v) {
+            $variantsByMenu[$v['menu_id']][] = $v;
+        }
+
+        foreach ($menus as &$menu) {
+            $menu['variants'] = $variantsByMenu[$menu['id']] ?? [];
+
+            if (!empty($menu['variants'])) {
+                $menu['price'] = min(array_column($menu['variants'], 'price'));
+                $menu['stock'] = array_sum(array_column($menu['variants'], 'stock'));
+            } else {
+                $menu['price'] = 0;
+                $menu['stock'] = 0;
+            }
+        }
+        unset($menu);
+
+        return $menus;
+    }
+
     public function index()
     {
         // Inisialisasi model
-        $menuModel = new MenuModel();
         $categoryModel = new CategoryModel();
+        $db = \Config\Database::connect();
 
         // 1. Ambil semua kategori untuk bagian tab filter
         $data['categories'] = $categoryModel->findAll();
 
-        // 2. Ambil menu yang diberi tanda rekomendasi (is_recommended = 1) dan berstatus aktif
-        $data['recommended_menus'] = $menuModel->where('is_recommended', 1)
-                                                ->where('is_active', 1)
-                                                ->findAll();
+        // 2. Ambil menu REKOMENDASI, lalu lengkapi dengan data varian
+        $recommendedMenus = $db->table('menus')
+            ->where('is_recommended', 1)
+            ->where('is_active', 1)
+            ->get()
+            ->getResultArray();
+        $data['recommended_menus'] = $this->attachVariants($recommendedMenus);
 
-        // 3. Ambil semua menu yang aktif untuk etalase utama
-        $data['all_menus'] = $menuModel->where('is_active', 1)->findAll();
+        // 3. Ambil SEMUA MENU AKTIF, lalu lengkapi dengan data varian
+        $allMenus = $db->table('menus')
+            ->where('is_active', 1)
+            ->get()
+            ->getResultArray();
+        $data['all_menus'] = $this->attachVariants($allMenus);
 
         // Kirim data ke view pelanggan/beranda
         return view('pelanggan/beranda', $data);
@@ -31,8 +67,8 @@ class Home extends BaseController
     // Halaman "Lihat semua menu" (dipanggil dari tombol "Lihat semua" di beranda)
     public function menu()
     {
-        $menuModel = new MenuModel();
         $categoryModel = new CategoryModel();
+        $db = \Config\Database::connect();
 
         // Ambil semua kategori untuk tab filter
         $data['categories'] = $categoryModel->findAll();
@@ -40,14 +76,16 @@ class Home extends BaseController
         // Cek apakah ada filter kategori dari query string, contoh: /menu?category=2
         $categoryId = $this->request->getGet('category');
 
-        $query = $menuModel->where('is_active', 1);
+        // Membangun query builder dinamis untuk halaman menu pelanggan
+        $builder = $db->table('menus')->where('is_active', 1);
 
+        // Jika owner/pelanggan ngeklik filter kategori tertentu
         if (!empty($categoryId)) {
-            $query = $query->where('category_id', $categoryId);
+            $builder->where('category_id', $categoryId);
         }
 
-        // Ambil semua menu (sudah difilter kategori kalau ada)
-        $data['all_menus'] = $query->findAll();
+        $allMenus = $builder->get()->getResultArray();
+        $data['all_menus'] = $this->attachVariants($allMenus);
 
         return view('pelanggan/menu', $data);
     }
