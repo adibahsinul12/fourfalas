@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tenaga Kerja - FO'orders</title>
+<title>Persetujuan Menu - FO'orders</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -42,7 +42,6 @@ body{ background:var(--cream); display:flex; min-height:100vh; }
 
 .main{ flex:1; padding:28px 32px; min-width:0; overflow-x:hidden; }
 
-/* ===== Hamburger & overlay (khusus layar kecil) ===== */
 .topbar-mobile{ display:none; align-items:center; margin-bottom:14px; }
 .hamburger{
     display:none; background:#fff; border:1px solid var(--border);
@@ -62,14 +61,6 @@ h1{ font-size:20px; color:#333; margin-bottom:4px; }
     padding:10px 14px; border-radius:8px; font-size:13px; margin-bottom:18px;
 }
 
-.filters{ display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap; }
-.filter-chip{
-    padding:8px 16px; border-radius:20px; font-size:13px; text-decoration:none;
-    color:#555; background:#fff; border:1px solid var(--border);
-    white-space:nowrap;
-}
-.filter-chip.active{ background:var(--green); color:#fff; border-color:var(--green); font-weight:600; }
-
 .table-wrap{
     background:#fff; border-radius:14px; padding:8px 20px;
     box-shadow:0 4px 14px rgba(0,0,0,.03);
@@ -82,21 +73,22 @@ th{
     font-weight:600; font-size:11px; text-transform:uppercase;
     border-bottom:1px solid var(--border); white-space:nowrap;
 }
-td{ padding:14px 10px; border-bottom:1px solid var(--border); color:#333; white-space:nowrap; }
+td{ padding:14px 10px; border-bottom:1px solid var(--border); color:#333; }
 tr:last-child td{ border-bottom:none; }
+
+.menu-photo{ width:56px; height:56px; object-fit:cover; border-radius:8px; }
 
 .badge{
     padding:4px 10px; border-radius:20px; font-size:11px; font-weight:600;
+    background:#FFF3CD; color:#856404;
 }
-.badge.aktif{ background:#E8F5E9; color:#2E7D32; }
-.badge.nonaktif{ background:#FFEBEE; color:#C62828; }
 
 .btn-toggle{
     border:none; padding:7px 14px; border-radius:8px; font-size:12px;
-    font-weight:600; cursor:pointer;
+    font-weight:600; cursor:pointer; margin-right:6px;
 }
-.btn-toggle.to-nonaktif{ background:#FFEBEE; color:#C62828; }
 .btn-toggle.to-aktif{ background:#E8F5E9; color:#2E7D32; }
+.btn-toggle.to-nonaktif{ background:#FFEBEE; color:#C62828; }
 
 .empty-note{ text-align:center; color:#aaa; font-size:13px; padding:30px 0; }
 
@@ -105,12 +97,10 @@ tr:last-child td{ border-bottom:none; }
     align-items:center; gap:6px;
 }
 
-/* ===== TABLET (<=1100px) ===== */
 @media (max-width: 1100px){
     .sidebar{ width:220px; }
 }
 
-/* ===== TABLET KECIL / HP LANDSCAPE (<=900px) ===== */
 @media (max-width: 900px){
     .sidebar{
         position:fixed; left:0; top:0; width:240px; height:100vh; z-index:50;
@@ -123,12 +113,10 @@ tr:last-child td{ border-bottom:none; }
     .scroll-hint{ display:flex; }
 }
 
-/* ===== HP (<=600px) ===== */
 @media (max-width: 600px){
     main.main{ padding:16px 14px; }
     h1{ font-size:18px; }
     .table-wrap{ padding:8px 12px; }
-    .filter-chip{ padding:7px 12px; font-size:12px; }
 }
 </style>
 </head>
@@ -137,37 +125,37 @@ tr:last-child td{ border-bottom:none; }
 <aside class="sidebar">
     <div class="logo"><i class="fa-solid fa-mug-saucer"></i> FO'orders</div>
 
-       <?php $current = uri_string(); // atau service('uri')->getPath() ?>
+    <?php $current = uri_string(); ?>
 
-            <a href="<?= base_url('owner') ?>" 
-            class="nav-item <?= $current === 'owner' ? 'active' : '' ?>">
-            <i class="fa-solid fa-gauge"></i> Dashboard
-            </a>
+    <a href="<?= base_url('owner') ?>"
+       class="nav-item <?= $current === 'owner' ? 'active' : '' ?>">
+       <i class="fa-solid fa-gauge"></i> Dashboard
+    </a>
 
-            <a href="<?= base_url('owner/menu-approval') ?>" 
-            class="nav-item <?= str_starts_with($current, 'owner/menu-approval') ? 'active' : '' ?>">
-            <i class="fa-solid fa-bowl-food"></i> Persetujuan Menu
-            </a>
+    <a href="<?= base_url('owner/menu-approval') ?>"
+       class="nav-item <?= str_starts_with($current, 'owner/menu-approval') ? 'active' : '' ?>">
+       <i class="fa-solid fa-bowl-food"></i> Persetujuan Menu
+    </a>
 
-            <a href="<?= base_url('owner/karyawan') ?>" 
-            class="nav-item <?= str_starts_with($current, 'owner/karyawan') ? 'active' : '' ?>">
-            <i class="fa-solid fa-users"></i> Tenaga Kerja
-            </a>
+    <a href="<?= base_url('owner/karyawan') ?>"
+       class="nav-item <?= str_starts_with($current, 'owner/karyawan') ? 'active' : '' ?>">
+       <i class="fa-solid fa-users"></i> Tenaga Kerja
+    </a>
 
-            <a href="<?= base_url('owner/rating') ?>" 
-            class="nav-item <?= str_starts_with($current, 'owner/rating') ? 'active' : '' ?>">
-            <i class="fa-solid fa-star"></i> Rating & Ulasan
-            </a>
+    <a href="<?= base_url('owner/rating') ?>"
+       class="nav-item <?= str_starts_with($current, 'owner/rating') ? 'active' : '' ?>">
+       <i class="fa-solid fa-star"></i> Rating & Ulasan
+    </a>
 
-            <a href="<?= base_url('owner/laporan') ?>" 
-            class="nav-item <?= str_starts_with($current, 'owner/laporan') ? 'active' : '' ?>">
-            <i class="fa-solid fa-chart-line"></i> Laporan Keuangan
-            </a>
+    <a href="<?= base_url('owner/laporan') ?>"
+       class="nav-item <?= str_starts_with($current, 'owner/laporan') ? 'active' : '' ?>">
+       <i class="fa-solid fa-chart-line"></i> Laporan Keuangan
+    </a>
 
-            <a href="<?= base_url('owner/pengaturan') ?>" 
-            class="nav-item <?= str_starts_with($current, 'owner/pengaturan') ? 'active' : '' ?>">
-            <i class="fa-solid fa-gear"></i> Pengaturan
-            </a>
+    <a href="<?= base_url('owner/pengaturan') ?>"
+       class="nav-item <?= str_starts_with($current, 'owner/pengaturan') ? 'active' : '' ?>">
+       <i class="fa-solid fa-gear"></i> Pengaturan
+    </a>
 
     <div class="nav-bottom">
         <a href="<?= base_url('logout') ?>" class="nav-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
@@ -179,68 +167,77 @@ tr:last-child td{ border-bottom:none; }
         <button type="button" class="hamburger" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
     </div>
 
-    <h1>Tenaga Kerja</h1>
-    <div class="subtitle">Pantau &amp; kelola status aktif staf per bidang</div>
+    <h1>Persetujuan Menu</h1>
+    <div class="subtitle">Tinjau dan setujui menu baru yang diajukan admin</div>
 
     <?php if (session()->getFlashdata('msg')) : ?>
         <div class="flash-msg"><?= esc(session()->getFlashdata('msg')) ?></div>
     <?php endif; ?>
 
-    <div class="filters">
-        <a href="<?= base_url('owner/karyawan') ?>" class="filter-chip <?= empty($bidang_aktif) ? 'active' : '' ?>">Semua</a>
-        <?php foreach ($bidang_list as $b) : ?>
-            <a href="<?= base_url('owner/karyawan?bidang=' . urlencode($b)) ?>"
-               class="filter-chip <?= $bidang_aktif === $b ? 'active' : '' ?>">
-                <?= esc($b) ?>
-            </a>
-        <?php endforeach; ?>
-    </div>
-
     <div class="scroll-hint"><i class="fa-solid fa-arrows-left-right"></i> Geser tabel ke samping untuk melihat semua kolom</div>
 
     <div class="table-wrap">
-        <?php if (empty($karyawan)) : ?>
-            <div class="empty-note">Belum ada data karyawan untuk bidang ini.</div>
+        <?php if (empty($pendingMenus)) : ?>
+            <div class="empty-note">Tidak ada permintaan menu baru.</div>
         <?php else : ?>
             <table>
                 <thead>
                     <tr>
-                        <th>Nama</th>
-                        <th>Bidang</th>
-                        <th>No. HP</th>
-                        <th>Tanggal Masuk</th>
-                        <th>Gaji</th>
+                        <th>Foto</th>
+                        <th>Nama Menu</th>
+                        <th>Kategori</th>
+                        <th>Diajukan Oleh</th>
                         <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($karyawan as $k) : ?>
+                    <?php foreach ($pendingMenus as $menu) : ?>
                         <tr>
-                            <td><?= esc($k['nama']) ?></td>
-                            <td><?= esc($k['bidang']) ?></td>
-                            <td><?= esc($k['no_hp'] ?? '-') ?></td>
-                            <td><?= esc(date('d M Y', strtotime($k['tanggal_masuk']))) ?></td>
-                            <td>Rp <?= number_format((float) $k['gaji'], 0, ',', '.') ?></td>
                             <td>
-                                <span class="badge <?= strtolower($k['status']) === 'aktif' ? 'aktif' : 'nonaktif' ?>">
-                                    <?= esc($k['status']) ?>
-                                </span>
+                                <?php if (!empty($menu['image_path'])) : ?>
+                                    <img src="<?= base_url('uploads/menus/'.$menu['image_path']) ?>" class="menu-photo">
+                                <?php else : ?>
+                                    <img src="<?= base_url('uploads/menus/default_menus.jpg') ?>" class="menu-photo">
+                                <?php endif; ?>
                             </td>
+                            <td><?= esc($menu['menu_name']) ?></td>
                             <td>
-                                <form action="<?= base_url('owner/karyawan/update-status/' . $k['id']) ?>" method="post">
-                                    <input type="hidden" name="bidang" value="<?= esc($bidang_aktif ?? '') ?>">
-                                    <?php if (strtolower($k['status']) === 'aktif') : ?>
-                                        <button type="submit" class="btn-toggle to-nonaktif"
-                                                onclick="return confirm('Nonaktifkan <?= esc($k['nama']) ?>?')">
-                                            Nonaktifkan
-                                        </button>
-                                    <?php else : ?>
-                                        <button type="submit" class="btn-toggle to-aktif"
-                                                onclick="return confirm('Aktifkan kembali <?= esc($k['nama']) ?>?')">
-                                            Aktifkan
-                                        </button>
-                                    <?php endif; ?>
+                                <?php
+                                    switch ($menu['category_id']) {
+                                        case 1: echo 'Snack'; break;
+                                        case 2: echo 'Teh & Susu'; break;
+                                        case 3: echo 'Ayam & Seafood'; break;
+                                        case 4: echo 'Aneka Mie'; break;
+                                        case 5: echo 'Dessert / Es Krim'; break;
+                                        case 6: echo 'Aneka Nasi'; break;
+                                        case 7: echo 'Western Food'; break;
+                                        case 8: echo 'Paket Menu'; break;
+                                        case 9: echo 'Sup & Berkuah'; break;
+                                        case 10: echo 'Minuman Segar'; break;
+                                        case 11: echo 'Signature Drink'; break;
+                                        case 12: echo 'Frappe Series'; break;
+                                        case 13: echo 'Minuman Tradisional'; break;
+                                        default: echo 'Lainnya'; break;
+                                    }
+                                ?>
+                            </td>
+                            <td>Admin #<?= esc($menu['requested_by']) ?></td>
+                            <td><span class="badge">⏳ Pending</span></td>
+                            <td>
+                                <form action="<?= base_url('owner/menu-approval/approve/'.$menu['id']) ?>" method="post" style="display:inline">
+                                    <?= csrf_field() ?>
+                                    <button type="submit" class="btn-toggle to-aktif"
+                                            onclick="return confirm('Setujui menu <?= esc($menu['menu_name']) ?>?')">
+                                        Approve
+                                    </button>
+                                </form>
+                                <form action="<?= base_url('owner/menu-approval/reject/'.$menu['id']) ?>" method="post" style="display:inline">
+                                    <?= csrf_field() ?>
+                                    <button type="submit" class="btn-toggle to-nonaktif"
+                                            onclick="return confirm('Tolak menu <?= esc($menu['menu_name']) ?>?')">
+                                        Reject
+                                    </button>
                                 </form>
                             </td>
                         </tr>

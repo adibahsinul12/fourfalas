@@ -167,13 +167,16 @@ class Admin extends BaseController
         $db = \Config\Database::connect();
         
         // Menggunakan insert builder langsung ke tabel menus tanpa lewat model logic
+        // Menggunakan insert builder langsung ke tabel menus tanpa lewat model logic
         $db->table('menus')->insert([
-            'category_id'    => $this->request->getPost('category_id'),
-            'menu_name'      => $this->request->getPost('menu_name'),
-            'description'    => $description,
-            'image_path'     => $namaFile,
-            'is_recommended' => $isRecommended, 
-            'is_active'      => 1
+            'category_id'      => $this->request->getPost('category_id'),
+            'menu_name'        => $this->request->getPost('menu_name'),
+            'description'      => $description,
+            'image_path'       => $namaFile,
+            'is_recommended'   => $isRecommended,
+            'is_active'        => 1,
+            'status'           => 'pending',                          // <-- TAMBAHKAN
+            'requested_by'     => session()->get('id'),          // <-- TAMBAHKAN
         ]);
 
         $menuId = $db->insertID(); 

@@ -256,6 +256,7 @@ body{ background:var(--cream); display:flex; min-height:100vh; }
     <div class="logo"><i class="fa-solid fa-mug-saucer"></i> FO'orders</div>
 
     <a href="<?= base_url('owner') ?>" class="nav-item active"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+    <a href="<?= base_url('owner/menu-approval') ?>" class="nav-item"><i class="fa-solid fa-bowl-food"></i> Persetujuan Menu</a>
     <a href="<?= base_url('owner/karyawan') ?>" class="nav-item"><i class="fa-solid fa-users"></i> Tenaga Kerja</a>
     <a href="<?= base_url('owner/rating') ?>" class="nav-item"><i class="fa-solid fa-star"></i> Rating & Ulasan</a>
     <a href="<?= base_url('owner/laporan') ?>" class="nav-item"><i class="fa-solid fa-chart-line"></i> Laporan Keuangan</a>

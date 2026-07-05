@@ -198,6 +198,11 @@ body{ background:var(--cream); display:flex; min-height:100vh; overflow-x:hidden
         <i class="fa-solid fa-gauge"></i> Dashboard
     </a>
 
+    <a href="<?= base_url('owner/menu-approval') ?>" 
+            class="nav-item <?= str_starts_with($current, 'owner/menu-approval') ? 'active' : '' ?>">
+            <i class="fa-solid fa-bowl-food"></i> Persetujuan Menu
+            </a>
+
     <a href="<?= base_url('owner/karyawan') ?>"
        class="nav-item <?= str_starts_with($current, 'owner/karyawan') ? 'active' : '' ?>">
         <i class="fa-solid fa-users"></i> Tenaga Kerja

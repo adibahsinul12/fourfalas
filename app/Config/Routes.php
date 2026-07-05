@@ -79,6 +79,10 @@ $routes->group('admin', ['filter' => 'auth'], function($routes) {
 $routes->group('owner', ['filter' => 'auth'], function($routes) {
     $routes->get('/', 'Owner\Dashboard::index');
     $routes->get('transaksi', 'Owner\Dashboard::transaksi');
+    
+    $routes->get('menu-approval', 'Admin\Owner\MenuApproval::index');
+    $routes->post('menu-approval/approve/(:num)', 'Admin\Owner\MenuApproval::approve/$1');
+    $routes->post('menu-approval/reject/(:num)', 'Admin\Owner\MenuApproval::reject/$1');
 
     // Karyawan
     $routes->get('karyawan', 'Owner\Karyawan::index');

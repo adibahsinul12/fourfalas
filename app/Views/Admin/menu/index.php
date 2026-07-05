@@ -228,6 +228,7 @@
                         <th>Nama Menu</th>
                         <th>Kategori</th>
                         <th>Varian & Harga</th>
+                        <th>Status</th>
                         <th class="text-center">Aksi</th>
                     </tr>
                 </thead>
@@ -293,6 +294,15 @@
                                         </ul>
                                     <?php else: ?>
                                         <span class="text-danger small"><i class="fa-solid fa-triangle-exclamation"></i> Belum ada varian!</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <?php if (($row['status'] ?? 'approved') == 'pending'): ?>
+                                        <span class="badge" style="background-color:#FFF3CD;color:#856404;">⏳ Menunggu Approval</span>
+                                    <?php elseif (($row['status'] ?? 'approved') == 'rejected'): ?>
+                                        <span class="badge" style="background-color:#FFEBEE;color:#F44336;" title="<?= esc($row['rejected_reason'] ?? '') ?>">❌ Ditolak</span>
+                                    <?php else: ?>
+                                        <span class="badge" style="background-color:#E8F5E9;color:#4CAF50;">✅ Disetujui</span>
                                     <?php endif; ?>
                                 </td>
                                 <td class="text-center">
@@ -402,7 +412,7 @@
                             ?>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <tr><td colspan="5" class="text-center text-muted py-4">Belum ada data menu di database.</td></tr>
+                        <tr><td colspan="6" class="text-center text-muted py-4">Belum ada data menu di database.</td></tr>
                     <?php endif; ?>  
                 </tbody>
             </table>
