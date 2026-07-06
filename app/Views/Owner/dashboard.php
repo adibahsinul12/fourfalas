@@ -290,7 +290,7 @@ body{ background:var(--cream); display:flex; min-height:100vh; }
             <div>
                 <div class="label">Total Pendapatan</div>
                 <div class="value">Rp <?= number_format($total_pendapatan, 0, ',', '.') ?></div>
-                <div class="note dummy">Data dummy (menunggu tabel transaksi)</div>
+                <div class="note dummy">Dari Tabel Transaksi</div>
             </div>
         </div>
         <div class="card">
@@ -298,7 +298,7 @@ body{ background:var(--cream); display:flex; min-height:100vh; }
             <div>
                 <div class="label">Total Pesanan</div>
                 <div class="value"><?= number_format($total_pesanan) ?></div>
-                <div class="note dummy">Data dummy</div>
+                <div class="note dummy">Data Pesanan</div>
             </div>
         </div>
         <div class="card">
