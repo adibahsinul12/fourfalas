@@ -183,7 +183,7 @@ body{
     </div>
 
     <div class="brand">
-        FO<span>'</span>orders
+        FO<span>'</span>Orders
     </div>
 
     <div class="subtitle">
