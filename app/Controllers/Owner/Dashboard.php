@@ -5,7 +5,7 @@ namespace App\Controllers\Owner;
 use App\Controllers\BaseController;
 use App\Models\KaryawanModel;
 use App\Models\RatingModel;
-use App\Models\OrderModel; // TAMBAHAN
+use App\Models\OrderModel;
 
 class Dashboard extends BaseController
 {
@@ -13,24 +13,28 @@ class Dashboard extends BaseController
     {
         $karyawanModel = new KaryawanModel();
         $ratingModel   = new RatingModel();
-        $orderModel    = new OrderModel(); // TAMBAHAN
+        $orderModel    = new OrderModel();
 
-        // TAMBAHAN: ambil data penjualan per bulan tahun berjalan
+        // Ambil data penjualan per bulan tahun berjalan
         $namaBulan = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
         $penjualanPerBulan = array_fill(1, 12, 0); // default 0 tiap bulan
+        $pesananPerBulan   = array_fill(1, 12, 0);
 
         $monthlySales = $orderModel->getMonthlySales();
         foreach ($monthlySales as $row) {
             $penjualanPerBulan[(int) $row['bulan']] = (float) $row['total'];
+            $pesananPerBulan[(int) $row['bulan']]   = (int) $row['jumlah_pesanan'];
         }
 
+        // Total pendapatan & total pesanan sekarang dihitung dari data yang sama dengan grafik,
+        // supaya keduanya selalu sinkron (bukan angka dummy lagi)
+        $totalPendapatan = array_sum($penjualanPerBulan);
+        $totalPesanan    = array_sum($pesananPerBulan);
+
         $data = [
-            // TODO: ganti dengan data asli begitu tabel transaksi/pesanan sudah ada.
-            // Sengaja dipisah jelas biar gampang dicari & diganti nanti.
-            'total_pendapatan' => 4850000,
-            'total_pesanan'    => 37,
-            'total_pelanggan'  => 25,
-            'is_dummy_sales'   => true,
+            'total_pendapatan' => $totalPendapatan,
+            'total_pesanan'    => $totalPesanan,
+            'total_pelanggan'  => 25, // masih dummy, belum ada sumber data pelanggan unik
 
             'total_karyawan' => $karyawanModel->countAllResults(),
             'per_bidang'     => $karyawanModel->countByBidang(),
@@ -39,7 +43,6 @@ class Dashboard extends BaseController
             'total_rating'   => $ratingModel->countAllResults(),
             'rating_terbaru' => $ratingModel->getRecent(5),
 
-            // TAMBAHAN: data untuk grafik penjualan per bulan
             'sales_chart_labels' => $namaBulan,
             'sales_chart_data'   => array_values($penjualanPerBulan),
         ];
