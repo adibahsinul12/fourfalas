@@ -7,6 +7,17 @@
     <h1 style="margin: 0 0 4px 0; font-size: 22px; font-weight: 700; color: #6B3A1E; font-family: 'Poppins', sans-serif;">Riwayat Pesanan</h1>
     <a href="<?= base_url('pesanan'); ?>" style="display:inline-block; margin-bottom:20px; font-size:13px; color:#6B3A1E; text-decoration:underline; font-family: 'Poppins', sans-serif;">&larr; Kembali ke Pesanan Aktif</a>
 
+    <?php if (session()->getFlashdata('success')): ?>
+        <div style="background:#E8F5E9; color:#2E7D32; padding:12px 16px; border-radius:10px; margin-bottom:16px; font-size:13px; font-family:'Poppins',sans-serif;">
+            <?= session()->getFlashdata('success'); ?>
+        </div>
+    <?php endif; ?>
+    <?php if (session()->getFlashdata('error')): ?>
+        <div style="background:#FFEBEE; color:#C62828; padding:12px 16px; border-radius:10px; margin-bottom:16px; font-size:13px; font-family:'Poppins',sans-serif;">
+            <?= session()->getFlashdata('error'); ?>
+        </div>
+    <?php endif; ?>
+
     <?php if (empty($orders)): ?>
         <div class="empty-state" style="margin-top: 40px; text-align: center;">
             <svg viewBox="0 0 100 100" style="width: 100px; height: 100px; margin: 0 auto;">
@@ -78,11 +89,59 @@
                     <p style="margin: 10px 0 0 0; font-size: 12px; color: #999999; font-style: italic;">Catatan: <?= esc($order['notes']); ?></p>
                 <?php endif; ?>
 
+                <?php if ($order['order_status'] === 'Selesai'): ?>
+
+                    <?php if (!empty($order['rating'])): ?>
+                        <div style="margin-top: 14px; padding-top: 14px; border-top: 1px dashed #EEEEEE;">
+                            <p style="margin: 0 0 4px 0; font-size: 12px; color: #888888;">Penilaian Anda</p>
+                            <div style="font-size: 16px; color: #FFB300; letter-spacing: 2px;">
+                                <?php for ($i = 1; $i <= 5; $i++): ?>
+                                    <?= $i <= $order['rating']['rating'] ? '★' : '☆'; ?>
+                                <?php endfor; ?>
+                            </div>
+                            <?php if (!empty($order['rating']['komentar'])): ?>
+                                <p style="margin: 6px 0 0 0; font-size: 13px; color: #555555; font-style: italic;">
+                                    "<?= esc($order['rating']['komentar']); ?>"
+                                </p>
+                            <?php endif; ?>
+                        </div>
+                    <?php else: ?>
+                        <div style="margin-top: 14px; padding-top: 14px; border-top: 1px dashed #EEEEEE;">
+                            <button type="button" onclick="bukaModalRating(<?= $order['id']; ?>)"
+                                style="width: 100%; background: #4CAF50; color: #fff; border: none; padding: 10px; border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer;">
+                                ⭐ Beri Rating
+                            </button>
+                        </div>
+                    <?php endif; ?>
+
+                <?php endif; ?>
+
             </div>
         <?php endforeach; ?>
 
     <?php endif; ?>
 
+</div>
+
+<!-- Modal Rating -->
+<div id="modalRating" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:999; align-items:center; justify-content:center;">
+    <div style="background:#fff; border-radius:16px; padding:24px; width:85%; max-width:340px; font-family:'Poppins',sans-serif;">
+        <h3 style="margin:0 0 16px 0; color:#6B3A1E; font-size:17px;">Beri Rating</h3>
+        <form id="formRating" method="post">
+            <div id="starPicker" style="font-size:32px; color:#DDDDDD; text-align:center; margin-bottom:16px; letter-spacing:6px;">
+                <span data-val="1" style="cursor:pointer;">★</span><span data-val="2" style="cursor:pointer;">★</span><span data-val="3" style="cursor:pointer;">★</span><span data-val="4" style="cursor:pointer;">★</span><span data-val="5" style="cursor:pointer;">★</span>
+            </div>
+            <input type="hidden" name="rating" id="ratingValue" value="0">
+            <textarea name="komentar" placeholder="Tulis komentar (opsional)"
+                style="width:100%; border:1px solid #EEEEEE; border-radius:10px; padding:10px; font-family:'Poppins',sans-serif; font-size:13px; resize:none; height:70px; box-sizing:border-box;"></textarea>
+            <div style="display:flex; gap:10px; margin-top:16px;">
+                <button type="button" onclick="tutupModalRating()"
+                    style="flex:1; background:#F5F5F5; color:#666; border:none; padding:10px; border-radius:10px; font-weight:600; cursor:pointer;">Batal</button>
+                <button type="submit"
+                    style="flex:1; background:#4CAF50; color:#fff; border:none; padding:10px; border-radius:10px; font-weight:600; cursor:pointer;">Kirim</button>
+            </div>
+        </form>
+    </div>
 </div>
 
 <div class="bottom-nav">
@@ -99,5 +158,26 @@
         <span>Keranjang</span>
     </div>
 </div>
+
+<script>
+function bukaModalRating(orderId) {
+    document.getElementById('formRating').action = '<?= base_url('pesanan/rating/simpan') ?>/' + orderId;
+    document.getElementById('ratingValue').value = 0;
+    document.querySelectorAll('#starPicker span').forEach(s => s.style.color = '#DDDDDD');
+    document.getElementById('modalRating').style.display = 'flex';
+}
+function tutupModalRating() {
+    document.getElementById('modalRating').style.display = 'none';
+}
+document.querySelectorAll('#starPicker span').forEach(span => {
+    span.addEventListener('click', function () {
+        const val = parseInt(this.dataset.val);
+        document.getElementById('ratingValue').value = val;
+        document.querySelectorAll('#starPicker span').forEach(s => {
+            s.style.color = parseInt(s.dataset.val) <= val ? '#FFB300' : '#DDDDDD';
+        });
+    });
+});
+</script>
 
 <?= $this->endSection(); ?>

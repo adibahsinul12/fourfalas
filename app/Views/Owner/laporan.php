@@ -247,6 +247,7 @@ table.transaksi tr:last-child td{ border-bottom:none; }
     <h2 style="margin-bottom:20px; color:#333;">Laporan Keuangan</h2>
 
     <!-- Filter tanggal -->
+    <!-- Filter tanggal -->
     <form class="filter-form" method="get" action="<?= base_url('owner/laporan') ?>">
         <div class="field">
             <label>Dari Tanggal</label>
@@ -255,6 +256,13 @@ table.transaksi tr:last-child td{ border-bottom:none; }
         <div class="field">
             <label>Sampai Tanggal</label>
             <input type="date" name="end" value="<?= esc($tanggal_selesai) ?>">
+        </div>
+        <div class="field">
+            <label>Tampilan Grafik</label>
+            <select name="period" style="padding:8px 12px; border:1px solid var(--border); border-radius:8px; font-size:13px; font-family:inherit;">
+                <option value="harian" <?= $periode === 'harian' ? 'selected' : '' ?>>Harian</option>
+                <option value="bulanan" <?= $periode === 'bulanan' ? 'selected' : '' ?>>Per Bulan</option>
+            </select>
         </div>
         <button type="submit"><i class="fa-solid fa-filter"></i> Terapkan</button>
         <span class="info-batal">*Hanya pesanan berstatus "Selesai" yang dihitung sebagai pendapatan</span>
@@ -299,8 +307,9 @@ table.transaksi tr:last-child td{ border-bottom:none; }
     <div class="panels">
         <div>
             <!-- Grafik pendapatan harian -->
+            <!-- Grafik pendapatan harian / bulanan -->
             <div class="panel">
-                <h3>Pendapatan Harian</h3>
+                <h3>Pendapatan <?= $periode === 'bulanan' ? 'Per Bulan' : 'Harian' ?></h3>
                 <?php if (empty($pendapatan_harian)) : ?>
                     <div class="empty-note">Belum ada transaksi Selesai pada rentang tanggal ini.</div>
                 <?php else : ?>
@@ -308,9 +317,15 @@ table.transaksi tr:last-child td{ border-bottom:none; }
                     <div class="bar-chart">
                         <?php foreach ($pendapatan_harian as $tanggal => $total) : ?>
                             <?php $tinggi = max(4, round(($total / $max) * 100)); ?>
+                            <?php
+                                // Format label beda tergantung mode: harian -> dd/mm, bulanan -> Mon YYYY
+                                $label = $periode === 'bulanan'
+                                    ? esc(date('M Y', strtotime($tanggal . '-01')))
+                                    : esc(date('d/m', strtotime($tanggal)));
+                            ?>
                             <div class="bar-col" title="Rp <?= number_format($total, 0, ',', '.') ?>">
                                 <div class="bar" style="height: <?= $tinggi ?>%;"></div>
-                                <div class="bar-label"><?= esc(date('d/m', strtotime($tanggal))) ?></div>
+                                <div class="bar-label"><?= $label ?></div>
                             </div>
                         <?php endforeach; ?>
                     </div>

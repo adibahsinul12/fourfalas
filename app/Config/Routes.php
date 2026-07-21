@@ -12,6 +12,7 @@ $routes->get('menu', 'Home::menu');
 // Rute Halaman Riwayat Pesanan Pelanggan
 $routes->get('pesanan', 'Pesanan::index'); // <-- DITAMBAHKAN
 $routes->get('pesanan/riwayat', 'Pesanan::riwayat'); // <-- TAMBAHAN BARU (arsip)
+$routes->post('pesanan/rating/simpan/(:num)', 'Pesanan::simpanRating/$1'); // <-- TAMBAHAN BARU (fitur rating)
 
 // Rute untuk Fitur Keranjang Belanja Pelanggan
 $routes->get('cart', 'Cart::index');
