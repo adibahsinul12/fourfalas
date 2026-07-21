@@ -397,6 +397,13 @@
         </div>
     <?php endif; ?>
 
+    <?php if (session()->getFlashdata('error')) : ?>
+        <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+            <i class="fa-solid fa-circle-exclamation me-2"></i> <?= session()->getFlashdata('error'); ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+
     <!-- Content Grid -->
     <div class="row g-4">
 
@@ -463,7 +470,8 @@
 
                     <div class="mb-3">
                         <label class="form-label">Nama Bisnis / Kafe</label>
-                        <input type="text" name="cafe_name" class="form-control" value="FO'Orders Coffee & Eatery" required>
+                        <input type="text" name="cafe_name" class="form-control"
+                               value="<?= esc($settings['cafe_name'] ?? '') ?>" required>
                     </div>
 
                     <!-- Jam Operasional -->
@@ -473,13 +481,15 @@
                             <div class="col-6">
                                 <div class="input-group">
                                     <span class="input-group-text" style="font-size:12px;">Buka</span>
-                                    <input type="time" name="operating_hours_open" class="form-control" value="09:00" required>
+                                    <input type="time" name="operating_hours_open" class="form-control"
+                                           value="<?= esc(substr($settings['operating_hours_open'] ?? '08:00:00', 0, 5)) ?>" required>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="input-group">
                                     <span class="input-group-text" style="font-size:12px;">Tutup</span>
-                                    <input type="time" name="operating_hours_close" class="form-control" value="22:00" required>
+                                    <input type="time" name="operating_hours_close" class="form-control"
+                                           value="<?= esc(substr($settings['operating_hours_close'] ?? '22:00:00', 0, 5)) ?>" required>
                                 </div>
                             </div>
                         </div>
@@ -488,8 +498,12 @@
                     <!-- Kontak & Alamat -->
                     <div class="mb-4">
                         <label class="form-label">Kontak & Alamat Kafe</label>
-                        <textarea name="contact_info" class="form-control" rows="3" required>Jl. Pendidikan No. 04, Sambas, Kalimantan Barat.</textarea>
+                        <textarea name="contact_info" class="form-control" rows="3" required><?= esc($settings['contact_info'] ?? '') ?></textarea>
                     </div>
+
+                    <!-- Hidden field: tetap kirim service_tax_percent yang sudah tersimpan,
+                         karena form ini belum ada input pajaknya secara visual -->
+                    <input type="hidden" name="service_tax_percent" value="<?= esc($settings['service_tax_percent'] ?? 10) ?>">
 
                     <button type="submit" class="btn btn-sm w-100 py-2 btn-simpan-toko" style="border-radius:8px;">
                         <i class="fa-solid fa-floppy-disk me-2"></i>Simpan Konfigurasi Toko
