@@ -72,8 +72,11 @@ $routes->group('admin', ['filter' => 'auth'], function($routes) {
     $routes->post('batalkan/(:num)', 'Admin\Dashboard::batalkan/$1');
 
     // Jalur Proses Simpan Pengaturan & Password
-    $routes->post('pengaturan/update-password', 'Admin\Dashboard::updatePassword');
-    $routes->post('pengaturan/update-settings', 'Admin\Dashboard::updateSettings');
+  $routes->post('pengaturan/update-password', 'Admin\Dashboard::updatePassword');
+$routes->post('pengaturan/update-settings', 'Admin\Dashboard::updateSettings');
+
+$routes->get('grafik-realtime', 'Admin\Dashboard::grafikRealtime');
+
 });
 
 $routes->group('owner', ['filter' => 'auth'], function($routes) {

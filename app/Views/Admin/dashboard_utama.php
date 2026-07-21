@@ -236,7 +236,9 @@
                 <div>
                     <div class="stat-title">Total Menu</div>
                     <h3 class="stat-value"><?= number_format($total_menu, 0, ',', '.'); ?></h3>
-                    <p class="stat-desc text-success fw-semibold m-0"><i class="fa-solid fa-circle-check"></i> 212 Menu Aktif</p>
+                   <p class="stat-desc text-success fw-semibold m-0">
+    <i class="fa-solid fa-circle-check"></i> <?= $total_menu ?> Menu Aktif
+</p>
                 </div>
             </div>
         </div>
@@ -248,12 +250,7 @@
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="m-0" style="font-size: 15px; font-weight: 700;">Grafik Penjualan</h5>
                 </div>
-                <div class="d-flex align-items-center justify-content-center text-muted" style="height: 200px; background-color: #FAFAFA; border-radius: 12px; border: 1px dashed #E5E5E5;">
-                    <div class="text-center">
-                        <i class="fa-solid fa-chart-line mb-2" style="font-size: 2rem; color: #4CAF50;"></i>
-                        <div class="small">Area Chart Penjualan Real-time</div>
-                    </div>
-                </div>
+               <div id="chartPenjualan" style="height:250px;"></div>
             </div>
         </div>
         <div class="col-12 col-lg-6">
@@ -326,5 +323,79 @@
         }
     });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+<script>
+var options = {
+    chart: {
+        type: 'area',
+        height: 250,
+        toolbar: {
+            show: false
+        },
+        zoom: {
+            enabled: false
+        }
+    },
+
+    series: [{
+        name: "Penjualan",
+        data: <?= json_encode($grafik_total) ?>
+    }],
+
+    xaxis: {
+        categories: <?= json_encode($grafik_bulan) ?>
+    },
+
+    stroke: {
+        curve: 'smooth',
+        width: 4
+    },
+
+    markers: {
+        size: 5
+    },
+
+    fill: {
+        type: 'gradient',
+        gradient: {
+            shadeIntensity: 1,
+            opacityFrom: 0.45,
+            opacityTo: 0.05
+        }
+    },
+
+    dataLabels: {
+        enabled: false
+    },
+
+    colors: ['#4CAF50']
+};
+
+var chart = new ApexCharts(document.querySelector("#chartPenjualan"), options);
+chart.render();
+
+setInterval(function () {
+
+    fetch("<?= base_url('admin/grafik-realtime') ?>")
+    .then(response => response.json())
+    .then(data => {
+
+        chart.updateOptions({
+            xaxis: {
+                categories: data.bulan
+            }
+        });
+
+        chart.updateSeries([{
+            name: "Penjualan",
+            data: data.total
+        }]);
+
+    });
+
+}, 5000);
+</script>
+
 </body>
 </html>

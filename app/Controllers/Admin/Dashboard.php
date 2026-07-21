@@ -28,15 +28,34 @@ class Dashboard extends BaseController
         // 4. Hitung Total Menu (COUNT semua menu makanan & minuman yang aktif dari tabel menus)
         $data['total_menu'] = $db->table('menus')->where('is_active', 1)->countAllResults();
 
-        // 5. Ambil 5 data Antrean Pesanan Terbaru untuk dipajang di tabel dashboard
-        $data['orders'] = $db->table('orders')
-                             ->orderBy('id', 'DESC')
-                             ->limit(5)
-                             ->get()
-                             ->getResultArray();
+       // 5. Ambil 5 data Antrean Pesanan Terbaru
+$data['orders'] = $db->table('orders')
+    ->orderBy('id', 'DESC')
+    ->limit(5)
+    ->get()
+    ->getResultArray();
 
-        // Kirim semua bungkusan data SQL di atas ke dalam halaman dashboard_utama
-        return view('admin/dashboard_utama', $data);
+$namaBulan = [
+    'Jan','Feb','Mar','Apr','Mei','Jun',
+    'Jul','Agu','Sep','Okt','Nov','Des'
+];
+
+$data['grafik_bulan'] = $namaBulan;
+$data['grafik_total'] = array_fill(0, 12, 0);
+
+$grafik = $db->query("
+    SELECT MONTH(created_at) AS bulan,
+           SUM(total_payment) AS total
+    FROM orders
+    WHERE order_status='Selesai'
+    GROUP BY MONTH(created_at)
+")->getResultArray();
+
+foreach ($grafik as $row) {
+    $data['grafik_total'][$row['bulan'] - 1] = (int)$row['total'];
+}
+
+return view('admin/dashboard_utama', $data);
     }
 
     public function pesanan()
@@ -510,4 +529,28 @@ class Dashboard extends BaseController
 
         return redirect()->to(base_url('admin/pengaturan'))->with('success', 'Konfigurasi kafe berhasil diperbarui!');
     }
+    public function grafikRealtime()
+{
+    $db = \Config\Database::connect();
+
+    $bulan = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+    $total = array_fill(0,12,0);
+
+    $query = $db->query("
+        SELECT MONTH(created_at) bulan,
+               SUM(total_payment) total
+        FROM orders
+        WHERE order_status='Selesai'
+        GROUP BY MONTH(created_at)
+    ")->getResultArray();
+
+    foreach ($query as $row) {
+        $total[$row['bulan'] - 1] = (int)$row['total'];
+    }
+
+    return $this->response->setJSON([
+        'bulan' => $bulan,
+        'total' => $total
+    ]);
+}
 }
