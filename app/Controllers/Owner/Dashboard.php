@@ -5,6 +5,7 @@ namespace App\Controllers\Owner;
 use App\Controllers\BaseController;
 use App\Models\KaryawanModel;
 use App\Models\RatingModel;
+use App\Models\OrderModel; // TAMBAHAN
 
 class Dashboard extends BaseController
 {
@@ -12,6 +13,16 @@ class Dashboard extends BaseController
     {
         $karyawanModel = new KaryawanModel();
         $ratingModel   = new RatingModel();
+        $orderModel    = new OrderModel(); // TAMBAHAN
+
+        // TAMBAHAN: ambil data penjualan per bulan tahun berjalan
+        $namaBulan = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+        $penjualanPerBulan = array_fill(1, 12, 0); // default 0 tiap bulan
+
+        $monthlySales = $orderModel->getMonthlySales();
+        foreach ($monthlySales as $row) {
+            $penjualanPerBulan[(int) $row['bulan']] = (float) $row['total'];
+        }
 
         $data = [
             // TODO: ganti dengan data asli begitu tabel transaksi/pesanan sudah ada.
@@ -27,6 +38,10 @@ class Dashboard extends BaseController
             'rata_rating'    => $ratingModel->getAverageRating(),
             'total_rating'   => $ratingModel->countAllResults(),
             'rating_terbaru' => $ratingModel->getRecent(5),
+
+            // TAMBAHAN: data untuk grafik penjualan per bulan
+            'sales_chart_labels' => $namaBulan,
+            'sales_chart_data'   => array_values($penjualanPerBulan),
         ];
 
         return view('owner/dashboard', $data);

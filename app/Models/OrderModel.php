@@ -26,4 +26,17 @@ class OrderModel extends Model
         'amount_change',
         'created_at' // Kolom ini ada di SQL, opsional diisi manual jika tidak pakai default DB
     ];
+
+    // Total penjualan per bulan untuk tahun tertentu (default: tahun berjalan)
+    // Dipakai untuk grafik penjualan di dashboard owner
+    public function getMonthlySales($year = null)
+    {
+        $year = $year ?? date('Y');
+
+        return $this->select("MONTH(created_at) as bulan, SUM(total_payment) as total, COUNT(*) as jumlah_pesanan")
+            ->where('YEAR(created_at)', $year)
+            ->groupBy('MONTH(created_at)')
+            ->orderBy('bulan', 'ASC')
+            ->findAll();
+    }
 }

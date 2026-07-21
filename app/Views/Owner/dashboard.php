@@ -323,10 +323,8 @@ body{ background:var(--cream); display:flex; min-height:100vh; }
         <div>
             <div class="panel">
                 <h3>Grafik Penjualan</h3>
-                <div class="chart-placeholder">
-                    <i class="fa-solid fa-chart-area"></i>
-                    Grafik Penjualan Real-time
-                    <span class="small">Akan aktif otomatis setelah tabel transaksi tersedia</span>
+                <div style="height:220px;">
+                    <canvas id="salesChart"></canvas>
                 </div>
             </div>
 
@@ -381,11 +379,48 @@ body{ background:var(--cream); display:flex; min-height:100vh; }
 
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
 function toggleSidebar(){
     document.querySelector('.sidebar').classList.toggle('open');
     document.getElementById('sidebarOverlay').classList.toggle('show');
 }
+
+// Grafik Penjualan per bulan (data asli dari tabel orders)
+const salesLabels = <?= json_encode($sales_chart_labels) ?>;
+const salesData   = <?= json_encode($sales_chart_data) ?>;
+
+const ctx = document.getElementById('salesChart').getContext('2d');
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: salesLabels,
+        datasets: [{
+            label: 'Penjualan (Rp)',
+            data: salesData,
+            borderColor: '#4CAF50',
+            backgroundColor: 'rgba(76,175,80,0.12)',
+            tension: 0.3,
+            fill: true,
+            pointBackgroundColor: '#4CAF50',
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    callback: function(value) {
+                        return 'Rp ' + new Intl.NumberFormat('id-ID').format(value);
+                    }
+                }
+            }
+        }
+    }
+});
 </script>
 
 </body>
