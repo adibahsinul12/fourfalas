@@ -155,20 +155,27 @@ tr:last-child td{ border-bottom:none; }
 
 /* ===== MODAL KONFIRMASI (nonaktif/aktif/hapus) ===== */
 .modal-overlay{
-    display:none; position:fixed; inset:0; background:rgba(0,0,0,.45);
+    display:none; position:fixed; inset:0; background:rgba(0,0,0,0);
+    backdrop-filter:blur(0px); -webkit-backdrop-filter:blur(0px);
     z-index:200; align-items:center; justify-content:center; padding:16px;
+    transition:background .28s ease, backdrop-filter .28s ease;
 }
-.modal-overlay.show{ display:flex; }
+.modal-overlay.show{
+    display:flex;
+    background:rgba(0,0,0,.45);
+    backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
+}
 
 .modal-box{
     background:#fff; border-radius:16px; width:100%; max-width:360px;
     padding:26px 24px 22px; text-align:center;
     box-shadow:0 10px 40px rgba(0,0,0,.2);
-    animation:modalPop .18s ease;
+    animation:modalPop .32s cubic-bezier(.22,1,.36,1);
 }
 @keyframes modalPop{
-    from{ transform:scale(.92); opacity:0; }
-    to{ transform:scale(1); opacity:1; }
+    0%{ transform:scale(.9) translateY(10px); opacity:0; filter:blur(6px); }
+    60%{ filter:blur(0px); }
+    100%{ transform:scale(1) translateY(0); opacity:1; filter:blur(0px); }
 }
 
 .modal-icon{
@@ -197,16 +204,22 @@ tr:last-child td{ border-bottom:none; }
 
 /* ===== MODAL FORM (Tambah / Edit) ===== */
 .form-modal-overlay{
-    display:none; position:fixed; inset:0; background:rgba(0,0,0,.45);
+    display:none; position:fixed; inset:0; background:rgba(0,0,0,0);
+    backdrop-filter:blur(0px); -webkit-backdrop-filter:blur(0px);
     z-index:200; align-items:center; justify-content:center; padding:16px;
+    transition:background .28s ease, backdrop-filter .28s ease;
 }
-.form-modal-overlay.show{ display:flex; }
+.form-modal-overlay.show{
+    display:flex;
+    background:rgba(0,0,0,.45);
+    backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
+}
 
 .form-modal-box{
     background:#fff; border-radius:16px; width:100%; max-width:460px;
     max-height:90vh; overflow-y:auto;
     box-shadow:0 10px 40px rgba(0,0,0,.2);
-    animation:modalPop .18s ease;
+    animation:modalPop .32s cubic-bezier(.22,1,.36,1);
 }
 .form-modal-head{
     display:flex; align-items:center; justify-content:space-between;
