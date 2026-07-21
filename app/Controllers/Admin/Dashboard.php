@@ -4,6 +4,7 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
 use App\Models\MemberModel;
+use App\Models\SettingsModel;
 
 class Dashboard extends BaseController
 {
@@ -380,9 +381,40 @@ return view('admin/dashboard_utama', $data);
         return view('admin/laporan/index', $data);
     }
 
+    // ==========================================
+    // PENGATURAN SISTEM & PROFIL KAFE (DIPERBAIKI)
+    // ==========================================
+
     public function pengaturan()
     {
-        return view('admin/pengaturan/index');
+        // Ambil data settings yang tersimpan di database lewat SettingsModel
+        // Kalau baris settings belum pernah dibuat, getSettings() otomatis
+        // mengembalikan nilai default sehingga form tidak error/kosong.
+        $settingsModel = new SettingsModel();
+        $data['settings'] = $settingsModel->getSettings();
+
+        return view('admin/pengaturan/index', $data);
+    }
+
+    public function updateSettings()
+    {
+        // Menggunakan SettingsModel::saveSettings() yang otomatis:
+        // - UPDATE baris yang sudah ada, ATAU
+        // - INSERT baris baru (id = 1) kalau baris settings belum pernah dibuat
+        // Ini memperbaiki bug sebelumnya di mana query "WHERE id = 1" tidak
+        // mengubah apa pun kalau baris dengan id=1 belum ada di tabel settings,
+        // sehingga notifikasi sukses muncul padahal data tidak benar-benar tersimpan.
+        $settingsModel = new SettingsModel();
+
+        $settingsModel->saveSettings([
+            'cafe_name'             => $this->request->getPost('cafe_name'),
+            'operating_hours_open'  => $this->request->getPost('operating_hours_open'),
+            'operating_hours_close' => $this->request->getPost('operating_hours_close'),
+            'service_tax_percent'   => $this->request->getPost('service_tax_percent'),
+            'contact_info'          => $this->request->getPost('contact_info'),
+        ]);
+
+        return redirect()->to(base_url('admin/pengaturan'))->with('success', 'Konfigurasi kafe berhasil diperbarui!');
     }
 
     // ==========================================
@@ -514,43 +546,28 @@ return view('admin/dashboard_utama', $data);
         return redirect()->to(base_url('admin/pengaturan'))->with('success', 'Password berhasil diperbarui!');
     }
 
-    public function updateSettings()
+    public function grafikRealtime()
     {
         $db = \Config\Database::connect();
 
-        // Memperbarui baris data tabel settings berdasarkan kolom di SQL kamu
-        $db->table('settings')->where('id', 1)->update([
-            'cafe_name'             => $this->request->getPost('cafe_name'),
-            'operating_hours_open'  => $this->request->getPost('operating_hours_open'),
-            'operating_hours_close' => $this->request->getPost('operating_hours_close'),
-            'service_tax_percent'   => $this->request->getPost('service_tax_percent'),
-            'contact_info'          => $this->request->getPost('contact_info'),
+        $bulan = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+        $total = array_fill(0,12,0);
+
+        $query = $db->query("
+            SELECT MONTH(created_at) bulan,
+                   SUM(total_payment) total
+            FROM orders
+            WHERE order_status='Selesai'
+            GROUP BY MONTH(created_at)
+        ")->getResultArray();
+
+        foreach ($query as $row) {
+            $total[$row['bulan'] - 1] = (int)$row['total'];
+        }
+
+        return $this->response->setJSON([
+            'bulan' => $bulan,
+            'total' => $total
         ]);
-
-        return redirect()->to(base_url('admin/pengaturan'))->with('success', 'Konfigurasi kafe berhasil diperbarui!');
     }
-    public function grafikRealtime()
-{
-    $db = \Config\Database::connect();
-
-    $bulan = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
-    $total = array_fill(0,12,0);
-
-    $query = $db->query("
-        SELECT MONTH(created_at) bulan,
-               SUM(total_payment) total
-        FROM orders
-        WHERE order_status='Selesai'
-        GROUP BY MONTH(created_at)
-    ")->getResultArray();
-
-    foreach ($query as $row) {
-        $total[$row['bulan'] - 1] = (int)$row['total'];
-    }
-
-    return $this->response->setJSON([
-        'bulan' => $bulan,
-        'total' => $total
-    ]);
-}
 }
