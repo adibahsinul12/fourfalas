@@ -39,6 +39,7 @@ class MenuModel extends Model
     {
         return $this->update($id, [
             'status'      => 'approved',
+            'is_active'   => 1, // otomatis aktifkan menu begitu disetujui, biar langsung tampil ke pelanggan
             'approved_by' => $ownerId,
             'approved_at' => date('Y-m-d H:i:s'),
         ]);

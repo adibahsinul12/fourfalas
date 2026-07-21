@@ -49,6 +49,7 @@ class Home extends BaseController
         $recommendedMenus = $db->table('menus')
             ->where('is_recommended', 1)
             ->where('is_active', 1)
+            ->where('status', 'approved') // hanya tampilkan menu yang sudah disetujui owner
             ->get()
             ->getResultArray();
         $data['recommended_menus'] = $this->attachVariants($recommendedMenus);
@@ -56,6 +57,7 @@ class Home extends BaseController
         // 3. Ambil SEMUA MENU AKTIF, lalu lengkapi dengan data varian
         $allMenus = $db->table('menus')
             ->where('is_active', 1)
+            ->where('status', 'approved') // hanya tampilkan menu yang sudah disetujui owner
             ->get()
             ->getResultArray();
         $data['all_menus'] = $this->attachVariants($allMenus);
@@ -70,16 +72,14 @@ class Home extends BaseController
         $categoryModel = new CategoryModel();
         $db = \Config\Database::connect();
 
-        // Ambil semua kategori untuk tab filter
         $data['categories'] = $categoryModel->findAll();
 
-        // Cek apakah ada filter kategori dari query string, contoh: /menu?category=2
         $categoryId = $this->request->getGet('category');
 
-        // Membangun query builder dinamis untuk halaman menu pelanggan
-        $builder = $db->table('menus')->where('is_active', 1);
+        $builder = $db->table('menus')
+            ->where('is_active', 1)
+            ->where('status', 'approved');
 
-        // Jika owner/pelanggan ngeklik filter kategori tertentu
         if (!empty($categoryId)) {
             $builder->where('category_id', $categoryId);
         }
