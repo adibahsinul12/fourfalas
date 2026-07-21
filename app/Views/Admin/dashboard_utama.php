@@ -253,6 +253,60 @@
                <div id="chartPenjualan" style="height:250px;"></div>
             </div>
         </div>
+<div class="col-12 col-lg-6">
+
+    <div class="widget-card mt-3">
+
+        <h5 class="mb-4" style="font-size:15px;font-weight:700;">
+            Quick Access
+        </h5>
+
+        <div class="row g-3">
+
+            <div class="col-md-6">
+                <a href="<?= base_url('admin/pesanan') ?>" class="text-decoration-none">
+
+                    <div class="border rounded p-4 text-center h-100">
+
+                        <i class="fa-solid fa-utensils fa-3x text-success mb-3"></i>
+
+                        <h5 class="mb-2">Pesanan</h5>
+
+                        <p class="text-muted mb-0">
+                            Klik untuk membuka halaman Pesanan
+                        </p>
+
+                    </div>
+
+                </a>
+            </div>
+
+            <div class="col-md-6">
+                <a href="<?= base_url('admin/transaksi') ?>" class="text-decoration-none">
+
+                    <div class="border rounded p-4 text-center h-100">
+
+                        <i class="fa-solid fa-file-invoice-dollar fa-3x text-primary mb-3"></i>
+
+                        <h5 class="mb-2">Transaksi</h5>
+
+                        <p class="text-muted mb-0">
+                            Klik untuk membuka halaman Transaksi
+                        </p>
+
+                    </div>
+
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<div class="row mt-3">
+<!-- BARU INI JANGAN DIHAPUS -->
+</div>
         <div class="col-12 col-lg-6">
             <div class="widget-card">
                 <h5 class="mb-3" style="font-size: 15px; font-weight: 700;">Pesanan Terbaru</h5>
@@ -293,8 +347,6 @@
             </div>
         </div>
     </div>
-</div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // Toggle sidebar untuk tablet & mobile (off-canvas menu)
