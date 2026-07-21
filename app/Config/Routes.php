@@ -12,6 +12,7 @@ $routes->get('menu', 'Home::menu');
 // Rute Halaman Riwayat Pesanan Pelanggan
 $routes->get('pesanan', 'Pesanan::index'); // <-- DITAMBAHKAN
 $routes->get('pesanan/riwayat', 'Pesanan::riwayat'); // <-- TAMBAHAN BARU (arsip)
+$routes->post('pesanan/rating/simpan/(:num)', 'Pesanan::simpanRating/$1'); // <-- TAMBAHAN BARU (fitur rating)
 
 // Rute untuk Fitur Keranjang Belanja Pelanggan
 $routes->get('cart', 'Cart::index');
@@ -89,10 +90,11 @@ $routes->group('owner', ['filter' => 'auth'], function($routes) {
 
     // Karyawan
     $routes->get('karyawan', 'Owner\Karyawan::index');
+    $routes->get('karyawan/create', 'Owner\Karyawan::create');
     $routes->post('karyawan/store', 'Owner\Karyawan::store');
-    $routes->post('karyawan/update/(:num)', 'Owner\Karyawan::update/$1');
+    $routes->get('karyawan/edit/(:num)', 'Owner\Karyawan::edit/$1');
     $routes->post('karyawan/update-status/(:num)', 'Owner\Karyawan::updateStatus/$1');
-    $routes->post('karyawan/delete/(:num)', 'Owner\Karyawan::delete/$1');
+    $routes->get('karyawan/delete/(:num)', 'Owner\Karyawan::delete/$1');
 
     // Rating & Ulasan
     $routes->get('rating', 'Owner\Rating::index');
