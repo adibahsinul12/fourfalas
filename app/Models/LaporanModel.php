@@ -66,6 +66,27 @@ class LaporanModel extends Model
     }
 
     /**
+     * Pendapatan per bulan, buat grafik saat mode "Per Bulan" dipilih
+     */
+    public function getPendapatanBulanan(string $start, string $end): array
+    {
+        $result = $this->select("DATE_FORMAT(created_at, '%Y-%m') as bulan, SUM(total_payment) as total")
+            ->where('order_status', 'Selesai')
+            ->where('DATE(created_at) >=', $start)
+            ->where('DATE(created_at) <=', $end)
+            ->groupBy("DATE_FORMAT(created_at, '%Y-%m')")
+            ->orderBy('bulan', 'ASC')
+            ->findAll();
+
+        $data = [];
+        foreach ($result as $row) {
+            $data[$row['bulan']] = (float) $row['total'];
+        }
+
+        return $data;
+    }
+
+    /**
      * Pendapatan per metode pembayaran (Tunai / QRIS / Debit)
      */
     public function getPendapatanPerMetode(string $start, string $end): array
