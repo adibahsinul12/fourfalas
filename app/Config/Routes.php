@@ -89,11 +89,10 @@ $routes->group('owner', ['filter' => 'auth'], function($routes) {
 
     // Karyawan
     $routes->get('karyawan', 'Owner\Karyawan::index');
-    $routes->get('karyawan/create', 'Owner\Karyawan::create');
     $routes->post('karyawan/store', 'Owner\Karyawan::store');
-    $routes->get('karyawan/edit/(:num)', 'Owner\Karyawan::edit/$1');
+    $routes->post('karyawan/update/(:num)', 'Owner\Karyawan::update/$1');
     $routes->post('karyawan/update-status/(:num)', 'Owner\Karyawan::updateStatus/$1');
-    $routes->get('karyawan/delete/(:num)', 'Owner\Karyawan::delete/$1');
+    $routes->post('karyawan/delete/(:num)', 'Owner\Karyawan::delete/$1');
 
     // Rating & Ulasan
     $routes->get('rating', 'Owner\Rating::index');
