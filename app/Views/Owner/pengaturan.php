@@ -208,6 +208,12 @@ body{ background:var(--cream); display:flex; min-height:100vh; overflow-x:hidden
         <i class="fa-solid fa-users"></i> Tenaga Kerja
     </a>
 
+                <a href="<?= base_url('owner/meja') ?>"
+            class="nav-item <?= str_starts_with($current, 'owner/meja') ? 'active' : '' ?>">
+            <i class="fa-solid fa-chair"></i> Meja
+            </a>
+
+
     <a href="<?= base_url('owner/rating') ?>"
        class="nav-item <?= str_starts_with($current, 'owner/rating') ? 'active' : '' ?>">
         <i class="fa-solid fa-star"></i> Rating & Ulasan

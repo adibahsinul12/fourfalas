@@ -12,9 +12,9 @@ $routes->get('rating', 'RatingCustomer::index');
 $routes->post('rating/store', 'RatingCustomer::store');
 
 // Rute Halaman Riwayat Pesanan Pelanggan
-$routes->get('pesanan', 'Pesanan::index'); // <-- DITAMBAHKAN
-$routes->get('pesanan/riwayat', 'Pesanan::riwayat'); // <-- TAMBAHAN BARU (arsip)
-$routes->post('pesanan/rating/simpan/(:num)', 'Pesanan::simpanRating/$1'); // <-- TAMBAHAN BARU (fitur rating)
+$routes->get('pesanan', 'Pesanan::index');
+$routes->get('pesanan/riwayat', 'Pesanan::riwayat');
+$routes->post('pesanan/rating/simpan/(:num)', 'Pesanan::simpanRating/$1');
 
 // Rute untuk Fitur Keranjang Belanja Pelanggan
 $routes->get('cart', 'Cart::index');
@@ -28,9 +28,9 @@ $routes->get('checkout', 'Cart::checkout');
 $routes->post('checkout/process', 'Cart::process');
 
 // Rute untuk Fitur Autentikasi Login & Logout
-$routes->get('login', 'Auth::index');   // GET -> tampilkan form login
-$routes->post('login', 'Auth::login');  // POST -> proses login
-$routes->post('login/store', 'Auth::attemptLogin'); // sesuaikan nama method
+$routes->get('login', 'Auth::index');
+$routes->post('login', 'Auth::login');
+$routes->post('login/store', 'Auth::attemptLogin');
 $routes->get('register', 'Auth::register');
 $routes->post('register/store', 'Auth::store');
 $routes->get('logout', 'Auth::logout');
@@ -41,10 +41,8 @@ $routes->get('logout', 'Auth::logout');
 
 $routes->group('admin', ['filter' => 'auth'], function($routes) {
 
-    // Dashboard Utama Admin (Mengarah ke Controller Dashboard)
     $routes->get('/', 'Admin\Dashboard::index');
 
-    // RUTE SIDEBAR
     $routes->get('pesanan', 'Admin\Dashboard::pesanan');
     $routes->get('menu', 'Admin\Dashboard::menu');
     $routes->get('meja', 'Admin\Dashboard::meja');
@@ -55,37 +53,30 @@ $routes->group('admin', ['filter' => 'auth'], function($routes) {
     $routes->get('laporan', 'Admin\Dashboard::laporan');
     $routes->get('pengaturan', 'Admin\Dashboard::pengaturan');
 
-    // PROSES CRUD MENU KAFE (Sudah diselipkan di dalam grup admin)
     $routes->post('menu/add', 'Admin\Dashboard::addMenu');
     $routes->post('menu/edit/(:num)', 'Admin\Dashboard::updateMenu/$1');
     $routes->get('menu/delete/(:num)', 'Admin\Dashboard::deleteMenu/$1');
 
-    // RUTE PROSES TAMBAH MEJA (DITAROH DI SINI)
     $routes->post('meja/simpan', 'Admin\Dashboard::simpanMeja');
     $routes->post('meja/update/(:num)', 'Admin\Dashboard::updateMeja/$1');
     $routes->get('meja/delete/(:num)', 'Admin\Dashboard::deleteMeja/$1');
 
-    // ====================================================================
-    // PERBAIKAN DI SINI: Diarahkan murni ke Controller Admin (\App\Controllers\Admin)
-    // agar pembacaan $_POST['payment_method'] dari dropdown detail.php berfungsi!
-    // ====================================================================
     $routes->get('detail/(:num)', 'Admin\Dashboard::detail/$1');
     $routes->post('update-status/(:num)', 'Admin\Dashboard::updateStatus/$1');
     $routes->post('pay/(:num)', 'Admin\Dashboard::processPayment/$1');
     $routes->post('batalkan/(:num)', 'Admin\Dashboard::batalkan/$1');
 
-    // Jalur Proses Simpan Pengaturan & Password
-  $routes->post('pengaturan/update-password', 'Admin\Dashboard::updatePassword');
-$routes->post('pengaturan/update-settings', 'Admin\Dashboard::updateSettings');
+    $routes->post('pengaturan/update-password', 'Admin\Dashboard::updatePassword');
+    $routes->post('pengaturan/update-settings', 'Admin\Dashboard::updateSettings');
 
-$routes->get('grafik-realtime', 'Admin\Dashboard::grafikRealtime');
+    $routes->get('grafik-realtime', 'Admin\Dashboard::grafikRealtime');
 
 });
 
 $routes->group('owner', ['filter' => 'auth'], function($routes) {
     $routes->get('/', 'Owner\Dashboard::index');
     $routes->get('transaksi', 'Owner\Dashboard::transaksi');
-    
+
     $routes->get('menu-approval', 'Admin\Owner\MenuApproval::index');
     $routes->post('menu-approval/approve/(:num)', 'Admin\Owner\MenuApproval::approve/$1');
     $routes->post('menu-approval/reject/(:num)', 'Admin\Owner\MenuApproval::reject/$1');
@@ -99,6 +90,15 @@ $routes->group('owner', ['filter' => 'auth'], function($routes) {
     $routes->get('karyawan/delete/(:num)', 'Owner\Karyawan::delete/$1');
     $routes->post('karyawan/delete/(:num)', 'Owner\Karyawan::delete/$1');
     $routes->post('karyawan/update/(:num)', 'Owner\Karyawan::update/$1');
+
+    // Meja
+    $routes->get('meja', 'Owner\MejaController::index');
+    $routes->post('meja/simpan', 'Owner\MejaController::simpan');
+    $routes->post('meja/update/(:num)', 'Owner\MejaController::update/$1');
+    $routes->get('meja/hapus/(:num)', 'Owner\MejaController::hapus/$1');
+
+    // QR Code
+    $routes->get('qrcode', 'QrcodeController::index');
 
     // Rating & Ulasan
     $routes->get('rating', 'Owner\Rating::index');
