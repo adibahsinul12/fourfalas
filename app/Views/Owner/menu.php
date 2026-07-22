@@ -9,22 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { font-family: 'Poppins', sans-serif; background-color: #F7F3EE; color: #333333; margin: 0; padding: 0; overflow-x: hidden; }
-
-        /* ===== SIDEBAR ===== */
-        .sidebar {
-            width: 260px;
-            height: 100vh;
-            background-color: #6B3A1E;
-            position: fixed;
-            top: 0;
-            left: 0;
-            padding: 24px 16px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            z-index: 1050;
-            transition: left 0.3s ease;
-        }
+        .sidebar { width: 260px; height: 100vh; background-color: #6B3A1E; position: fixed; top: 0; left: 0; padding: 24px 16px; display: flex; flex-direction: column; justify-content: space-between; z-index: 1050; transition: left 0.3s ease; }
         .sidebar-brand { color: #FFFFFF; font-size: 1.5rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 10px; padding-left: 12px; margin-bottom: 30px; }
         .sidebar-menu { list-style: none; padding: 0; margin: 0; flex-grow: 1; }
         .sidebar-item { margin-bottom: 8px; }
@@ -33,45 +18,12 @@
         .sidebar-link.active { opacity: 1; background-color: #4CAF50; color: #FFFFFF; font-weight: 600; }
         .sidebar-logout { color: #FFFFFF; opacity: 0.7; padding: 12px 16px; text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 14px; }
         .sidebar-logout:hover { opacity: 1; background-color: rgba(244, 67, 54, 0.15); color: #FFCDD2; }
-
-        .sidebar-close-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: #FFFFFF;
-            font-size: 1.2rem;
-            position: absolute;
-            top: 20px;
-            right: 16px;
-        }
-
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 1040;
-        }
+        .sidebar-close-btn { display: none; background: none; border: none; color: #FFFFFF; font-size: 1.2rem; position: absolute; top: 20px; right: 16px; }
+        .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1040; }
         .sidebar-overlay.show { display: block; }
-
-        /* ===== MAIN CONTENT ===== */
         .main-content { margin-left: 260px; padding: 30px; min-height: 100vh; transition: margin-left 0.3s ease; }
-
-        /* ===== TOPBAR ===== */
         .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; gap: 12px; flex-wrap: wrap; }
-        .menu-toggle-btn {
-            display: none;
-            background: #FFFFFF;
-            border: 1px solid #E5E5E5;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            align-items: center;
-            justify-content: center;
-            color: #6B3A1E;
-            font-size: 1rem;
-            flex-shrink: 0;
-        }
+        .menu-toggle-btn { display: none; background: #FFFFFF; border: 1px solid #E5E5E5; width: 40px; height: 40px; border-radius: 50%; align-items: center; justify-content: center; color: #6B3A1E; font-size: 1rem; flex-shrink: 0; }
         .search-box { position: relative; width: 300px; flex: 1 1 200px; max-width: 300px; }
         .search-box input { width: 100%; padding: 10px 16px 10px 40px; border-radius: 12px; border: 1px solid #E5E5E5; background-color: #FFFFFF; font-size: 13px; }
         .search-box i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #888888; }
@@ -79,12 +31,8 @@
         .notif-btn { background: #FFFFFF; border: 1px solid #E5E5E5; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #6B3A1E; flex-shrink: 0; }
         .profile-card { background: #FFFFFF; padding: 6px 16px 6px 6px; border-radius: 30px; border: 1px solid #E5E5E5; display: flex; align-items: center; gap: 10px; }
         .profile-avatar { width: 32px; height: 32px; background-color: #F7F3EE; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #6B3A1E; flex-shrink: 0; }
-
-        /* ===== PAGE HEADER ===== */
         .page-header { flex-wrap: wrap; gap: 12px; }
         .page-header h4 { font-size: 1.15rem; margin: 0; }
-
-        /* ===== WIDGET / TABLE ===== */
         .widget-card { background-color: #FFFFFF; border-radius: 16px; padding: 24px; border: 1px solid rgba(229, 229, 229, 0.5); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.01); }
         .custom-table th { font-size: 12px; text-transform: uppercase; color: #888888; font-weight: 600; padding: 12px 16px; border-bottom: 2px solid #F7F3EE; white-space: nowrap; }
         .custom-table td { font-size: 13px; padding: 14px 16px; vertical-align: middle; border-bottom: 1px solid #F7F3EE; }
@@ -92,106 +40,18 @@
         .status-tersedia { background-color: #E8F5E9; color: #4CAF50; }
         .status-habis { background-color: #FFEBEE; color: #F44336; }
         .table-responsive { -webkit-overflow-scrolling: touch; }
-
         .action-buttons { display: flex; gap: 6px; justify-content: center; flex-wrap: nowrap; }
-
-        .action-buttons .btn-edit {
-            background-color: #4CAF50;
-            color: #FFFFFF;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-weight: 500;
-            transition: background-color 0.2s;
-        }
+        .action-buttons .btn-edit { background-color: #4CAF50; color: #FFFFFF; border: none; padding: 6px 12px; border-radius: 6px; font-weight: 500; transition: background-color 0.2s; }
         .action-buttons .btn-edit:hover { background-color: #3e9c43; }
-
-        .action-buttons .btn-delete {
-            background-color: #6B3A1E;
-            color: #FFFFFF;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-weight: 500;
-            transition: background-color 0.2s;
-        }
+        .action-buttons .btn-delete { background-color: #6B3A1E; color: #FFFFFF; border: none; padding: 6px 12px; border-radius: 6px; font-weight: 500; transition: background-color 0.2s; }
         .action-buttons .btn-delete:hover { background-color: #552e18; }
-
-        /* ===== MODAL (Bootstrap - Tambah/Edit) ===== */
-        .modal-dialog { 
-            max-width: 550px; 
-            margin: 1.75rem auto; 
-        }
-        .modal-body {
-            max-height: 75vh;
-            overflow-y: auto;
-        }
+        .modal-dialog { max-width: 550px; margin: 1.75rem auto; }
+        .modal-body { max-height: 75vh; overflow-y: auto; }
         .modal-content { border-radius: 14px; }
-
-        button, input, select, textarea, .btn {
-            font-family: 'Poppins', sans-serif !important;
-        }
-
-        .btn-tambah { 
-            background-color: #4CAF50 !important;
-            border-color: #4CAF50 !important;
-            color: #FFFFFF !important;
-        }
-        .btn-tambah:hover {
-            background-color: #3e9c43 !important;
-            border-color: #3e9c43 !important;
-        }
-
-        /* Styling area pengelolaan varian di form */
-        .variant-box {
-            background-color: #FDFBF9;
-            border: 1px dashed #DDD1C7;
-            border-radius: 10px;
-            padding: 14px;
-        }
-
-        /* ===== MODAL KONFIRMASI HAPUS (custom, animasi seperti halaman Tenaga Kerja) ===== */
-        .confirm-modal-overlay{
-            display:none; position:fixed; inset:0; background:rgba(0,0,0,0);
-            backdrop-filter:blur(0px); -webkit-backdrop-filter:blur(0px);
-            z-index:2000; align-items:center; justify-content:center; padding:16px;
-            transition:background .28s ease, backdrop-filter .28s ease;
-        }
-        .confirm-modal-overlay.show{
-            display:flex;
-            background:rgba(0,0,0,.45);
-            backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
-        }
-        .confirm-modal-box{
-            background:#fff; border-radius:16px; width:100%; max-width:360px;
-            padding:26px 24px 22px; text-align:center;
-            box-shadow:0 10px 40px rgba(0,0,0,.2);
-            animation:confirmModalPop .32s cubic-bezier(.22,1,.36,1);
-        }
-        @keyframes confirmModalPop{
-            0%{ transform:scale(.9) translateY(10px); opacity:0; filter:blur(6px); }
-            60%{ filter:blur(0px); }
-            100%{ transform:scale(1) translateY(0); opacity:1; filter:blur(0px); }
-        }
-        .confirm-modal-icon{
-            width:52px; height:52px; border-radius:50%;
-            display:flex; align-items:center; justify-content:center;
-            margin:0 auto 14px; font-size:22px;
-        }
-        .confirm-modal-icon.warn{ background:#FFEBEE; color:#C62828; }
-        .confirm-modal-title{ font-size:16px; font-weight:600; color:#333; margin-bottom:6px; }
-        .confirm-modal-text{ font-size:13px; color:#8a8a8a; margin-bottom:22px; line-height:1.5; }
-        .confirm-modal-actions{ display:flex; gap:10px; }
-        .confirm-modal-btn{
-            flex:1; border:none; padding:11px 0; border-radius:10px;
-            font-size:13px; font-weight:600; cursor:pointer; transition:.15s;
-            font-family:'Poppins',sans-serif;
-        }
-        .confirm-modal-btn.cancel{ background:#F2F2F2; color:#555; }
-        .confirm-modal-btn.cancel:hover{ background:#e6e6e6; }
-        .confirm-modal-btn.confirm-danger{ background:#C62828; color:#fff; }
-        .confirm-modal-btn.confirm-danger:hover{ background:#B71C1C; }
-
+        button, input, select, textarea, .btn { font-family: 'Poppins', sans-serif !important; }
+        .btn-tambah { background-color: #4CAF50 !important; border-color: #4CAF50 !important; color: #FFFFFF !important; }
+        .btn-tambah:hover { background-color: #3e9c43 !important; border-color: #3e9c43 !important; }
+        .variant-box { background-color: #FDFBF9; border: 1px dashed #DDD1C7; border-radius: 10px; padding: 14px; }
         @media (max-width: 991.98px) {
             .sidebar { left: -280px; width: 260px; box-shadow: 4px 0 20px rgba(0,0,0,0.15); }
             .sidebar.show { left: 0; }
@@ -199,7 +59,6 @@
             .main-content { margin-left: 0; padding: 20px; }
             .menu-toggle-btn { display: flex; }
         }
-
         @media (max-width: 767.98px) {
             .main-content { padding: 16px; }
             .topbar { margin-bottom: 20px; }
@@ -269,8 +128,8 @@
                         <th>Foto</th>
                         <th>Nama Menu</th>
                         <th>Kategori</th>
-                        <th>Varian & Harga</th>
                         <th>Status</th>
+                        <th>Varian & Harga</th>
                         <th class="text-center">Aksi</th>
                     </tr>
                 </thead>
@@ -283,13 +142,9 @@
                         $modalsHtml = '';
                     ?>
                     <?php if(!empty($daftar_menu)): ?>
-                        <?php 
+                        <?php
                         $db = \Config\Database::connect();
-                        foreach($daftar_menu as $row): 
-                            // Menu yang sudah ditolak owner tidak usah ditampilkan lagi di daftar admin
-                            if (($row['status'] ?? 'approved') == 'rejected') {
-                                continue;
-                            }
+                        foreach($daftar_menu as $row):
                             // Ambil list data varian dari menu ini langsung dari DB untuk ditampilkan di list tabel
                             $variants = $db->table('menu_variants')->where('menu_id', $row['id'])->get()->getResultArray();
                         ?>
@@ -308,7 +163,7 @@
                                     <?php endif; ?>
                                 </td>
                                 <td>
-                                    <?php 
+                                    <?php
                                         switch($row['category_id']) {
                                             case 1: echo 'Snack'; break;
                                             case 2: echo 'Teh & Susu'; break;
@@ -328,12 +183,31 @@
                                     ?>
                                 </td>
                                 <td>
+                                    <?php
+                                        $statusRow = $row['status'] ?? 'approved';
+                                        $badgeClass = [
+                                            'pending'  => 'bg-warning text-dark',
+                                            'approved' => 'bg-success',
+                                            'rejected' => 'bg-danger',
+                                        ][$statusRow] ?? 'bg-secondary';
+                                        $statusLabel = [
+                                            'pending'  => 'Menunggu Persetujuan Owner',
+                                            'approved' => 'Disetujui',
+                                            'rejected' => 'Ditolak',
+                                        ][$statusRow] ?? $statusRow;
+                                    ?>
+                                    <span class="badge <?= $badgeClass ?>" style="font-size: 10px;"><?= $statusLabel ?></span>
+                                    <?php if($statusRow === 'rejected' && !empty($row['rejection_note'])): ?>
+                                        <div class="text-danger mt-1" style="font-size: 10px;">Catatan Owner: <?= esc($row['rejection_note']) ?></div>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
                                     <?php if(!empty($variants)): ?>
                                         <ul class="list-unstyled m-0" style="font-size: 12px;">
                                             <?php foreach($variants as $v): ?>
                                                 <li>
-                                                    🔹 <?= $v['variant_name']; ?>: 
-                                                    <span class="text-success fw-bold">Rp <?= number_format($v['price'], 0, ',', '.'); ?></span> 
+                                                    🔹 <?= $v['variant_name']; ?>:
+                                                    <span class="text-success fw-bold">Rp <?= number_format($v['price'], 0, ',', '.'); ?></span>
                                                     <small class="text-muted">(Stok: <?= $v['stock']; ?>)</small>
                                                 </li>
                                             <?php endforeach; ?>
@@ -342,23 +216,10 @@
                                         <span class="text-danger small"><i class="fa-solid fa-triangle-exclamation"></i> Belum ada varian!</span>
                                     <?php endif; ?>
                                 </td>
-                                <td>
-                                    <?php if (($row['status'] ?? 'approved') == 'pending'): ?>
-                                        <span class="badge" style="background-color:#FFF3CD;color:#856404;">⏳ Menunggu Approval</span>
-                                    <?php else: ?>
-                                        <span class="badge" style="background-color:#E8F5E9;color:#4CAF50;">✅ Disetujui</span>
-                                    <?php endif; ?>
-                                </td>
                                 <td class="text-center">
                                     <div class="action-buttons">
                                         <button type="button" class="btn btn-sm btn-edit" data-bs-toggle="modal" data-bs-target="#modalEdit<?= $row['id'] ?>" style="font-size: 11px; border-radius: 6px;">Edit</button>
-                                        <button type="button"
-                                                class="btn btn-sm btn-delete btn-hapus-menu"
-                                                style="font-size: 11px; border-radius: 6px;"
-                                                data-url="<?= base_url('admin/menu/delete/'.$row['id']) ?>"
-                                                data-nama="<?= esc($row['menu_name']) ?>">
-                                            Hapus
-                                        </button>
+                                        <a href="<?= base_url('admin/menu/delete/'.$row['id']) ?>" class="btn btn-sm btn-delete" style="font-size: 11px; border-radius: 6px;" onclick="return confirm('Yakin ingin menghapus menu ini?')">Hapus</a>
                                     </div>
                                 </td>
                             </tr>
@@ -448,7 +309,7 @@
 
                                                 <div class="mb-3">
                                                     <label class="form-label fw-semibold">Ganti Foto Menu</label>
-                                                    <input type="file" name="gambar" class="form-control" accept="image/*">
+                                                    <input type="file" name="image" class="form-control" accept="image/*">
                                                     <small class="text-muted">Kosongkan jika tidak ingin mengganti foto.</small>
                                                 </div>
                                             </div>
@@ -463,7 +324,7 @@
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr><td colspan="6" class="text-center text-muted py-4">Belum ada data menu di database.</td></tr>
-                    <?php endif; ?>  
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
@@ -534,24 +395,11 @@
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Foto Menu</label>
-                        <input type="file" name="gambar" class="form-control" accept="image/*">
+                        <input type="file" name="image" class="form-control" accept="image/*">
                     </div>
                 </div>
                 <div class="modal-footer"><button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button><button type="submit" class="btn btn-success btn-sm">Simpan Data</button></div>
             </form>
-        </div>
-    </div>
-</div>
-
-<!-- Modal Konfirmasi Hapus (custom, dengan animasi) -->
-<div class="confirm-modal-overlay" id="confirmDeleteModal">
-    <div class="confirm-modal-box">
-        <div class="confirm-modal-icon warn"><i class="fa-solid fa-trash"></i></div>
-        <div class="confirm-modal-title">Hapus Menu</div>
-        <div class="confirm-modal-text" id="confirmDeleteText">Yakin ingin menghapus menu ini?</div>
-        <div class="confirm-modal-actions">
-            <button type="button" class="confirm-modal-btn cancel" id="confirmDeleteCancel">Batal</button>
-            <button type="button" class="confirm-modal-btn confirm-danger" id="confirmDeleteOk">Ya, Hapus</button>
         </div>
     </div>
 </div>
@@ -575,12 +423,8 @@
         if (window.innerWidth >= 992) { closeSidebar(); }
     });
 
-    // ========================================================
-    // JAVASCRIPT DINAMIS UNTUK PENGELOLAAN DATA BANYAK VARIAN
-    // ========================================================
     document.addEventListener('DOMContentLoaded', function() {
-        
-        // 1. Dinamis di Modal Tambah Menu
+
         const tambahContainer = document.getElementById('tambah-variant-container');
         const btnAddTambah = document.getElementById('btn-add-tambah-variant');
 
@@ -598,19 +442,17 @@
                 `;
                 tambahContainer.appendChild(newRow);
 
-                // Baris baru harus ikut aturan wajib/opsional sesuai kategori yang sedang dipilih
                 const form = tambahContainer.closest('form');
                 const catSelect = form ? form.querySelector('.kategori-select') : null;
                 if (catSelect) applyKategoriRules(catSelect);
             });
         }
 
-        // 2. Dinamis di Banyak Modal Edit Menu Sekaligus
         document.querySelectorAll('.btn-add-edit-variant').forEach(button => {
             button.addEventListener('click', function() {
                 const modalBody = this.closest('.modal-body');
                 const editContainer = modalBody.querySelector('.edit-variant-container');
-                
+
                 if(editContainer) {
                     const newRow = document.createElement('div');
                     newRow.className = 'row g-2 mb-2 variant-row';
@@ -624,7 +466,6 @@
                     `;
                     editContainer.appendChild(newRow);
 
-                    // Baris baru harus ikut aturan wajib/opsional sesuai kategori yang sedang dipilih
                     const form = this.closest('form');
                     const catSelect = form ? form.querySelector('.kategori-select') : null;
                     if (catSelect) applyKategoriRules(catSelect);
@@ -632,17 +473,12 @@
             });
         });
 
-        // 3. Fungsi Global untuk Aksi Hapus Baris Varian (Berlaku di Modal Tambah & Edit)
         document.addEventListener('click', function(e) {
             if (e.target.closest('.btn-remove-variant')) {
                 e.target.closest('.variant-row').remove();
             }
         });
 
-        // 4. Aturan khusus untuk kategori "Paket Menu" (value 8), berlaku di modal
-        //    Tambah maupun semua modal Edit:
-        //    - Tampilkan field "Deskripsi Isi Paket"
-        //    - Field varian (nama/harga/stok) jadi OPSIONAL, tidak wajib diisi
         const PAKET_MENU_VALUE = '8';
 
         function applyKategoriRules(selectEl) {
@@ -651,74 +487,27 @@
 
             const isPaket = selectEl.value === PAKET_MENU_VALUE;
 
-            // Toggle field deskripsi paket
             const wrapper = form.querySelector('.deskripsi-paket-wrapper');
             if (wrapper) {
                 wrapper.style.display = isPaket ? '' : 'none';
             }
 
-            // Toggle label penanda opsional
             const note = form.querySelector('.variant-optional-note');
             if (note) {
                 note.style.display = isPaket ? '' : 'none';
             }
 
-            // Toggle wajib/tidaknya semua input varian di form ini (termasuk baris yang baru ditambah)
             form.querySelectorAll('input[name="variant_name[]"], input[name="variant_price[]"], input[name="variant_stock[]"]').forEach(input => {
                 input.required = !isPaket;
             });
         }
 
         document.querySelectorAll('.kategori-select').forEach(select => {
-            // Set kondisi awal saat halaman/modal dimuat
             applyKategoriRules(select);
-            // Update setiap kali kategori diganti
             select.addEventListener('change', function() {
                 applyKategoriRules(this);
             });
         });
-
-        // ========================================================
-        // 5. MODAL KONFIRMASI HAPUS MENU (animasi, pengganti confirm() bawaan)
-        // ========================================================
-        (function () {
-            const overlay   = document.getElementById('confirmDeleteModal');
-            const textEl    = document.getElementById('confirmDeleteText');
-            const okBtn     = document.getElementById('confirmDeleteOk');
-            const cancelBtn = document.getElementById('confirmDeleteCancel');
-
-            let pendingUrl = null;
-
-            function openModal(url, nama) {
-                pendingUrl = url;
-                textEl.textContent = 'Yakin ingin menghapus menu "' + nama + '"? Tindakan ini tidak bisa dibatalkan.';
-                overlay.classList.add('show');
-            }
-
-            function closeModal() {
-                overlay.classList.remove('show');
-                pendingUrl = null;
-            }
-
-            document.querySelectorAll('.btn-hapus-menu').forEach(function (btn) {
-                btn.addEventListener('click', function () {
-                    openModal(btn.dataset.url, btn.dataset.nama || 'ini');
-                });
-            });
-
-            okBtn.addEventListener('click', function () {
-                if (pendingUrl) window.location.href = pendingUrl;
-                closeModal();
-            });
-
-            cancelBtn.addEventListener('click', closeModal);
-            overlay.addEventListener('click', function (e) {
-                if (e.target === overlay) closeModal();
-            });
-            document.addEventListener('keydown', function (e) {
-                if (e.key === 'Escape' && overlay.classList.contains('show')) closeModal();
-            });
-        })();
     });
 </script>
 </body>

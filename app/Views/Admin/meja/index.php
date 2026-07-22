@@ -116,6 +116,48 @@
         .modal-content { border-radius: 14px; font-family: 'Poppins', sans-serif; }
         button, input, select, textarea, .btn { font-family: 'Poppins', sans-serif !important; }
 
+        /* ===== MODAL KONFIRMASI HAPUS (custom, animasi) ===== */
+        .confirm-modal-overlay{
+            display:none; position:fixed; inset:0; background:rgba(0,0,0,0);
+            backdrop-filter:blur(0px); -webkit-backdrop-filter:blur(0px);
+            z-index:2000; align-items:center; justify-content:center; padding:16px;
+            transition:background .28s ease, backdrop-filter .28s ease;
+        }
+        .confirm-modal-overlay.show{
+            display:flex;
+            background:rgba(0,0,0,.45);
+            backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
+        }
+        .confirm-modal-box{
+            background:#fff; border-radius:16px; width:100%; max-width:360px;
+            padding:26px 24px 22px; text-align:center;
+            box-shadow:0 10px 40px rgba(0,0,0,.2);
+            animation:confirmModalPop .32s cubic-bezier(.22,1,.36,1);
+        }
+        @keyframes confirmModalPop{
+            0%{ transform:scale(.9) translateY(10px); opacity:0; filter:blur(6px); }
+            60%{ filter:blur(0px); }
+            100%{ transform:scale(1) translateY(0); opacity:1; filter:blur(0px); }
+        }
+        .confirm-modal-icon{
+            width:52px; height:52px; border-radius:50%;
+            display:flex; align-items:center; justify-content:center;
+            margin:0 auto 14px; font-size:22px;
+        }
+        .confirm-modal-icon.warn{ background:#FFEBEE; color:#C62828; }
+        .confirm-modal-title{ font-size:16px; font-weight:600; color:#333; margin-bottom:6px; }
+        .confirm-modal-text{ font-size:13px; color:#8a8a8a; margin-bottom:22px; line-height:1.5; }
+        .confirm-modal-actions{ display:flex; gap:10px; }
+        .confirm-modal-btn{
+            flex:1; border:none; padding:11px 0; border-radius:10px;
+            font-size:13px; font-weight:600; cursor:pointer; transition:.15s;
+            font-family:'Poppins',sans-serif;
+        }
+        .confirm-modal-btn.cancel{ background:#F2F2F2; color:#555; }
+        .confirm-modal-btn.cancel:hover{ background:#e6e6e6; }
+        .confirm-modal-btn.confirm-danger{ background:#C62828; color:#fff; }
+        .confirm-modal-btn.confirm-danger:hover{ background:#B71C1C; }
+
         /* =======================================================
            TABLET (768px - 991.98px): sidebar jadi drawer + main content full width
         ======================================================= */
@@ -297,9 +339,13 @@
                                             <i class="fa-solid fa-pen-to-square"></i> Edit
                                         </button>
 
-                                        <a href="<?= base_url('admin/meja/delete/'.$row['id']) ?>" class="btn btn-sm btn-hapus-meja text-white" onclick="return confirm('Apakah Anda yakin ingin menghapus meja ini?')" style="border-radius: 6px; background-color: #5C3A21; border-color: #5C3A21; font-size: 13px; font-weight: 500; padding: 5px 12px;">
+                                        <button type="button"
+                                                class="btn btn-sm btn-hapus-meja btn-hapus-meja-trigger text-white"
+                                                data-url="<?= base_url('admin/meja/delete/'.$row['id']) ?>"
+                                                data-nama="Meja <?= esc($row['table_number']) ?>"
+                                                style="border-radius: 6px; background-color: #5C3A21; border-color: #5C3A21; font-size: 13px; font-weight: 500; padding: 5px 12px;">
                                             <i class="fa-solid fa-trash"></i> Hapus
-                                        </a>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -383,6 +429,19 @@
     <?php endforeach; ?>
 <?php endif; ?>
 
+<!-- Modal Konfirmasi Hapus (custom, dengan animasi) -->
+<div class="confirm-modal-overlay" id="confirmDeleteModal">
+    <div class="confirm-modal-box">
+        <div class="confirm-modal-icon warn"><i class="fa-solid fa-trash"></i></div>
+        <div class="confirm-modal-title">Hapus Meja</div>
+        <div class="confirm-modal-text" id="confirmDeleteText">Yakin ingin menghapus meja ini?</div>
+        <div class="confirm-modal-actions">
+            <button type="button" class="confirm-modal-btn cancel" id="confirmDeleteCancel">Batal</button>
+            <button type="button" class="confirm-modal-btn confirm-danger" id="confirmDeleteOk">Ya, Hapus</button>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     const sidebar = document.getElementById('sidebar');
@@ -407,6 +466,48 @@
         if (window.innerWidth >= 992) {
             closeSidebar();
         }
+    });
+
+    // ========================================================
+    // MODAL KONFIRMASI HAPUS MEJA (animasi, pengganti confirm() bawaan)
+    // ========================================================
+    document.addEventListener('DOMContentLoaded', function () {
+        const confirmOverlay = document.getElementById('confirmDeleteModal');
+        const confirmText    = document.getElementById('confirmDeleteText');
+        const confirmOkBtn   = document.getElementById('confirmDeleteOk');
+        const confirmCancelBtn = document.getElementById('confirmDeleteCancel');
+
+        let pendingUrl = null;
+
+        function openConfirmModal(url, nama) {
+            pendingUrl = url;
+            confirmText.textContent = 'Yakin ingin menghapus "' + nama + '"? Tindakan ini tidak bisa dibatalkan.';
+            confirmOverlay.classList.add('show');
+        }
+
+        function closeConfirmModal() {
+            confirmOverlay.classList.remove('show');
+            pendingUrl = null;
+        }
+
+        document.querySelectorAll('.btn-hapus-meja-trigger').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                openConfirmModal(btn.dataset.url, btn.dataset.nama || 'ini');
+            });
+        });
+
+        confirmOkBtn.addEventListener('click', function () {
+            if (pendingUrl) window.location.href = pendingUrl;
+            closeConfirmModal();
+        });
+
+        confirmCancelBtn.addEventListener('click', closeConfirmModal);
+        confirmOverlay.addEventListener('click', function (e) {
+            if (e.target === confirmOverlay) closeConfirmModal();
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && confirmOverlay.classList.contains('show')) closeConfirmModal();
+        });
     });
 </script>
 </body>

@@ -39,7 +39,49 @@
         .badge-poin { background-color: #FFF3E0; color: #E65100; font-weight: 600; padding: 4px 10px; border-radius: 20px; font-size: 11px; }
         .btn-add-member { background-color: #4CAF50; color: #fff; border: none; padding: 10px 18px; border-radius: 10px; font-size: 13px; font-weight: 600; }
         .btn-add-member:hover { background-color: #43A047; color: #fff; }
-        .btn-delete { color: #F44336; background: none; border: none; font-size: 13px; }
+        .btn-delete { color: #F44336; background: none; border: none; font-size: 13px; cursor: pointer; }
+
+        /* ===== MODAL KONFIRMASI HAPUS (custom, animasi) ===== */
+        .confirm-modal-overlay{
+            display:none; position:fixed; inset:0; background:rgba(0,0,0,0);
+            backdrop-filter:blur(0px); -webkit-backdrop-filter:blur(0px);
+            z-index:2000; align-items:center; justify-content:center; padding:16px;
+            transition:background .28s ease, backdrop-filter .28s ease;
+        }
+        .confirm-modal-overlay.show{
+            display:flex;
+            background:rgba(0,0,0,.45);
+            backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
+        }
+        .confirm-modal-box{
+            background:#fff; border-radius:16px; width:100%; max-width:360px;
+            padding:26px 24px 22px; text-align:center;
+            box-shadow:0 10px 40px rgba(0,0,0,.2);
+            animation:confirmModalPop .32s cubic-bezier(.22,1,.36,1);
+        }
+        @keyframes confirmModalPop{
+            0%{ transform:scale(.9) translateY(10px); opacity:0; filter:blur(6px); }
+            60%{ filter:blur(0px); }
+            100%{ transform:scale(1) translateY(0); opacity:1; filter:blur(0px); }
+        }
+        .confirm-modal-icon{
+            width:52px; height:52px; border-radius:50%;
+            display:flex; align-items:center; justify-content:center;
+            margin:0 auto 14px; font-size:22px;
+        }
+        .confirm-modal-icon.warn{ background:#FFEBEE; color:#C62828; }
+        .confirm-modal-title{ font-size:16px; font-weight:600; color:#333; margin-bottom:6px; }
+        .confirm-modal-text{ font-size:13px; color:#8a8a8a; margin-bottom:22px; line-height:1.5; }
+        .confirm-modal-actions{ display:flex; gap:10px; }
+        .confirm-modal-btn{
+            flex:1; border:none; padding:11px 0; border-radius:10px;
+            font-size:13px; font-weight:600; cursor:pointer; transition:.15s;
+            font-family:'Poppins',sans-serif;
+        }
+        .confirm-modal-btn.cancel{ background:#F2F2F2; color:#555; }
+        .confirm-modal-btn.cancel:hover{ background:#e6e6e6; }
+        .confirm-modal-btn.confirm-danger{ background:#C62828; color:#fff; }
+        .confirm-modal-btn.confirm-danger:hover{ background:#B71C1C; }
 
         @media (max-width: 991.98px) {
             .sidebar { left: -280px; width: 260px; box-shadow: 4px 0 20px rgba(0,0,0,0.15); }
@@ -143,11 +185,12 @@
                                 <td><span class="badge-poin"><?= (int)($m['poin'] ?? 0) ?> pts</span></td>
                                 <td><?= date('d F Y', strtotime($m['tanggal_gabung'])) ?></td>
                                 <td class="text-end">
-                                    <a href="<?= base_url('admin/pelanggan_hapus/' . $m['id']) ?>"
-                                       class="btn-delete"
-                                       onclick="return confirm('Hapus member ini?');">
+                                    <button type="button"
+                                            class="btn-delete btn-hapus-member-trigger"
+                                            data-url="<?= base_url('admin/pelanggan_hapus/' . $m['id']) ?>"
+                                            data-nama="<?= esc($m['nama'] ?? 'member ini') ?>">
                                         <i class="fa-solid fa-trash"></i>
-                                    </a>
+                                    </button>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -192,6 +235,19 @@
     </div>
 </div>
 
+<!-- Modal Konfirmasi Hapus (custom, dengan animasi) -->
+<div class="confirm-modal-overlay" id="confirmDeleteModal">
+    <div class="confirm-modal-box">
+        <div class="confirm-modal-icon warn"><i class="fa-solid fa-trash"></i></div>
+        <div class="confirm-modal-title">Hapus Member</div>
+        <div class="confirm-modal-text" id="confirmDeleteText">Yakin ingin menghapus member ini?</div>
+        <div class="confirm-modal-actions">
+            <button type="button" class="confirm-modal-btn cancel" id="confirmDeleteCancel">Batal</button>
+            <button type="button" class="confirm-modal-btn confirm-danger" id="confirmDeleteOk">Ya, Hapus</button>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     const sidebar = document.getElementById('sidebar');
@@ -208,6 +264,48 @@
 
     window.addEventListener('resize', function () {
         if (window.innerWidth >= 992) closeSidebar();
+    });
+
+    // ========================================================
+    // MODAL KONFIRMASI HAPUS MEMBER (animasi, pengganti confirm() bawaan)
+    // ========================================================
+    document.addEventListener('DOMContentLoaded', function () {
+        const confirmOverlay   = document.getElementById('confirmDeleteModal');
+        const confirmText      = document.getElementById('confirmDeleteText');
+        const confirmOkBtn     = document.getElementById('confirmDeleteOk');
+        const confirmCancelBtn = document.getElementById('confirmDeleteCancel');
+
+        let pendingUrl = null;
+
+        function openConfirmModal(url, nama) {
+            pendingUrl = url;
+            confirmText.textContent = 'Yakin ingin menghapus member "' + nama + '"? Tindakan ini tidak bisa dibatalkan.';
+            confirmOverlay.classList.add('show');
+        }
+
+        function closeConfirmModal() {
+            confirmOverlay.classList.remove('show');
+            pendingUrl = null;
+        }
+
+        document.querySelectorAll('.btn-hapus-member-trigger').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                openConfirmModal(btn.dataset.url, btn.dataset.nama || 'ini');
+            });
+        });
+
+        confirmOkBtn.addEventListener('click', function () {
+            if (pendingUrl) window.location.href = pendingUrl;
+            closeConfirmModal();
+        });
+
+        confirmCancelBtn.addEventListener('click', closeConfirmModal);
+        confirmOverlay.addEventListener('click', function (e) {
+            if (e.target === confirmOverlay) closeConfirmModal();
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && confirmOverlay.classList.contains('show')) closeConfirmModal();
+        });
     });
 </script>
 </body>
