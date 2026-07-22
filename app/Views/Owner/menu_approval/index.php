@@ -85,7 +85,7 @@ tr:last-child td{ border-bottom:none; }
 
 .btn-toggle{
     border:none; padding:7px 14px; border-radius:8px; font-size:12px;
-    font-weight:600; cursor:pointer; margin-right:6px;
+    font-weight:600; cursor:pointer; margin-right:6px; font-family:'Poppins',sans-serif;
 }
 .btn-toggle.to-aktif{ background:#E8F5E9; color:#2E7D32; }
 .btn-toggle.to-nonaktif{ background:#FFEBEE; color:#C62828; }
@@ -118,6 +118,48 @@ tr:last-child td{ border-bottom:none; }
     h1{ font-size:18px; }
     .table-wrap{ padding:8px 12px; }
 }
+
+/* ===== MODAL KONFIRMASI CUSTOM ===== */
+.modal-overlay{
+    display:none; position:fixed; inset:0; background:rgba(0,0,0,.45);
+    z-index:200; align-items:center; justify-content:center; padding:16px;
+}
+.modal-overlay.show{ display:flex; }
+
+.modal-box{
+    background:#fff; border-radius:16px; width:100%; max-width:360px;
+    padding:26px 24px 22px; text-align:center;
+    box-shadow:0 10px 40px rgba(0,0,0,.2);
+    animation:modalPop .18s ease;
+}
+@keyframes modalPop{
+    from{ transform:scale(.92); opacity:0; }
+    to{ transform:scale(1); opacity:1; }
+}
+
+.modal-icon{
+    width:52px; height:52px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    margin:0 auto 14px; font-size:22px;
+}
+.modal-icon.warn{ background:#FFEBEE; color:#C62828; }
+.modal-icon.ok{ background:#E8F5E9; color:#2E7D32; }
+
+.modal-title{ font-size:16px; font-weight:600; color:#333; margin-bottom:6px; }
+.modal-text{ font-size:13px; color:var(--text-muted); margin-bottom:22px; line-height:1.5; }
+
+.modal-actions{ display:flex; gap:10px; }
+.modal-btn{
+    flex:1; border:none; padding:11px 0; border-radius:10px;
+    font-size:13px; font-weight:600; cursor:pointer; transition:.15s;
+    font-family:'Poppins',sans-serif;
+}
+.modal-btn.cancel{ background:#F2F2F2; color:#555; }
+.modal-btn.cancel:hover{ background:#e6e6e6; }
+.modal-btn.confirm-danger{ background:#C62828; color:#fff; }
+.modal-btn.confirm-danger:hover{ background:#B71C1C; }
+.modal-btn.confirm-ok{ background:var(--green); color:#fff; }
+.modal-btn.confirm-ok:hover{ background:#43A047; }
 </style>
 </head>
 <body>
@@ -225,17 +267,15 @@ tr:last-child td{ border-bottom:none; }
                             <td>Admin #<?= esc($menu['requested_by']) ?></td>
                             <td><span class="badge">⏳ Pending</span></td>
                             <td>
-                                <form action="<?= base_url('owner/menu-approval/approve/'.$menu['id']) ?>" method="post" style="display:inline">
+                                <form action="<?= base_url('owner/menu-approval/approve/'.$menu['id']) ?>" method="post" style="display:inline" class="js-approval-form">
                                     <?= csrf_field() ?>
-                                    <button type="submit" class="btn-toggle to-aktif"
-                                            onclick="return confirm('Setujui menu <?= esc($menu['menu_name']) ?>?')">
+                                    <button type="button" class="btn-toggle to-aktif" data-nama="<?= esc($menu['menu_name']) ?>" data-mode="approve">
                                         Approve
                                     </button>
                                 </form>
-                                <form action="<?= base_url('owner/menu-approval/reject/'.$menu['id']) ?>" method="post" style="display:inline">
+                                <form action="<?= base_url('owner/menu-approval/reject/'.$menu['id']) ?>" method="post" style="display:inline" class="js-approval-form">
                                     <?= csrf_field() ?>
-                                    <button type="submit" class="btn-toggle to-nonaktif"
-                                            onclick="return confirm('Tolak menu <?= esc($menu['menu_name']) ?>?')">
+                                    <button type="button" class="btn-toggle to-nonaktif" data-nama="<?= esc($menu['menu_name']) ?>" data-mode="reject">
                                         Reject
                                     </button>
                                 </form>
@@ -250,11 +290,78 @@ tr:last-child td{ border-bottom:none; }
 
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
+<!-- Modal Konfirmasi Custom -->
+<div class="modal-overlay" id="confirmModal">
+    <div class="modal-box">
+        <div class="modal-icon" id="confirmIcon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div class="modal-title" id="confirmTitle">Konfirmasi</div>
+        <div class="modal-text" id="confirmText">Apakah kamu yakin?</div>
+        <div class="modal-actions">
+            <button type="button" class="modal-btn cancel" id="confirmCancelBtn">Batal</button>
+            <button type="button" class="modal-btn confirm-danger" id="confirmOkBtn">Ya, Lanjutkan</button>
+        </div>
+    </div>
+</div>
+
 <script>
 function toggleSidebar(){
     document.querySelector('.sidebar').classList.toggle('open');
     document.getElementById('sidebarOverlay').classList.toggle('show');
 }
+
+(function(){
+    const overlay   = document.getElementById('confirmModal');
+    const iconBox   = document.getElementById('confirmIcon');
+    const titleEl   = document.getElementById('confirmTitle');
+    const textEl    = document.getElementById('confirmText');
+    const okBtn     = document.getElementById('confirmOkBtn');
+    const cancelBtn = document.getElementById('confirmCancelBtn');
+
+    let pendingForm = null;
+
+    function openModal(form, mode, nama){
+        pendingForm = form;
+
+        if (mode === 'approve') {
+            iconBox.className = 'modal-icon ok';
+            iconBox.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+            titleEl.textContent = 'Setujui Menu';
+            textEl.textContent  = 'Setujui menu "' + nama + '"? Menu ini akan langsung tampil untuk pelanggan.';
+            okBtn.className = 'modal-btn confirm-ok';
+            okBtn.textContent = 'Ya, Setujui';
+        } else {
+            iconBox.className = 'modal-icon warn';
+            iconBox.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+            titleEl.textContent = 'Tolak Menu';
+            textEl.textContent  = 'Tolak menu "' + nama + '"? Menu ini tidak akan ditambahkan ke daftar.';
+            okBtn.className = 'modal-btn confirm-danger';
+            okBtn.textContent = 'Ya, Tolak';
+        }
+
+        overlay.classList.add('show');
+    }
+
+    function closeModal(){
+        overlay.classList.remove('show');
+        pendingForm = null;
+    }
+
+    document.querySelectorAll('.js-approval-form .btn-toggle').forEach(function(btn){
+        btn.addEventListener('click', function(){
+            const form = btn.closest('form');
+            openModal(form, btn.dataset.mode, btn.dataset.nama);
+        });
+    });
+
+    okBtn.addEventListener('click', function(){
+        if (pendingForm) pendingForm.submit();
+        closeModal();
+    });
+
+    cancelBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', function(e){ if (e.target === overlay) closeModal(); });
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeModal(); });
+})();
 </script>
 
 </body>
