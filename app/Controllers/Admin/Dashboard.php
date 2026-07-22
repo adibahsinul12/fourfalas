@@ -55,7 +55,25 @@ $grafik = $db->query("
 foreach ($grafik as $row) {
     $data['grafik_total'][$row['bulan'] - 1] = (int)$row['total'];
 }
+$data['waiters'] = $db->table('karyawan')
+    ->where('bidang', 'Waiters')
+    ->where('status', 'Aktif')
+    ->countAllResults();
 
+$data['barista'] = $db->table('karyawan')
+    ->where('bidang', 'Barista')
+    ->where('status', 'Aktif')
+    ->countAllResults();
+
+$data['asisten_koki'] = $db->table('karyawan')
+    ->where('bidang', 'Asisten Koki')
+    ->where('status', 'Aktif')
+    ->countAllResults();
+
+$data['koki'] = $db->table('karyawan')
+    ->where('bidang', 'Koki')
+    ->where('status', 'Aktif')
+    ->countAllResults();
 return view('admin/dashboard_utama', $data);
     }
 
