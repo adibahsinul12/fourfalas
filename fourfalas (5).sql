@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 21, 2026 at 12:46 PM
+-- Generation Time: Jul 22, 2026 at 02:30 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -72,7 +72,8 @@ INSERT INTO `categories` (`id`, `parent_type`, `category_name`) VALUES
 (10, 'Minuman', 'Minuman Segar'),
 (11, 'Minuman', 'Signature Drink'),
 (12, 'Minuman', 'Frappe Series'),
-(13, 'Minuman', 'Minuman Tradisional');
+(13, 'Minuman', 'Minuman Tradisional'),
+(14, 'Minuman', 'Aneka Es');
 
 -- --------------------------------------------------------
 
@@ -101,7 +102,7 @@ CREATE TABLE `karyawan` (
 
 INSERT INTO `karyawan` (`id`, `nama`, `bidang`, `no_hp`, `email`, `alamat`, `foto`, `status`, `tanggal_masuk`, `gaji`, `created_at`, `updated_at`) VALUES
 (1, 'Budi Santoso', 'Barista', '081234567890', NULL, NULL, NULL, 'Aktif', '2024-01-15', 2500000.00, '2026-07-01 21:10:38', '2026-07-01 21:10:38'),
-(2, 'Siti Aminah', 'Waiters', '081234567891', NULL, NULL, NULL, 'Aktif', '2024-02-01', 2200000.00, '2026-07-01 21:10:38', '2026-07-01 21:10:38'),
+(2, 'Siti Aminah', 'Waiters', '081234567891', NULL, NULL, NULL, 'Aktif', '2024-02-01', 2200000.00, '2026-07-01 21:10:38', '2026-07-21 19:53:05'),
 (3, 'Andi Wijaya', 'Koki', '081234567892', NULL, NULL, NULL, 'Aktif', '2023-11-10', 3000000.00, '2026-07-01 21:10:38', '2026-07-01 21:10:38'),
 (4, 'Dewi Lestari', 'Asisten Koki', '081234567893', NULL, NULL, NULL, 'Aktif', '2024-03-05', 2400000.00, '2026-07-01 21:10:38', '2026-07-01 21:10:38');
 
@@ -161,9 +162,19 @@ CREATE TABLE `menus` (
 INSERT INTO `menus` (`id`, `category_id`, `menu_name`, `description`, `image_path`, `is_recommended`, `is_active`, `status`, `requested_by`, `approved_by`, `rejected_reason`, `approved_at`) VALUES
 (1, 2, 'Jasmine Tea (Manis)', NULL, 'default_menus.jpg', 1, 1, 'approved', NULL, NULL, NULL, '2026-07-05 23:21:41'),
 (2, 8, 'Paket Menu Bersama (2 Orang)', NULL, 'default_menus.jpg', 0, 1, 'approved', NULL, NULL, NULL, '2026-07-05 23:21:52'),
-(3, 2, 'Blueberry Tea Blended', NULL, 'default_menus.jpg', 0, 1, 'approved', NULL, NULL, NULL, '2026-07-05 23:34:50'),
-(5, 2, 'Lemon Tea', NULL, 'default_menus.jpg', 1, 1, 'approved', NULL, NULL, NULL, '2026-07-05 23:36:11'),
-(6, 2, 'Milk Tea', NULL, 'default_menus.jpg', 0, 1, 'approved', NULL, NULL, NULL, '2026-07-06 09:26:32');
+(6, 2, 'Milk Tea', NULL, 'default_menus.jpg', 0, 1, 'approved', NULL, NULL, NULL, '2026-07-06 09:26:32'),
+(15, 2, 'Earl Grey Tea (Tawar)', NULL, 'default_menus.jpg', 0, 1, 'approved', NULL, NULL, NULL, '2026-07-22 18:24:59'),
+(16, 2, 'Earl Grey Tea (Manis)', NULL, 'default_menus.jpg', 0, 1, 'approved', NULL, NULL, NULL, '2026-07-22 18:25:04'),
+(17, 2, 'Jasmine Tea (Tawar)', NULL, 'default_menus.jpg', 0, 1, 'approved', NULL, NULL, NULL, '2026-07-22 18:25:07'),
+(18, 2, 'Lychee Earl Grey Tea', NULL, 'default_menus.jpg', 0, 1, 'approved', NULL, NULL, NULL, '2026-07-22 18:50:37'),
+(19, 2, 'Lychee Jasmine Tea', NULL, 'default_menus.jpg', 0, 1, 'approved', NULL, NULL, NULL, '2026-07-22 18:50:41'),
+(20, 2, 'Honey Lemon Tea', NULL, 'default_menus.jpg', 0, 1, 'approved', NULL, NULL, NULL, '2026-07-22 18:50:44'),
+(21, 2, 'Green Milk Tea', NULL, 'default_menus.jpg', 0, 1, 'approved', NULL, NULL, NULL, '2026-07-22 18:50:47'),
+(22, 2, 'Thai Tea', NULL, 'default_menus.jpg', 1, 1, 'approved', NULL, NULL, NULL, '2026-07-22 18:50:51'),
+(23, 2, 'Matcha Latte', NULL, 'default_menus.jpg', 1, 1, 'approved', NULL, NULL, NULL, '2026-07-22 19:04:24'),
+(24, 2, 'Matcha Latte with OatMilk', NULL, 'default_menus.jpg', 0, 1, 'approved', NULL, NULL, NULL, '2026-07-22 19:04:27'),
+(25, 2, 'Thai Coffee Tea', NULL, 'default_menus.jpg', 0, 1, 'pending', NULL, NULL, NULL, NULL),
+(26, 2, 'Blueberry Tea Blended', NULL, 'default_menus.jpg', 0, 1, 'pending', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -186,14 +197,32 @@ CREATE TABLE `menu_variants` (
 --
 
 INSERT INTO `menu_variants` (`id`, `menu_id`, `variant_name`, `price`, `stock`, `created_at`, `updated_at`) VALUES
-(9, 2, '-', 120000, 10, '2026-07-02 19:22:52', '2026-07-02 19:22:52'),
-(10, 3, 'Es', 13000, 20, '2026-07-02 19:43:01', '2026-07-02 19:43:01'),
-(13, 5, 'Es', 10000, 20, '2026-07-05 23:35:53', '2026-07-05 23:35:53'),
-(14, 5, 'Panas', 10000, 20, '2026-07-05 23:35:53', '2026-07-05 23:35:53'),
-(15, 6, 'Es', 10000, 20, '2026-07-06 09:25:30', '2026-07-06 09:25:30'),
-(16, 6, 'Panas', 10000, 20, '2026-07-06 09:25:30', '2026-07-06 09:25:30'),
-(21, 1, 'Es', 6000, 20, '2026-07-06 10:56:31', '2026-07-06 10:56:31'),
-(22, 1, 'Panas', 7000, 20, '2026-07-06 10:56:31', '2026-07-06 10:56:31');
+(35, 2, '-', 120000, 10, '2026-07-22 18:10:27', '2026-07-22 18:10:27'),
+(38, 1, 'panas', 5000, 20, '2026-07-22 18:22:30', '2026-07-22 18:22:30'),
+(39, 1, 'es', 6000, 20, '2026-07-22 18:22:30', '2026-07-22 18:22:30'),
+(40, 15, 'panas', 4000, 50, '2026-07-22 18:22:45', '2026-07-22 18:22:45'),
+(41, 15, 'es', 5000, 50, '2026-07-22 18:22:45', '2026-07-22 18:22:45'),
+(42, 16, 'panas', 5000, 20, '2026-07-22 18:23:33', '2026-07-22 18:23:33'),
+(43, 16, 'es', 6000, 20, '2026-07-22 18:23:33', '2026-07-22 18:23:33'),
+(44, 17, 'panas', 4000, 20, '2026-07-22 18:24:10', '2026-07-22 18:24:10'),
+(45, 17, 'es', 5000, 20, '2026-07-22 18:24:10', '2026-07-22 18:24:10'),
+(46, 18, 'panas', 13000, 20, '2026-07-22 18:43:17', '2026-07-22 18:43:17'),
+(47, 18, 'es', 14000, 20, '2026-07-22 18:43:17', '2026-07-22 18:43:17'),
+(48, 19, 'panas', 13000, 20, '2026-07-22 18:44:07', '2026-07-22 18:44:07'),
+(49, 19, 'es', 14000, 20, '2026-07-22 18:44:07', '2026-07-22 18:44:07'),
+(50, 20, 'panas', 15000, 20, '2026-07-22 18:44:46', '2026-07-22 18:44:46'),
+(51, 20, 'es', 15000, 20, '2026-07-22 18:44:46', '2026-07-22 18:44:46'),
+(52, 21, 'panas', 10000, 20, '2026-07-22 18:45:35', '2026-07-22 18:45:35'),
+(53, 21, 'es', 10000, 20, '2026-07-22 18:45:35', '2026-07-22 18:45:35'),
+(55, 22, 'panas', 10000, 20, '2026-07-22 18:49:01', '2026-07-22 18:49:01'),
+(56, 22, 'es', 10000, 20, '2026-07-22 18:49:01', '2026-07-22 18:49:01'),
+(57, 23, 'panas', 17000, 20, '2026-07-22 18:58:23', '2026-07-22 18:58:23'),
+(58, 23, 'es', 17000, 20, '2026-07-22 18:58:23', '2026-07-22 18:58:23'),
+(59, 24, 'panas', 21000, 20, '2026-07-22 18:59:18', '2026-07-22 18:59:18'),
+(60, 24, 'es', 22000, 20, '2026-07-22 18:59:18', '2026-07-22 18:59:18'),
+(61, 25, 'panas', 14000, 20, '2026-07-22 19:09:44', '2026-07-22 19:09:44'),
+(62, 25, 'es', 14000, 20, '2026-07-22 19:09:44', '2026-07-22 19:09:44'),
+(63, 26, 'blended', 13000, 20, '2026-07-22 19:11:53', '2026-07-22 19:11:53');
 
 -- --------------------------------------------------------
 
@@ -250,7 +279,7 @@ CREATE TABLE `order_items` (
 
 INSERT INTO `order_items` (`id`, `order_id`, `menu_id`, `variant_id`, `quantity`, `price_at_order`, `subtotal`) VALUES
 (1, 1, 1, NULL, 1, 6000.00, 6000.00),
-(2, 2, 6, 15, 1, 10000.00, 10000.00),
+(2, 2, 6, NULL, 1, 10000.00, 10000.00),
 (3, 3, 1, NULL, 1, 6000.00, 6000.00);
 
 -- --------------------------------------------------------
@@ -471,13 +500,13 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `karyawan`
 --
 ALTER TABLE `karyawan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `members`
@@ -489,13 +518,13 @@ ALTER TABLE `members`
 -- AUTO_INCREMENT for table `menus`
 --
 ALTER TABLE `menus`
-  MODIFY `id` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `menu_variants`
 --
 ALTER TABLE `menu_variants`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `orders`
