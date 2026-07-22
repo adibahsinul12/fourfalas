@@ -1,6 +1,16 @@
 <?= $this->extend('layout/customer_template'); ?>
 
+<?= $this->section('pageKey') ?>keranjang<?= $this->endSection() ?>
+
 <?= $this->section('content'); ?>
+
+<style>
+    /* Blur latar belakang di balik SweetAlert2 */
+    .swal2-container {
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+    }
+</style>
 
 <div class="app-container" style="min-height: 100vh; display: flex; flex-direction: column; box-sizing: border-box;"> 
     
@@ -50,7 +60,7 @@
                         <p class="item-price">Rp <?= number_format($item['price'], 0, ',', '.'); ?></p>
                     </div>
                     <div class="item-actions">
-                        <a href="<?= base_url('cart/remove/'.$id); ?>" class="btn-delete" style="text-decoration: none;" onclick="return confirm('Hapus menu ini?')">Hapus</a>
+                        <a href="<?= base_url('cart/remove/'.$id); ?>" class="btn-delete" style="text-decoration: none;" onclick="return confirmDeleteItem(event, this.href)">Hapus</a>
                         <div class="qty-counter">
                             <a href="<?= base_url('cart/decrease/'.$id); ?>" class="qty-btn" style="text-decoration: none;">-</a>
                             <span class="qty-num"><?= $item['quantity']; ?></span>
@@ -81,19 +91,19 @@
         <?php endif; ?>
 
         <div class="bottom-nav" style="position: static !important; display: flex; justify-content: space-around; align-items: center; background: transparent !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; width: 100% !important; transform: none !important;">
-            <div class="nav-item" onclick="location.href='<?= base_url('pelanggan'); ?>'" style="cursor: pointer; flex: 1; text-align: center;">
+            <div class="nav-item" onclick="navigateSmooth('<?= base_url('pelanggan'); ?>', 'beranda')" style="cursor: pointer; flex: 1; text-align: center;">
                 <svg viewBox="0 0 24 24" style="margin: 0 auto 4px auto;"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                 <span style="font-family: 'Poppins', sans-serif;">Beranda</span>
             </div>
-            <div class="nav-item" onclick="location.href='<?= base_url('pesanan'); ?>'" style="cursor: pointer; flex: 1; text-align: center;">
+            <div class="nav-item" onclick="navigateSmooth('<?= base_url('pesanan'); ?>', 'pesanan')" style="cursor: pointer; flex: 1; text-align: center;">
                 <svg viewBox="0 0 24 24" style="margin: 0 auto 4px auto;"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
                 <span style="font-family: 'Poppins', sans-serif;">Pesanan</span>
             </div>
-            <div class="nav-item active" onclick="location.href='<?= base_url('cart'); ?>'" style="cursor: pointer; flex: 1; text-align: center;">
+            <div class="nav-item active" onclick="navigateSmooth('<?= base_url('cart'); ?>', 'keranjang')" style="cursor: pointer; flex: 1; text-align: center;">
                 <svg viewBox="0 0 24 24" style="margin: 0 auto 4px auto;"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
                 <span style="font-family: 'Poppins', sans-serif;">Keranjang</span>
             </div>
-            <div class="nav-item" onclick="location.href='<?= base_url('rating'); ?>'" style="cursor: pointer; flex: 1; text-align: center;">
+            <div class="nav-item" onclick="navigateSmooth('<?= base_url('rating'); ?>', 'rating')" style="cursor: pointer; flex: 1; text-align: center;">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto 4px auto;">
                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
                 </svg>
@@ -103,4 +113,31 @@
     </div>
 </div>
 
+<?= $this->endSection(); ?>
+
+<?= $this->section('scripts'); ?>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+function confirmDeleteItem(event, url) {
+    event.preventDefault();
+    Swal.fire({
+        target: document.body,
+        title: 'Hapus menu ini?',
+        text: 'Menu akan dihapus dari keranjang belanjamu.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, Hapus',
+        cancelButtonText: 'Batal',
+        confirmButtonColor: '#6B3A1E',
+        cancelButtonColor: '#E5E5E5',
+        background: '#FFFFFF',
+        reverseButtons: true
+    }).then(function (result) {
+        if (result.isConfirmed) {
+            location.href = url;
+        }
+    });
+    return false;
+}
+</script>
 <?= $this->endSection(); ?>
