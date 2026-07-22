@@ -209,9 +209,12 @@ return view('admin/dashboard_utama', $data);
         $db = \Config\Database::connect();
 
         // Menggabungkan tabel menus dan categories berdasarkan ID kategorinya
+        // Hanya tampilkan menu yang masih aktif (is_active = 1), supaya menu
+        // yang sudah "dihapus" (soft delete) tidak muncul lagi di list.
         $query = $db->table('menus')
                     ->select('menus.*, categories.category_name')
                     ->join('categories', 'categories.id = menus.category_id', 'left')
+                    ->where('menus.is_active', 1)
                     ->get();
 
         $data['daftar_menu'] = $query->getResultArray();
@@ -542,11 +545,17 @@ return view('admin/dashboard_utama', $data);
     {
         $db = \Config\Database::connect();
 
-        // Hapus varian dulu (jaga-jaga kalau FK belum di-set ON DELETE CASCADE)
-        $db->table('menu_variants')->where('menu_id', $id)->delete();
-        $db->table('menus')->where('id', $id)->delete();
+        // Nonaktifkan menu (soft delete), BUKAN benar-benar hapus row.
+        // Kalau row menu ini dihapus permanen dari tabel 'menus', MySQL akan
+        // menolak (foreign key constraint) selama menu_id ini masih dipakai
+        // di tabel order_items pada riwayat transaksi lama. Solusinya:
+        // tandai saja is_active = 0 supaya menu hilang dari daftar tapi
+        // riwayat pesanan lama tetap aman/valid.
+        $db->table('menus')
+           ->where('id', $id)
+           ->update(['is_active' => 0]);
 
-        return redirect()->to(base_url('admin/menu'));
+        return redirect()->to(base_url('admin/menu'))->with('success', 'Menu berhasil dinonaktifkan!');
     }
 
     public function updatePassword()
