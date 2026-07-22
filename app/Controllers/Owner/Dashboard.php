@@ -41,7 +41,9 @@ class Dashboard extends BaseController
 
             'rata_rating'    => $ratingModel->getAverageRating(),
             'total_rating'   => $ratingModel->countAllResults(),
-            'rating_terbaru' => $ratingModel->getRecent(5),
+            // Diubah dari 5 -> 10 supaya semua ulasan terbaru ikut tampil,
+            // tidak lagi "terpotong" saat total ulasan lebih dari 5.
+            'rating_terbaru' => $ratingModel->getRecent(10),
 
             'sales_chart_labels' => $namaBulan,
             'sales_chart_data'   => array_values($penjualanPerBulan),

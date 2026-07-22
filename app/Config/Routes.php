@@ -8,6 +8,8 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 $routes->get('pelanggan', 'Home::index');
 $routes->get('menu', 'Home::menu');
+$routes->get('rating', 'RatingCustomer::index');
+$routes->post('rating/store', 'RatingCustomer::store');
 
 // Rute Halaman Riwayat Pesanan Pelanggan
 $routes->get('pesanan', 'Pesanan::index'); // <-- DITAMBAHKAN
@@ -95,6 +97,8 @@ $routes->group('owner', ['filter' => 'auth'], function($routes) {
     $routes->get('karyawan/edit/(:num)', 'Owner\Karyawan::edit/$1');
     $routes->post('karyawan/update-status/(:num)', 'Owner\Karyawan::updateStatus/$1');
     $routes->get('karyawan/delete/(:num)', 'Owner\Karyawan::delete/$1');
+    $routes->post('karyawan/delete/(:num)', 'Owner\Karyawan::delete/$1');
+    $routes->post('karyawan/update/(:num)', 'Owner\Karyawan::update/$1');
 
     // Rating & Ulasan
     $routes->get('rating', 'Owner\Rating::index');
